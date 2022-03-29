@@ -27,7 +27,10 @@ const Login = ({ navigation }) => {
             <TextInput style={[styles.formInput, fonts.regular]} />
           </View>
 
-          <TouchableOpacity style={[styles.button]}>
+          <TouchableOpacity
+            style={[styles.button]}
+            onPress={() => navigation.navigate('Dashboard')}
+          >
             <Text style={[styles.buttonText, fonts.medium]}>Login</Text>
           </TouchableOpacity>
         </View>

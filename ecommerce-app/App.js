@@ -1,8 +1,6 @@
-import * as React from 'react'
+// 3rd Party Packages
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { Home, Login } from './pages'
-
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -26,7 +24,10 @@ import {
 
 import { useFonts } from 'expo-font'
 import AppLoading from 'expo-app-loading'
-import Signup from './pages/Signup'
+
+// Components
+import { Dashboard, Home, Login, Signup } from './pages'
+import { StatusBar } from 'expo-status-bar'
 
 const Stack = createNativeStackNavigator()
 
@@ -63,7 +64,9 @@ const App = () => {
         <Stack.Screen name='Home' component={Home} />
         <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='Signup' component={Signup} />
+        <Stack.Screen name='Dashboard' component={Dashboard} />
       </Stack.Navigator>
+      <StatusBar style='dark' />
     </NavigationContainer>
   )
 }
