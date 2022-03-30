@@ -1,6 +1,8 @@
 // 3rd Party Packages
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -20,16 +22,55 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black,
   Poppins_900Black_Italic,
-} from '@expo-google-fonts/poppins'
+} from "@expo-google-fonts/poppins";
 
-import { useFonts } from 'expo-font'
-import AppLoading from 'expo-app-loading'
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 // Components
-import { Dashboard, Home, Login, Signup } from './pages'
-import { StatusBar } from 'expo-status-bar'
+import {
+  Dashboard,
+  Home,
+  Login,
+  Product,
+  Settings,
+  Signup,
+} from "./src/screens";
+import { StatusBar } from "expo-status-bar";
 
-const Stack = createNativeStackNavigator()
+const AuthStack = createNativeStackNavigator();
+const AppStack = createNativeStackNavigator();
+const SpecialStack = createNativeStackNavigator();
+const TabStack = createBottomTabNavigator();
+
+const SpecialStackScreen = () => {
+  return (
+    <SpecialStack.Navigator>
+      <SpecialStack.Screen name="Product" component={Product} />
+      <SpecialStack.Screen name="Setting" component={Settings} />
+    </SpecialStack.Navigator>
+  );
+};
+
+const TabStackScreen = () => {
+  return (
+    <TabStack.Navigator screenOptions={{ headerShown: false }}>
+      <TabStack.Screen name="Home" component={Dashboard} />
+    </TabStack.Navigator>
+  );
+};
+
+const AuthStackScreen = () => {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="Home" component={Home} />
+      <AuthStack.Screen name="Login" component={Login} />
+      <AuthStack.Screen name="Signup" component={Signup} />
+    </AuthStack.Navigator>
+  );
+};
+
+const isAuth = false;
 
 const App = () => {
   const [loaded] = useFonts({
@@ -51,24 +92,20 @@ const App = () => {
     Poppins_800ExtraBold_Italic,
     Poppins_900Black,
     Poppins_900Black_Italic,
-  })
+  });
 
-  if (!loaded) return <AppLoading />
+  if (!loaded) return <AppLoading />;
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false }}
-        initialRouteName='Home'
-      >
-        <Stack.Screen name='Home' component={Home} />
-        <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='Signup' component={Signup} />
-        <Stack.Screen name='Dashboard' component={Dashboard} />
-      </Stack.Navigator>
-      <StatusBar style='dark' />
+      <AppStack.Navigator screenOptions={{ headerShown: false }}>
+        <AppStack.Screen name="Auth" component={AuthStackScreen} />
+        <AppStack.Screen name="Products" component={TabStackScreen} />
+        <AppStack.Screen name="Special" component={SpecialStackScreen} />
+      </AppStack.Navigator>
+      <StatusBar style="dark" />
     </NavigationContainer>
-  )
-}
+  );
+};
 
-export default App
+export default App;

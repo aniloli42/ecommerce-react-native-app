@@ -4,21 +4,23 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
-} from 'react-native'
-import colors from '../styles/colors'
-import fonts from '../styles/fonts'
-import Icon from 'react-native-vector-icons/FontAwesome'
+} from "react-native";
+import colors from "../styles/colors";
+import fonts from "../styles/fonts";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const ProductCard = () => {
+const ProductCard = ({ navigation }) => {
   return (
     <View style={[styles.container]}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Special", { screen: "Product" })}
+      >
         <ImageBackground
           style={[styles.imageContainer]}
-          source={require('../assets/IMG_1028.jpeg')}
+          source={require("../../assets/IMG_1028.jpeg")}
         >
           <TouchableOpacity style={[styles.addToCart]}>
-            <Icon name='cart-plus' color={'#000'} size={18} />
+            <MaterialCommunityIcons name="cart-plus" color={"#000"} size={16} />
           </TouchableOpacity>
         </ImageBackground>
 
@@ -26,8 +28,8 @@ const ProductCard = () => {
         <Text style={[fonts.regular, styles.productPrice]}>Rs. 40</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -36,24 +38,24 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     backgroundColor: colors.mediumGray,
-    width: '100%',
+    width: "100%",
     height: 150,
     borderRadius: 16,
-    overflow: 'hidden',
-    position: 'relative',
+    overflow: "hidden",
+    position: "relative",
   },
   addToCart: {
     width: 27,
     height: 27,
     backgroundColor: colors.white,
-    position: 'absolute',
+    position: "absolute",
     borderRadius: 50,
     zIndex: 1,
     top: 0,
     right: 0,
     margin: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   productTitle: {
     marginTop: 8,
@@ -62,6 +64,6 @@ const styles = StyleSheet.create({
   productPrice: {
     color: colors.mediumGray,
   },
-})
+});
 
-export default ProductCard
+export default ProductCard;
