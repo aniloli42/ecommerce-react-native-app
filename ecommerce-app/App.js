@@ -3,6 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import Ionic from "react-native-vector-icons/Ionicons";
+
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -29,44 +31,58 @@ import AppLoading from "expo-app-loading";
 
 // Components
 import {
+  Cart,
   Dashboard,
   Home,
   Login,
+  OrderHistory,
   Product,
   Settings,
   Signup,
 } from "./src/screens";
 import { StatusBar } from "expo-status-bar";
+import colors from "./src/styles/colors";
 
-const AuthStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator();
-const SpecialStack = createNativeStackNavigator();
 const TabStack = createBottomTabNavigator();
-
-const SpecialStackScreen = () => {
-  return (
-    <SpecialStack.Navigator>
-      <SpecialStack.Screen name="Product" component={Product} />
-      <SpecialStack.Screen name="Setting" component={Settings} />
-    </SpecialStack.Navigator>
-  );
-};
 
 const TabStackScreen = () => {
   return (
-    <TabStack.Navigator screenOptions={{ headerShown: false }}>
-      <TabStack.Screen name="Home" component={Dashboard} />
-    </TabStack.Navigator>
-  );
-};
+    <TabStack.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarIcon: ({ focused, size, color }) => {
+          let iconName;
 
-const AuthStackScreen = () => {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen name="Home" component={Home} />
-      <AuthStack.Screen name="Login" component={Login} />
-      <AuthStack.Screen name="Signup" component={Signup} />
-    </AuthStack.Navigator>
+          color = focused ? colors.tintBrown : "#bbb";
+          size = focused ? 26 : 24;
+
+          if (route.name == "Home") {
+            iconName = focused ? "home" : "home-outline";
+          }
+
+          if (route.name === "Cart") {
+            iconName = focused ? "cart" : "cart-outline";
+          }
+
+          if (route.name === "OrderHistory") {
+            iconName = focused
+              ? "ios-reorder-three"
+              : "ios-reorder-three-outline";
+          }
+          return <Ionic name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <TabStack.Screen name="Home" component={Dashboard} />
+      <TabStack.Screen name="Cart" component={Cart} />
+      <TabStack.Screen
+        name="OrderHistory"
+        component={OrderHistory}
+        options={{ tabBarLabel: "Order History" }}
+      />
+    </TabStack.Navigator>
   );
 };
 
@@ -99,9 +115,12 @@ const App = () => {
   return (
     <NavigationContainer>
       <AppStack.Navigator screenOptions={{ headerShown: false }}>
-        <AppStack.Screen name="Auth" component={AuthStackScreen} />
-        <AppStack.Screen name="Products" component={TabStackScreen} />
-        <AppStack.Screen name="Special" component={SpecialStackScreen} />
+        <AppStack.Screen name="Home" component={Home} />
+        <AppStack.Screen name="Login" component={Login} />
+        <AppStack.Screen name="Signup" component={Signup} />
+        <AppStack.Screen name="Product" component={Product} />
+        <AppStack.Screen name="Settings" component={Settings} />
+        <AppStack.Screen name="Tab" component={TabStackScreen} />
       </AppStack.Navigator>
       <StatusBar style="dark" />
     </NavigationContainer>

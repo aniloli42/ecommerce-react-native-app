@@ -119,9 +119,7 @@ const Login = ({ navigation }) => {
                 paddingVertical: 12,
                 borderRadius: 50,
               }}
-              onPress={() =>
-                navigation.navigate("Products", { screen: "Home" })
-              }
+              onPress={() => navigation.navigate("Tab", { screen: "Home" })}
             >
               <Text
                 style={[
