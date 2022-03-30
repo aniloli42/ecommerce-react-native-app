@@ -197,13 +197,13 @@ const Sizes = ({ text }) => {
     <TouchableOpacity
       style={{
         marginRight: utils.maxSpacing,
-        borderWidth: 1,
         width: 48,
         height: 48,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 50,
         borderColor: "transparent",
+        elevation: 1,
         backgroundColor: colors.white,
       }}
     >
