@@ -4,8 +4,6 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  SafeAreaView,
-  Platform,
   StatusBar,
 } from "react-native";
 
@@ -14,15 +12,19 @@ import colors from "../styles/colors";
 
 const Signup = ({ navigation }) => {
   return (
-    <SafeAreaView
+    <View
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        height: "100%",
       }}
     >
+      <StatusBar
+        backgroundColor="white"
+        barStyle="dark-content"
+        animated={true}
+      />
       <ScrollView>
         <View
           style={{
-            flex: 1,
             alignItems: "center",
             paddingVertical: 50,
           }}
@@ -42,7 +44,6 @@ const Signup = ({ navigation }) => {
           {/* Form */}
           <View
             style={{
-              maxWidth: 450,
               width: "80%",
               marginTop: 50,
             }}
@@ -154,7 +155,7 @@ const Signup = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

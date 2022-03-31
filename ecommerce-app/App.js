@@ -55,8 +55,7 @@ const TabStackScreen = () => {
         tabBarIcon: ({ focused, size, color }) => {
           let iconName;
 
-          color = focused ? colors.tintBrown : "#bbb";
-          size = focused ? 26 : 24;
+          color = focused ? colors.tintBrown : "#aaa";
 
           if (route.name == "Home") {
             iconName = focused ? "home" : "home-outline";
@@ -68,8 +67,12 @@ const TabStackScreen = () => {
 
           if (route.name === "OrderHistory") {
             iconName = focused
-              ? "ios-reorder-three"
-              : "ios-reorder-three-outline";
+              ? "ios-reorder-four"
+              : "ios-reorder-four-outline";
+          }
+
+          if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
           }
           return <Ionic name={iconName} size={size} color={color} />;
         },
@@ -82,6 +85,7 @@ const TabStackScreen = () => {
         component={OrderHistory}
         options={{ tabBarLabel: "Order History" }}
       />
+      <TabStack.Screen name="Settings" component={Settings} />
     </TabStack.Navigator>
   );
 };
@@ -113,16 +117,21 @@ const App = () => {
   if (!loaded) return <AppLoading />;
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={{
+        colors: {
+          background: "#fff",
+          card: "#fff",
+        },
+      }}
+    >
       <AppStack.Navigator screenOptions={{ headerShown: false }}>
         <AppStack.Screen name="Home" component={Home} />
         <AppStack.Screen name="Login" component={Login} />
         <AppStack.Screen name="Signup" component={Signup} />
         <AppStack.Screen name="Product" component={Product} />
-        <AppStack.Screen name="Settings" component={Settings} />
         <AppStack.Screen name="Tab" component={TabStackScreen} />
       </AppStack.Navigator>
-      <StatusBar style="dark" />
     </NavigationContainer>
   );
 };

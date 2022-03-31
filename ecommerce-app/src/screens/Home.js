@@ -4,6 +4,7 @@ import {
   Image,
   TouchableOpacity,
   ImageBackground,
+  StatusBar,
 } from "react-native";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
@@ -15,11 +16,15 @@ const Home = ({ navigation }) => {
       resizeMode="cover"
       style={{ width: "100%", height: "100%", flex: 1 }}
     >
+      <StatusBar
+        backgroundColor="white"
+        barStyle="dark-content"
+        animated={true}
+      />
       <View
         style={{
           flex: 1,
           alignItems: "center",
-          overflow: "scroll",
         }}
       >
         <View
@@ -90,7 +95,6 @@ const Home = ({ navigation }) => {
             marginTop: "auto",
             marginBottom: 50,
             width: "80%",
-            maxWidth: 450,
           }}
         >
           <TouchableOpacity

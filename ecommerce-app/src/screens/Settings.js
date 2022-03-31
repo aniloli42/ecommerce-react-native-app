@@ -1,22 +1,19 @@
-import {
-  Platform,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import React from "react";
+import { StatusBar, StyleSheet, Text, View } from "react-native";
 
 const Settings = () => {
   return (
-    <SafeAreaView
+    <View
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        height: "100%",
       }}
     >
+      <StatusBar
+        backgroundColor="white"
+        barStyle="dark-content"
+        animated={true}
+      />
       <Text>Settings</Text>
-    </SafeAreaView>
+    </View>
   );
 };
 

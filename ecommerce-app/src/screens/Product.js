@@ -1,13 +1,13 @@
+import { useState } from "react";
 import {
   Image,
-  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,21 +15,40 @@ import Ionic from "react-native-vector-icons/Ionicons";
 import utils from "../styles/utils";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import { Sizes } from "../components";
 
 const productImage = require("../../assets/IMG_8616.jpeg");
 const productImage2 = require("../../assets/IMG_8633.jpeg");
 
+const ProductSizes = [
+  { id: 0, size: "S" },
+  { id: 1, size: "M" },
+  { id: 2, size: "L" },
+  { id: 3, size: "X" },
+  { id: 4, size: "XL" },
+  { id: 5, size: "XXL" },
+];
+
 const Product = () => {
   const navigation = useNavigation();
+
+  const [chooseSize, setChooseSize] = useState(0);
+
+  const handleSize = (value) => {
+    setChooseSize(value);
+  };
 
   return (
     <SafeAreaView
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-        backgroundColor: colors.lightGray,
-        flex: 1,
+        height: "100%",
       }}
     >
+      <StatusBar
+        backgroundColor="white"
+        barStyle="dark-content"
+        animated={true}
+      />
       <View
         style={{
           paddingLeft: utils.maxSpacing,
@@ -45,7 +64,7 @@ const Product = () => {
             borderRadius: 50,
             marginTop: utils.minSpacing,
           }}
-          onPress={() => navigation.navigate("Tab", { screen: "Home" })}
+          onPress={() => navigation.goBack()}
         >
           <Ionic name="arrow-back" size={27} color={"#000"} />
         </TouchableOpacity>
@@ -53,24 +72,35 @@ const Product = () => {
 
       {/* Image */}
 
-      <View
+      <ScrollView
         style={{
-          justifyContent: "flex-start",
-          alignItems: "flex-end",
+          flexGrow: 0,
+          flexShrink: 0,
           height: 360,
           width: "100%",
         }}
+        contentContainerStyle={{ flexGrow: 1, flexShrink: 0 }}
+        horizontal={true}
       >
         <Image
           source={productImage2}
           style={{
             width: "100%",
-            height: "100%",
+            height: 360,
             resizeMode: "cover",
             backgroundColor: colors.mediumGray,
           }}
         />
-      </View>
+        <Image
+          source={productImage}
+          style={{
+            width: "100%",
+            height: 360,
+            resizeMode: "cover",
+            backgroundColor: colors.mediumGray,
+          }}
+        />
+      </ScrollView>
 
       {/* Product Details */}
       <ScrollView
@@ -78,6 +108,8 @@ const Product = () => {
         style={{
           paddingTop: utils.midSpacing,
           paddingHorizontal: utils.maxSpacing,
+          flexGrow: 0,
+          flexShrink: 0,
         }}
       >
         <View
@@ -114,7 +146,6 @@ const Product = () => {
         </View>
 
         {/* Product Sizes */}
-
         <Text
           style={[
             fonts.medium,
@@ -127,18 +158,18 @@ const Product = () => {
           Sizes
         </Text>
 
-        <ScrollView
+        <FlatList
+          keyExtractor={(item) => item.id}
+          data={ProductSizes}
           horizontal={true}
+          renderItem={({ item }) => (
+            <Sizes {...item} chooseSize={chooseSize} handleSize={handleSize} />
+          )}
           showsHorizontalScrollIndicator={false}
-          style={{
-            flexDirection: "row",
-            marginVertical: utils.minSpacing,
+          contentContainerStyle={{
+            paddingVertical: utils.minSpacing,
           }}
-        >
-          <Sizes text={"S"} />
-          <Sizes text={"M"} />
-          <Sizes text={"X"} />
-        </ScrollView>
+        />
 
         <TouchableOpacity
           style={{
@@ -148,7 +179,7 @@ const Product = () => {
             paddingHorizontal: utils.minSpacing,
             backgroundColor: colors.mediumGray,
             borderRadius: 10,
-            marginTop: utils.midSpacing,
+            marginTop: utils.maxSpacing,
           }}
         >
           <Text
@@ -189,35 +220,6 @@ const Product = () => {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
-  );
-};
-
-const Sizes = ({ text }) => {
-  return (
-    <TouchableOpacity
-      style={{
-        marginRight: utils.maxSpacing,
-        width: 48,
-        height: 48,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 50,
-        borderColor: "transparent",
-        elevation: 1,
-        backgroundColor: colors.white,
-      }}
-    >
-      <Text
-        style={[
-          fonts.regular,
-          {
-            fontSize: 18,
-          },
-        ]}
-      >
-        {text ?? "?"}
-      </Text>
-    </TouchableOpacity>
   );
 };
 

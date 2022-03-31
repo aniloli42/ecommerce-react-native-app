@@ -4,8 +4,6 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  SafeAreaView,
-  Platform,
   StatusBar,
 } from "react-native";
 
@@ -14,19 +12,23 @@ import fonts from "../styles/fonts";
 
 const Login = ({ navigation }) => {
   return (
-    <SafeAreaView
+    <View
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        height: "100%",
       }}
     >
       <ScrollView>
         <View
           style={{
-            flex: 1,
             alignItems: "center",
             paddingVertical: 50,
           }}
         >
+          <StatusBar
+            backgroundColor="white"
+            barStyle="dark-content"
+            animated={true}
+          />
           <Text
             style={[
               {
@@ -42,7 +44,6 @@ const Login = ({ navigation }) => {
           {/* Form */}
           <View
             style={{
-              maxWidth: 450,
               width: "80%",
               marginTop: 50,
             }}
@@ -161,7 +162,7 @@ const Login = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

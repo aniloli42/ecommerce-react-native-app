@@ -1,41 +1,70 @@
 import {
-  SafeAreaView,
   ScrollView,
   Text,
   TextInput,
   View,
   StatusBar,
-  Platform,
-  TouchableOpacity,
   FlatList,
 } from "react-native";
 import Ionic from "react-native-vector-icons/Ionicons";
 
+import { useState, useCallback, useEffect } from "react";
+
 // Custom
 import fonts from "../styles/fonts";
 import utils from "../styles/utils";
-import { ProductCard } from "../components";
+import { ProductCard, ProductType } from "../components";
+import colors from "../styles/colors";
+import { Link } from "@react-navigation/native";
 
-const Data = [
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 },
-  { id: 6 },
-  { id: 7 },
-  { id: 8 },
+const EProducts = [
+  {
+    id: 1,
+    type: "Ring",
+    product: "Diamond 1",
+    price: 500,
+  },
+  {
+    id: 2,
+    type: "Ear Ring",
+    product: "Ear 1",
+    price: 400,
+  },
+  {
+    id: 1,
+    type: "Necklace",
+    product: "Gold Necklace 1",
+    price: 500,
+  },
 ];
 
-const Dashboard = ({ navigation }) => {
+const Dashboard = () => {
+  const [pType, setPType] = useState("All");
+  const [filteredProduct, setFilteredProduct] = useState(EProducts);
+
+  useEffect(() => {
+    if (pType === "All") return setFilteredProduct(EProducts);
+
+    setFilteredProduct(EProducts.filter((Product) => Product.type === pType));
+  }, [pType]);
+
+  const handleFilter = (productType) => {
+    if (productType === pType) return setPType("All");
+
+    setPType(productType);
+  };
+
   return (
-    <SafeAreaView
+    <View
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-        backgroundColor: colors.lightGray,
-        flex: 1,
+        height: "100%",
       }}
     >
+      <StatusBar
+        backgroundColor="white"
+        barStyle="dark-content"
+        animated={true}
+      />
       <View
         style={{
           flexDirection: "row",
@@ -45,9 +74,9 @@ const Dashboard = ({ navigation }) => {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-          <Ionic name="person-circle" size={47} color={"#000"} />
-        </TouchableOpacity>
+        <Link to={"/Tab/Settings"}>
+          <Ionic name="person-circle" size={56} color={"#000"} />
+        </Link>
       </View>
 
       <Text
@@ -71,7 +100,7 @@ const Dashboard = ({ navigation }) => {
             paddingHorizontal: 20,
             paddingVertical: 8,
             borderRadius: 10,
-            backgroundColor: colors.white,
+            backgroundColor: colors.lightGray,
             fontSize: 14,
             marginTop: utils.midSpacing,
             marginBottom: utils.minSpacing,
@@ -82,36 +111,61 @@ const Dashboard = ({ navigation }) => {
         ]}
       />
 
+      {/* Products Category */}
+      <Text
+        style={[
+          {
+            marginHorizontal: utils.maxSpacing,
+            fontSize: 18,
+          },
+          fonts.medium,
+        ]}
+      >
+        Products
+      </Text>
+
       <ScrollView
         horizontal={true}
         style={{
-          paddingHorizontal: utils.maxSpacing,
-          height: 80,
+          marginVertical: utils.midSpacing,
+          flexGrow: 0,
+          flexShrink: 0,
         }}
         showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: utils.maxSpacing,
+        }}
       >
-        <TouchableOpacity
-          style={{
-            padding: utils.minSpacing,
-          }}
-        >
-          <Text>Hello</Text>
-        </TouchableOpacity>
+        <ProductType product="Ring" handleFilter={handleFilter} pType={pType} />
+        <ProductType
+          product="Ear Ring"
+          handleFilter={handleFilter}
+          pType={pType}
+        />
+        <ProductType
+          product="Necklace"
+          handleFilter={handleFilter}
+          pType={pType}
+        />
       </ScrollView>
 
       <FlatList
-        data={Data}
+        data={filteredProduct}
         horizontal={false}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={true}
         numColumns={2}
         keyExtractor={(item) => item.id}
-        renderItem={(item) => <ProductCard {...item} />}
+        renderItem={({ index, item }) => (
+          <ProductCard {...item} index={index} />
+        )}
         contentContainerStyle={{
           paddingHorizontal: utils.maxSpacing,
-          display: "flex",
-          justifyContent: "space-around",
+          paddingVertical: utils.midSpacing,
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

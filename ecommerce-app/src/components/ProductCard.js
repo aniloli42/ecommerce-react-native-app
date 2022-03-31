@@ -5,21 +5,20 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useNavigation } from "@react-navigation/native";
 import utils from "../styles/utils";
 
-const ProductCard = ({ index }) => {
+const ProductCard = ({ index, product, price }) => {
   const navigation = useNavigation();
 
   return (
     <View
       style={{
-        flex: 1,
         marginRight: index % 2 === 0 ? utils.midSpacing : 0,
         marginVertical: 6,
+        flexBasis: "48%",
       }}
     >
       <TouchableOpacity onPress={() => navigation.navigate("Product")}>
         <ImageBackground
           style={{
-            backgroundColor: colors.mediumGray,
             width: "100%",
             height: 200,
             borderRadius: 16,
@@ -56,7 +55,7 @@ const ProductCard = ({ index }) => {
             },
           ]}
         >
-          NeckLace
+          {product}
         </Text>
         <Text
           style={[
@@ -66,7 +65,7 @@ const ProductCard = ({ index }) => {
             },
           ]}
         >
-          Rs. 40
+          Rs. {price}
         </Text>
       </TouchableOpacity>
     </View>

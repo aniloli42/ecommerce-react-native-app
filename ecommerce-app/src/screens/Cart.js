@@ -1,15 +1,19 @@
-import { View, Text, SafeAreaView, Platform, StatusBar } from "react-native";
-import React from "react";
+import { View, Text, StatusBar } from "react-native";
 
 const Cart = () => {
   return (
-    <SafeAreaView
+    <View
       style={{
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        height: "100%",
       }}
     >
+      <StatusBar
+        backgroundColor="white"
+        barStyle="dark-content"
+        animated={true}
+      />
       <Text>Cart</Text>
-    </SafeAreaView>
+    </View>
   );
 };
 
