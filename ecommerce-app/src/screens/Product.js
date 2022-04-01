@@ -22,9 +22,9 @@ const productImage = require("../../assets/IMG_8616.jpeg");
 const productImage2 = require("../../assets/IMG_8633.jpeg");
 
 const ProductSizes = [
-  { id: 0, size: "S" },
-  { id: 1, size: "M" },
-  { id: 2, size: "L" },
+  { id: 0, size: 2 },
+  { id: 1, size: 4 },
+  { id: 2, size: 6 },
 ];
 
 const Product = () => {
@@ -52,15 +52,15 @@ const Product = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Image */}
-      <Image source={productImage2} style={styles.productImage} />
-
       {/* Product Details */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.productDetailScrollWrapper}
         contentContainerStyle={styles.productDetailWrapper}
       >
+        {/* Image */}
+        <Image source={productImage2} style={styles.productImage} />
+
         <View style={styles.titlePriceWrapper}>
           <Text style={[fonts.medium, styles.productTitle]}>Product 1</Text>
 
@@ -81,13 +81,15 @@ const Product = () => {
           contentContainerStyle={styles.productSizesScrollWrapper}
         />
 
-        <TouchableOpacity style={[styles.addToCartButton, styles.button]}>
-          <Text style={[fonts.medium, styles.buttonText]}>Add To Cart</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonWrapper}>
+          <TouchableOpacity style={[styles.addToCartButton, styles.button]}>
+            <Text style={[fonts.medium, styles.buttonText]}>Add To Cart</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.buyNowButton, styles.button]}>
-          <Text style={[fonts.medium, styles.buttonText]}>Buy Now</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={[styles.buyNowButton, styles.button]}>
+            <Text style={[fonts.medium, styles.buttonText]}>Buy Now</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -116,8 +118,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.mediumGray,
   },
   productDetailScrollWrapper: {
-    paddingTop: utils.midSpacing,
-    paddingHorizontal: utils.maxSpacing,
     flexGrow: 0,
     flexShrink: 1,
   },
@@ -128,22 +128,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: utils.midSpacing,
+    paddingHorizontal: utils.maxSpacing,
   },
   productTitle: {
-    fontSize: 24,
+    fontSize: 20,
     color: colors.tintBrown,
     textAlignVertical: "bottom",
   },
   productPrice: {
     color: colors.mediumGray,
-    fontSize: 20,
+    fontSize: 18,
   },
   productSizeTitle: {
     fontSize: 18,
     marginTop: utils.maxSpacing,
+    paddingHorizontal: utils.maxSpacing,
   },
   productSizesScrollWrapper: {
     paddingVertical: utils.minSpacing,
+    paddingHorizontal: utils.maxSpacing,
+  },
+  buttonWrapper: {
+    paddingHorizontal: utils.maxSpacing,
   },
   button: {
     justifyContent: "center",

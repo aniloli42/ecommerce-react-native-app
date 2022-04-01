@@ -24,14 +24,16 @@ const Home = ({ navigation }) => {
       />
       <View style={styles.wrapper}>
         <View style={styles.brandWrapper}>
-          <Image
-            source={require("../../assets/brand.png")}
-            style={styles.brandImage}
-          />
-        </View>
-        <View style={styles.textWrapper}>
-          <Text style={[styles.brandText, fonts.black]}>ELEGANT</Text>
-          <Text style={[styles.brandText, fonts.black]}>COLLECTION</Text>
+          <View style={styles.brandImageWrapper}>
+            <Image
+              source={require("../../assets/brand.png")}
+              style={styles.brandImage}
+            />
+          </View>
+          <View style={styles.textWrapper}>
+            <Text style={[styles.brandText, fonts.black]}>ELEGANT</Text>
+            <Text style={[styles.brandText, fonts.black]}>COLLECTION</Text>
+          </View>
         </View>
 
         <View style={styles.buttonWrapper}>
@@ -68,13 +70,16 @@ const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   backgroundImage: { width: "100%", height: "100%", flex: 1 },
-  wrapper: { flex: 1, alignItems: "center" },
+  wrapper: { flex: 1, alignItems: "center", justifyContent: "space-between" },
   brandWrapper: {
+    alignItems: "center",
+  },
+  brandImageWrapper: {
     width: 150,
     height: 150,
     backgroundColor: colors.lightGray,
     borderRadius: 36,
-    marginTop: 120,
+    marginTop: utils.maxSpacing * 2,
     justifyContent: "center",
     alignItems: "center",
     elevation: 3,
@@ -85,11 +90,11 @@ const styles = StyleSheet.create({
     height: 270,
   },
   textWrapper: {
-    marginTop: 30,
+    marginTop: utils.maxSpacing,
   },
   brandText: {
     color: "#fff",
-    fontSize: 36,
+    fontSize: 32,
     textAlign: "center",
     fontWeight: "bold",
     textShadowColor: colors.tintBrown,
@@ -98,14 +103,13 @@ const styles = StyleSheet.create({
     lineHeight: 42,
   },
   buttonWrapper: {
-    marginTop: "auto",
-    marginBottom: 50,
+    margin: utils.maxSpacing,
     width: "80%",
   },
   button: {
     marginVertical: 12,
     paddingVertical: 12,
-    elevation: 1,
+    elevation: 3,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,

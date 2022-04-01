@@ -69,7 +69,7 @@ const Signup = ({ navigation }) => {
                   Gender
                 </Text>
                 <SelectDropdown
-                  data={["Female", "Male"]}
+                  data={["Female", "Male", "Third Gender"]}
                   defaultValue={values.gender}
                   onSelect={handleChange("gender")}
                   buttonTextAfterSelection={(selectedItem) => {

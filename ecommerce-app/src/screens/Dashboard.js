@@ -32,7 +32,7 @@ const EProducts = [
     price: 400,
   },
   {
-    id: 1,
+    id: 3,
     type: "Necklace",
     product: "Gold Necklace 1",
     price: 500,
@@ -76,41 +76,48 @@ const Dashboard = () => {
         style={[styles.searchBox, fonts.regular]}
       />
 
-      {/* Products Category */}
-      <Text style={[styles.productText, fonts.medium]}>Products</Text>
+      {/* All Products & Types Wrapper */}
+      <ScrollView>
+        {/* Products Category */}
+        <Text style={[styles.productText, fonts.medium]}>Products</Text>
 
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        style={styles.scrollContainer}
-        contentContainerStyle={styles.productTypeScrollWrapper}
-      >
-        <ProductType product="Ring" handleFilter={handleFilter} pType={pType} />
-        <ProductType
-          product="Ear Ring"
-          handleFilter={handleFilter}
-          pType={pType}
-        />
-        <ProductType
-          product="Necklace"
-          handleFilter={handleFilter}
-          pType={pType}
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollContainer}
+          contentContainerStyle={styles.productTypeScrollWrapper}
+        >
+          <ProductType
+            product="Ring"
+            handleFilter={handleFilter}
+            pType={pType}
+          />
+          <ProductType
+            product="Ear Ring"
+            handleFilter={handleFilter}
+            pType={pType}
+          />
+          <ProductType
+            product="Necklace"
+            handleFilter={handleFilter}
+            pType={pType}
+          />
+        </ScrollView>
+
+        <FlatList
+          data={filteredProduct}
+          horizontal={false}
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          keyExtractor={(item) => item.id}
+          scrollEnabled={false}
+          renderItem={({ index, item }) => (
+            <ProductCard {...item} index={index} />
+          )}
+          contentContainerStyle={styles.productsScrollWrapper}
         />
       </ScrollView>
-
-      <FlatList
-        data={filteredProduct}
-        horizontal={false}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={true}
-        numColumns={2}
-        keyExtractor={(item) => item.id}
-        renderItem={({ index, item }) => (
-          <ProductCard {...item} index={index} />
-        )}
-        contentContainerStyle={styles.productsScrollWrapper}
-      />
     </View>
   );
 };
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
   },
   brandText: {
     paddingHorizontal: utils.maxSpacing,
-    fontSize: 27,
+    fontSize: 24,
     flexWrap: "wrap",
   },
   searchBox: {
@@ -139,6 +146,7 @@ const styles = StyleSheet.create({
     marginBottom: utils.minSpacing,
     marginHorizontal: utils.maxSpacing,
     textAlignVertical: "bottom",
+    elevation: 2,
   },
   productText: {
     marginHorizontal: utils.maxSpacing,
