@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // custom
@@ -12,35 +12,35 @@ const ProductType = ({ product, handleFilter, pType }) => {
 
   return (
     <TouchableOpacity
-      style={{
-        minWidth: 80,
-        height: 80,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: colors.white,
-        elevation: 1,
-        marginRight: utils.midSpacing,
-        paddingHorizontal: utils.minSpacing,
-        borderWidth: 2,
-        borderColor: pType === product ? "red" : "transparent",
-      }}
+      style={styles.buttonWrapper(pType, product)}
       onPress={() => handleFilter(product)}
     >
       <MaterialIcons name={productIcon} size={24} color={"#000"} />
-      <Text
-        style={[
-          fonts.regular,
-          {
-            fontSize: 14,
-            marginTop: 5,
-          },
-        ]}
-      >
+      <Text style={[fonts.regular, styles.productTypeName]}>
         {product ?? "Not Found"}
       </Text>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  buttonWrapper: (pType, product) => ({
+    minWidth: 80,
+    height: 80,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: colors.white,
+    elevation: 1,
+    marginRight: utils.midSpacing,
+    paddingHorizontal: utils.minSpacing,
+    borderWidth: 2,
+    borderColor: pType === product ? "red" : "transparent",
+  }),
+  productTypeName: {
+    fontSize: 14,
+    marginTop: 5,
+  },
+});
 
 export default ProductType;

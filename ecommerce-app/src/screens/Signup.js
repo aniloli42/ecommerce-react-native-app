@@ -5,158 +5,135 @@ import {
   ScrollView,
   TextInput,
   StatusBar,
+  StyleSheet,
+  KeyboardAvoidingView,
 } from "react-native";
+import { auth, createUserWithEmailAndPassword } from "../../firebase";
+import { useState } from "react";
 
-import fonts from "../styles/fonts";
 import colors from "../styles/colors";
+import fonts from "../styles/fonts";
+import utils from "../styles/utils";
 
 const Signup = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignIn = async () => {
+    try {
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("Successfully Created");
+    } catch (error) {
+      alert("Check Your Email and Password");
+      console.log(error);
+    }
+  };
+
   return (
-    <View
-      style={{
-        height: "100%",
-      }}
-    >
+    <View style={styles.wrapper}>
       <StatusBar
         backgroundColor="white"
         barStyle="dark-content"
         animated={true}
       />
-      <ScrollView>
-        <View
-          style={{
-            alignItems: "center",
-            paddingVertical: 50,
-          }}
-        >
-          <Text
-            style={[
-              {
-                marginTop: 72,
-                fontSize: 42,
-              },
-              fonts.medium,
-            ]}
-          >
-            Signup
-          </Text>
+      <Text style={[styles.screenTitle, fonts.medium]}>Sign Up</Text>
 
-          {/* Form */}
-          <View
-            style={{
-              width: "80%",
-              marginTop: 50,
-            }}
-          >
-            <View
-              style={{
-                marginTop: 15,
-              }}
-            >
-              <Text
-                style={[
-                  {
-                    fontSize: 16,
-                    color: colors.mediumGray,
-                  },
-                  fonts.medium,
-                ]}
-              >
-                Name
-              </Text>
-              <TextInput
-                style={[
-                  {
-                    borderBottomWidth: 1,
-                    borderBottomColor: colors.mediumGray,
-                    marginTop: 2,
-                    paddingVertical: 5,
-                    fontSize: 18,
-                    textDecorationLine: "none",
-                  },
-                  fonts.regular,
-                ]}
-              />
-            </View>
-
-            <View style={{ marginTop: 36 }}>
-              <Text
-                style={[
-                  {
-                    fontSize: 16,
-                    color: colors.mediumGray,
-                  },
-                  fonts.medium,
-                ]}
-              >
-                Address
-              </Text>
-              <TextInput
-                style={[
-                  {
-                    borderBottomWidth: 1,
-                    borderBottomColor: colors.mediumGray,
-                    marginTop: 2,
-                    paddingVertical: 5,
-                    fontSize: 18,
-                    textDecorationLine: "none",
-                  },
-                  fonts.regular,
-                ]}
-              />
-            </View>
-
-            <TouchableOpacity
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 30,
-                backgroundColor: colors.tintBrown,
-                paddingHorizontal: 8,
-                paddingVertical: 12,
-                borderRadius: 50,
-              }}
-            >
-              <Text
-                style={[
-                  {
-                    color: "#fff",
-                    fontSize: 18,
-                  },
-                  fonts.medium,
-                ]}
-              >
-                Signup
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Bottom Task */}
-          <View
-            style={{
-              marginTop: 30,
-              flexDirection: "row",
-            }}
-          >
-            <Text style={[fonts.light]}>Already have an Account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Text
-                style={[
-                  fonts.medium,
-                  {
-                    marginLeft: 7,
-                    color: colors.tintBrown,
-                  },
-                ]}
-              >
-                Click Here
-              </Text>
-            </TouchableOpacity>
-          </View>
+      {/* Form */}
+      <KeyboardAvoidingView style={styles.formWrapper}>
+        <View style={styles.formElementWrapper}>
+          <Text style={[styles.formElementLabel, fonts.medium]}>Email</Text>
+          <TextInput
+            style={[styles.formElementInput, fonts.regular]}
+            onChangeText={(text) => setEmail(text)}
+            autoCapitalize={"none"}
+            autoCorrect={false}
+            keyboardType="email-address"
+          />
         </View>
-      </ScrollView>
+
+        <View style={styles.formElementWrapper}>
+          <Text style={[styles.formElementLabel, fonts.medium]}>Password</Text>
+          <TextInput
+            style={[styles.formElementInput, fonts.regular]}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry={true}
+            keyboardType="default"
+            autoCapitalize={"none"}
+            autoCorrect={false}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.loginButton} onPress={handleSignIn}>
+          <Text style={[styles.loginButtonText, fonts.medium]}>
+            Create Account
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+
+      {/* Bottom Task */}
+      <View style={[styles.newAccountWrapper]}>
+        <Text style={[fonts.light]}>Already have an Account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={[fonts.medium, styles.newAccountButtonText]}>
+            Click Here
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    height: "100%",
+    alignItems: "center",
+    padding: utils.maxSpacing,
+  },
+  screenTitle: { fontSize: 42 },
+  formWrapper: {
+    marginTop: utils.maxSpacing * 2,
+    width: "84%",
+  },
+  formElementWrapper: {
+    marginTop: utils.maxSpacing * 1.5,
+  },
+  formElementLabel: {
+    fontSize: 16,
+    color: colors.mediumGray,
+  },
+  formElementInput: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.mediumGray,
+    marginTop: 2,
+    paddingVertical: 5,
+    fontSize: 18,
+    textDecorationLine: "none",
+  },
+  loginButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+    backgroundColor: colors.tintBrown,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+    borderRadius: 50,
+  },
+  loginButtonText: {
+    color: "#fff",
+    fontSize: 18,
+  },
+  newAccountWrapper: {
+    marginTop: 30,
+    flexDirection: "row",
+  },
+  newAccountButtonText: {
+    marginLeft: 7,
+    color: colors.tintBrown,
+  },
+});
 
 export default Signup;

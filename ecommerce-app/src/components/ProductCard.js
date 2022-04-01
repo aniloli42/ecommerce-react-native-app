@@ -1,4 +1,10 @@
-import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -9,67 +15,57 @@ const ProductCard = ({ index, product, price }) => {
   const navigation = useNavigation();
 
   return (
-    <View
-      style={{
-        marginRight: index % 2 === 0 ? utils.midSpacing : 0,
-        marginVertical: 6,
-        flexBasis: "48%",
-      }}
-    >
+    <View style={styles.wrapper}>
       <TouchableOpacity onPress={() => navigation.navigate("Product")}>
         <ImageBackground
-          style={{
-            width: "100%",
-            height: 200,
-            borderRadius: 16,
-            overflow: "hidden",
-            position: "relative",
-          }}
+          style={styles.productImage}
           source={require("../../assets/IMG_1028.jpeg")}
         >
-          <TouchableOpacity
-            style={{
-              width: 27,
-              height: 27,
-              backgroundColor: colors.white,
-              position: "absolute",
-              borderRadius: 50,
-              zIndex: 1,
-              top: 0,
-              right: 0,
-              margin: 10,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <TouchableOpacity style={styles.productNavigatorButtonWrapper}>
             <MaterialCommunityIcons name="cart-plus" color={"#000"} size={16} />
           </TouchableOpacity>
         </ImageBackground>
 
-        <Text
-          style={[
-            fonts.medium,
-            {
-              marginTop: 8,
-              fontSize: 16,
-            },
-          ]}
-        >
-          {product}
-        </Text>
-        <Text
-          style={[
-            fonts.regular,
-            {
-              color: colors.mediumGray,
-            },
-          ]}
-        >
-          Rs. {price}
-        </Text>
+        <Text style={[fonts.medium, styles.productName]}>{product}</Text>
+        <Text style={[fonts.regular, styles.productPrice]}>Rs. {price}</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    marginRight: index % 2 === 0 ? utils.midSpacing : 0,
+    marginVertical: 6,
+    flexBasis: "48%",
+  },
+  productImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 16,
+    overflow: "hidden",
+    position: "relative",
+  },
+  productNavigatorButtonWrapper: {
+    width: 27,
+    height: 27,
+    backgroundColor: colors.white,
+    position: "absolute",
+    borderRadius: 50,
+    zIndex: 1,
+    top: 0,
+    right: 0,
+    margin: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  productName: {
+    marginTop: 8,
+    fontSize: 16,
+  },
+  productPrice: {
+    color: colors.mediumGray,
+  },
+});
 
 export default ProductCard;

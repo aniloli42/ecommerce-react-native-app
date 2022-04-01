@@ -5,10 +5,11 @@ import {
   View,
   StatusBar,
   FlatList,
+  StyleSheet,
 } from "react-native";
 import Ionic from "react-native-vector-icons/Ionicons";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 // Custom
 import fonts from "../styles/fonts";
@@ -55,87 +56,34 @@ const Dashboard = () => {
   };
 
   return (
-    <View
-      style={{
-        height: "100%",
-      }}
-    >
+    <View style={styles.wrapper}>
       <StatusBar
         backgroundColor="white"
         barStyle="dark-content"
         animated={true}
       />
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "flex-end",
-          paddingHorizontal: utils.maxSpacing,
-          paddingVertical: utils.minSpacing,
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.profileImageWrapper}>
         <Link to={"/Tab/Settings"}>
           <Ionic name="person-circle" size={56} color={"#000"} />
         </Link>
       </View>
 
-      <Text
-        style={[
-          {
-            paddingHorizontal: utils.maxSpacing,
-            fontSize: 27,
-            flexWrap: "wrap",
-          },
-          fonts.semiBold,
-        ]}
-      >
-        Elegant Collection
-      </Text>
+      <Text style={[styles.brandText, fonts.semiBold]}>Elegant Collection</Text>
 
       {/* Search Box */}
       <TextInput
         placeholder="Search"
-        style={[
-          {
-            paddingHorizontal: 20,
-            paddingVertical: 8,
-            borderRadius: 10,
-            backgroundColor: colors.lightGray,
-            fontSize: 14,
-            marginTop: utils.midSpacing,
-            marginBottom: utils.minSpacing,
-            marginHorizontal: utils.maxSpacing,
-            textAlignVertical: "bottom",
-          },
-          fonts.regular,
-        ]}
+        style={[styles.searchBox, fonts.regular]}
       />
 
       {/* Products Category */}
-      <Text
-        style={[
-          {
-            marginHorizontal: utils.maxSpacing,
-            fontSize: 18,
-          },
-          fonts.medium,
-        ]}
-      >
-        Products
-      </Text>
+      <Text style={[styles.productText, fonts.medium]}>Products</Text>
 
       <ScrollView
         horizontal={true}
-        style={{
-          marginVertical: utils.midSpacing,
-          flexGrow: 0,
-          flexShrink: 0,
-        }}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: utils.maxSpacing,
-        }}
+        contentContainerStyle={styles.productTypeScrollWrapper}
       >
         <ProductType product="Ring" handleFilter={handleFilter} pType={pType} />
         <ProductType
@@ -160,13 +108,51 @@ const Dashboard = () => {
         renderItem={({ index, item }) => (
           <ProductCard {...item} index={index} />
         )}
-        contentContainerStyle={{
-          paddingHorizontal: utils.maxSpacing,
-          paddingVertical: utils.midSpacing,
-        }}
+        contentContainerStyle={styles.productsScrollWrapper}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: { height: "100%" },
+  profileImageWrapper: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingHorizontal: utils.maxSpacing,
+    paddingVertical: utils.minSpacing,
+    alignItems: "center",
+  },
+  brandText: {
+    paddingHorizontal: utils.maxSpacing,
+    fontSize: 27,
+    flexWrap: "wrap",
+  },
+  searchBox: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: colors.lightGray,
+    fontSize: 14,
+    marginTop: utils.midSpacing,
+    marginBottom: utils.minSpacing,
+    marginHorizontal: utils.maxSpacing,
+    textAlignVertical: "bottom",
+  },
+  productText: {
+    marginHorizontal: utils.maxSpacing,
+    fontSize: 18,
+  },
+  productTypeScrollWrapper: {
+    paddingHorizontal: utils.maxSpacing,
+    marginVertical: utils.midSpacing,
+    flexGrow: 0,
+    flexShrink: 0,
+  },
+  productsScrollWrapper: {
+    paddingHorizontal: utils.maxSpacing,
+    paddingVertical: utils.midSpacing,
+  },
+});
 
 export default Dashboard;

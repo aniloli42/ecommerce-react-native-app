@@ -2,15 +2,17 @@ import {
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
+  KeyboardAvoidingView,
   TextInput,
   StatusBar,
+  StyleSheet,
 } from "react-native";
 import { auth, signInWithEmailAndPassword } from "../../firebase";
 import { useState } from "react";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import utils from "../styles/utils";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -26,161 +28,107 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View
-      style={{
-        height: "100%",
-      }}
-    >
-      <ScrollView>
-        <View
-          style={{
-            alignItems: "center",
-            paddingVertical: 50,
-          }}
-        >
-          <StatusBar
-            backgroundColor="white"
-            barStyle="dark-content"
-            animated={true}
+    <View style={styles.wrapper}>
+      <StatusBar
+        backgroundColor="white"
+        barStyle="dark-content"
+        animated={true}
+      />
+      <Text style={[styles.screenTitle, fonts.medium]}>Login</Text>
+
+      {/* Form */}
+      <KeyboardAvoidingView style={styles.formWrapper}>
+        <View style={styles.formElementWrapper}>
+          <Text style={[styles.formElementLabel, fonts.medium]}>Email</Text>
+          <TextInput
+            style={[styles.formElementInput, fonts.regular]}
+            onChangeText={(text) => setEmail(text)}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
           />
-          <Text
-            style={[
-              {
-                marginTop: 72,
-                fontSize: 42,
-              },
-              fonts.medium,
-            ]}
-          >
-            Login
-          </Text>
-
-          {/* Form */}
-          <View
-            style={{
-              width: "80%",
-              marginTop: 50,
-            }}
-          >
-            <View
-              style={{
-                marginTop: 15,
-              }}
-            >
-              <Text
-                style={[
-                  {
-                    fontSize: 16,
-                    color: colors.mediumGray,
-                  },
-                  fonts.medium,
-                ]}
-              >
-                Email
-              </Text>
-              <TextInput
-                style={[
-                  {
-                    borderBottomWidth: 1,
-                    borderBottomColor: colors.mediumGray,
-                    marginTop: 2,
-                    paddingVertical: 5,
-                    fontSize: 18,
-                    textDecorationLine: "none",
-                  },
-                  fonts.regular,
-                ]}
-                onChangeText={(text) => setEmail(text)}
-              />
-            </View>
-
-            <View
-              style={{
-                marginTop: 36,
-              }}
-            >
-              <Text
-                style={[
-                  {
-                    fontSize: 16,
-                    color: colors.mediumGray,
-                  },
-                  fonts.medium,
-                ]}
-              >
-                Password
-              </Text>
-              <TextInput
-                style={[
-                  {
-                    borderBottomWidth: 1,
-                    borderBottomColor: colors.mediumGray,
-                    marginTop: 2,
-                    paddingVertical: 5,
-                    fontSize: 18,
-                    textDecorationLine: "none",
-                  },
-                  fonts.regular,
-                ]}
-                secureTextEntry
-                onChangeText={(text) => setPassword(text)}
-              />
-            </View>
-
-            <TouchableOpacity
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 30,
-                backgroundColor: colors.tintBrown,
-                paddingHorizontal: 8,
-                paddingVertical: 12,
-                borderRadius: 50,
-              }}
-              onPress={handleSignIn}
-            >
-              <Text
-                style={[
-                  {
-                    color: "#fff",
-                    fontSize: 18,
-                  },
-                  fonts.medium,
-                ]}
-              >
-                Login
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Bottom Task */}
-          <View
-            style={[
-              {
-                marginTop: 30,
-                flexDirection: "row",
-              },
-            ]}
-          >
-            <Text style={[fonts.light]}>Don't have an Account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-              <Text
-                style={[
-                  fonts.medium,
-                  {
-                    marginLeft: 7,
-                    color: colors.tintBrown,
-                  },
-                ]}
-              >
-                Click Here
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </ScrollView>
+
+        <View style={styles.formElementWrapper}>
+          <Text style={[styles.formElementLabel, fonts.medium]}>Password</Text>
+          <TextInput
+            style={[styles.formElementInput, fonts.regular]}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry={true}
+            keyboardType="default"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </View>
+
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => navigation.navigate("Tab", { screen: "Home" })}
+        >
+          <Text style={[styles.loginButtonText, fonts.medium]}>Login</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+
+      {/* Bottom Task */}
+      <View style={[styles.newAccountWrapper]}>
+        <Text style={[fonts.light]}>Don't have an Account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <Text style={[fonts.medium, styles.newAccountButtonText]}>
+            Click Here
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    height: "100%",
+    alignItems: "center",
+    padding: utils.maxSpacing,
+  },
+  screenTitle: { fontSize: 42 },
+  formWrapper: {
+    marginTop: utils.maxSpacing * 2,
+    width: "84%",
+  },
+  formElementWrapper: {
+    marginTop: utils.maxSpacing * 1.5,
+  },
+  formElementLabel: {
+    fontSize: 16,
+    color: colors.mediumGray,
+  },
+  formElementInput: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.mediumGray,
+    marginTop: 2,
+    paddingVertical: 5,
+    fontSize: 18,
+    textDecorationLine: "none",
+  },
+  loginButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 30,
+    backgroundColor: colors.tintBrown,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+    borderRadius: 50,
+  },
+  loginButtonText: {
+    color: "#fff",
+    fontSize: 18,
+  },
+  newAccountWrapper: {
+    marginTop: 30,
+    flexDirection: "row",
+  },
+  newAccountButtonText: {
+    marginLeft: 7,
+    color: colors.tintBrown,
+  },
+});
 
 export default Login;

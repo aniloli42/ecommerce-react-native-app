@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -39,31 +40,15 @@ const Product = () => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        height: "100%",
-      }}
-    >
+    <SafeAreaView style={styles.wrapper}>
       <StatusBar
         backgroundColor="white"
         barStyle="dark-content"
         animated={true}
       />
-      <View
-        style={{
-          paddingLeft: utils.maxSpacing,
-          marginBottom: utils.midSpacing,
-        }}
-      >
+      <View style={styles.backButtonWrapper}>
         <TouchableOpacity
-          style={{
-            width: 32,
-            height: 32,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 50,
-            marginTop: utils.minSpacing,
-          }}
+          style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
           <Ionic name="arrow-back" size={27} color={"#000"} />
@@ -73,90 +58,31 @@ const Product = () => {
       {/* Image */}
 
       <ScrollView
-        style={{
+        contentContainerStyle={{
           flexGrow: 0,
           flexShrink: 0,
           height: 360,
           width: "100%",
         }}
-        contentContainerStyle={{ flexGrow: 1, flexShrink: 0 }}
         horizontal={true}
       >
-        <Image
-          source={productImage2}
-          style={{
-            width: "100%",
-            height: 360,
-            resizeMode: "cover",
-            backgroundColor: colors.mediumGray,
-          }}
-        />
-        <Image
-          source={productImage}
-          style={{
-            width: "100%",
-            height: 360,
-            resizeMode: "cover",
-            backgroundColor: colors.mediumGray,
-          }}
-        />
+        <Image source={productImage2} style={styles.productImage} />
+        <Image source={productImage} style={styles.productImage} />
       </ScrollView>
 
       {/* Product Details */}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{
-          paddingTop: utils.midSpacing,
-          paddingHorizontal: utils.maxSpacing,
-          flexGrow: 0,
-          flexShrink: 0,
-        }}
+        style={styles.productDetailScrollWrapper}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={[
-              fonts.medium,
-              {
-                fontSize: 24,
-                color: colors.tintBrown,
-                textAlignVertical: "bottom",
-              },
-            ]}
-          >
-            Product 1
-          </Text>
+        <View style={styles.titlePriceWrapper}>
+          <Text style={[fonts.medium, styles.productTitle]}>Product 1</Text>
 
-          <Text
-            style={[
-              fonts.regular,
-              {
-                color: colors.mediumGray,
-                fontSize: 20,
-              },
-            ]}
-          >
-            Rs. 480
-          </Text>
+          <Text style={[fonts.regular, styles.productPrice]}>Rs. 480</Text>
         </View>
 
         {/* Product Sizes */}
-        <Text
-          style={[
-            fonts.medium,
-            {
-              fontSize: 18,
-              marginTop: utils.maxSpacing,
-            },
-          ]}
-        >
-          Sizes
-        </Text>
+        <Text style={[fonts.medium, styles.productSizeTitle]}>Sizes</Text>
 
         <FlatList
           keyExtractor={(item) => item.id}
@@ -166,61 +92,89 @@ const Product = () => {
             <Sizes {...item} chooseSize={chooseSize} handleSize={handleSize} />
           )}
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingVertical: utils.minSpacing,
-          }}
+          contentContainerStyle={styles.productSizesScrollWrapper}
         />
 
-        <TouchableOpacity
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            paddingVertical: utils.midSpacing,
-            paddingHorizontal: utils.minSpacing,
-            backgroundColor: colors.mediumGray,
-            borderRadius: 10,
-            marginTop: utils.maxSpacing,
-          }}
-        >
-          <Text
-            style={[
-              fonts.medium,
-              {
-                color: colors.white,
-                fontSize: 18,
-              },
-            ]}
-          >
-            Add To Cart
-          </Text>
+        <TouchableOpacity style={[styles.addToCartButton, styles.button]}>
+          <Text style={[fonts.medium, styles.buttonText]}>Add To Cart</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            paddingVertical: utils.midSpacing,
-            paddingHorizontal: utils.minSpacing,
-            backgroundColor: colors.tintBrown,
-            borderRadius: 10,
-            marginVertical: utils.midSpacing,
-          }}
-        >
-          <Text
-            style={[
-              fonts.medium,
-              {
-                color: colors.white,
-                fontSize: 18,
-              },
-            ]}
-          >
-            Buy Now
-          </Text>
+        <TouchableOpacity style={[styles.buyNowButton, styles.button]}>
+          <Text style={[fonts.medium, styles.buttonText]}>Buy Now</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    height: "100%",
+  },
+  backButtonWrapper: {
+    paddingLeft: utils.maxSpacing,
+    marginBottom: utils.midSpacing,
+  },
+  backButton: {
+    width: 32,
+    height: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 50,
+    marginTop: utils.minSpacing,
+  },
+  productImage: {
+    width: "100%",
+    height: 360,
+    resizeMode: "cover",
+    backgroundColor: colors.mediumGray,
+  },
+  productDetailScrollWrapper: {
+    paddingTop: utils.midSpacing,
+    paddingHorizontal: utils.maxSpacing,
+    flexGrow: 0,
+    flexShrink: 0,
+  },
+  titlePriceWrapper: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  productTitle: {
+    fontSize: 24,
+    color: colors.tintBrown,
+    textAlignVertical: "bottom",
+  },
+  productPrice: {
+    color: colors.mediumGray,
+    fontSize: 20,
+  },
+  productSizeTitle: {
+    fontSize: 18,
+    marginTop: utils.maxSpacing,
+  },
+  productSizesScrollWrapper: {
+    paddingVertical: utils.minSpacing,
+  },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: utils.midSpacing,
+    paddingHorizontal: utils.minSpacing,
+    borderRadius: 10,
+  },
+  addToCartButton: {
+    backgroundColor: colors.mediumGray,
+    marginTop: utils.maxSpacing,
+  },
+  buyNowButton: {
+    backgroundColor: colors.tintBrown,
+    marginVertical: utils.midSpacing,
+  },
+  buttonText: {
+    color: colors.white,
+    fontSize: 18,
+  },
+});
 
 export default Product;
