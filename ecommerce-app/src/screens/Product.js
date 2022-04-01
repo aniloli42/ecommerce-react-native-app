@@ -25,9 +25,6 @@ const ProductSizes = [
   { id: 0, size: "S" },
   { id: 1, size: "M" },
   { id: 2, size: "L" },
-  { id: 3, size: "X" },
-  { id: 4, size: "XL" },
-  { id: 5, size: "XXL" },
 ];
 
 const Product = () => {
@@ -56,24 +53,13 @@ const Product = () => {
       </View>
 
       {/* Image */}
-
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 0,
-          flexShrink: 0,
-          height: 360,
-          width: "100%",
-        }}
-        horizontal={true}
-      >
-        <Image source={productImage2} style={styles.productImage} />
-        <Image source={productImage} style={styles.productImage} />
-      </ScrollView>
+      <Image source={productImage2} style={styles.productImage} />
 
       {/* Product Details */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.productDetailScrollWrapper}
+        contentContainerStyle={styles.productDetailWrapper}
       >
         <View style={styles.titlePriceWrapper}>
           <Text style={[fonts.medium, styles.productTitle]}>Product 1</Text>
@@ -133,7 +119,10 @@ const styles = StyleSheet.create({
     paddingTop: utils.midSpacing,
     paddingHorizontal: utils.maxSpacing,
     flexGrow: 0,
-    flexShrink: 0,
+    flexShrink: 1,
+  },
+  productDetailWrapper: {
+    paddingBottom: utils.maxSpacing,
   },
   titlePriceWrapper: {
     flexDirection: "row",

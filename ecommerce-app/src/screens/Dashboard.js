@@ -83,6 +83,7 @@ const Dashboard = () => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
+        style={styles.scrollContainer}
         contentContainerStyle={styles.productTypeScrollWrapper}
       >
         <ProductType product="Ring" handleFilter={handleFilter} pType={pType} />
@@ -146,6 +147,8 @@ const styles = StyleSheet.create({
   productTypeScrollWrapper: {
     paddingHorizontal: utils.maxSpacing,
     marginVertical: utils.midSpacing,
+  },
+  scrollContainer: {
     flexGrow: 0,
     flexShrink: 0,
   },

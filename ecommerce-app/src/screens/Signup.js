@@ -1,40 +1,31 @@
+import { useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
+  Pressable,
   TextInput,
   StatusBar,
   StyleSheet,
-  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { auth, createUserWithEmailAndPassword } from "../../firebase";
-import { useState } from "react";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import utils from "../styles/utils";
+import { Formik } from "formik";
+import { signUpSchema } from "../schemas/userSchema";
+import SelectDropdown from "react-native-select-dropdown";
+
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Signup = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSignIn = async () => {
-    try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log("Successfully Created");
-    } catch (error) {
-      alert("Check Your Email and Password");
-      console.log(error);
-    }
-  };
-
   return (
-    <View style={styles.wrapper}>
+    <ScrollView
+      contentContainerStyle={styles.wrapper}
+      style={styles.scrollWrapper}
+    >
       <StatusBar
         backgroundColor="white"
         barStyle="dark-content"
@@ -42,37 +33,121 @@ const Signup = ({ navigation }) => {
       />
       <Text style={[styles.screenTitle, fonts.medium]}>Sign Up</Text>
 
-      {/* Form */}
-      <KeyboardAvoidingView style={styles.formWrapper}>
-        <View style={styles.formElementWrapper}>
-          <Text style={[styles.formElementLabel, fonts.medium]}>Email</Text>
-          <TextInput
-            style={[styles.formElementInput, fonts.regular]}
-            onChangeText={(text) => setEmail(text)}
-            autoCapitalize={"none"}
-            autoCorrect={false}
-            keyboardType="email-address"
-          />
-        </View>
+      <Formik
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          gender: "Female",
+          phone: "",
+        }}
+        validationSchema={signUpSchema}
+        onSubmit={(values) => console.log(values)}
+        validateOnMount={true}
+      >
+        {({ isValid, handleSubmit, handleChange, handleBlur, values }) => (
+          <>
+            {/* Form */}
+            <View style={styles.formWrapper}>
+              <View style={styles.formElementWrapper}>
+                <Text style={[styles.formElementLabel, fonts.medium]}>
+                  Name
+                </Text>
+                <TextInput
+                  style={[styles.formElementInput, fonts.regular]}
+                  autoCapitalize={"none"}
+                  autoCorrect={false}
+                  keyboardType="default"
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
+                />
+              </View>
 
-        <View style={styles.formElementWrapper}>
-          <Text style={[styles.formElementLabel, fonts.medium]}>Password</Text>
-          <TextInput
-            style={[styles.formElementInput, fonts.regular]}
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry={true}
-            keyboardType="default"
-            autoCapitalize={"none"}
-            autoCorrect={false}
-          />
-        </View>
+              <View style={styles.formElementWrapper}>
+                <Text style={[styles.formElementLabel, fonts.medium]}>
+                  Gender
+                </Text>
+                <SelectDropdown
+                  data={["Female", "Male"]}
+                  defaultValue={values.gender}
+                  onSelect={handleChange("gender")}
+                  buttonTextAfterSelection={(selectedItem) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item) => {
+                    return item;
+                  }}
+                  buttonStyle={styles.dropDownElement}
+                  buttonTextStyle={styles.dropDownText}
+                  renderDropdownIcon={(isOpened) => (
+                    <FontAwesome
+                      name={isOpened ? "chevron-up" : "chevron-down"}
+                      color={colors.mediumGray}
+                      size={16}
+                    />
+                  )}
+                />
+              </View>
 
-        <TouchableOpacity style={styles.loginButton} onPress={handleSignIn}>
-          <Text style={[styles.loginButtonText, fonts.medium]}>
-            Create Account
-          </Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+              <View style={styles.formElementWrapper}>
+                <Text style={[styles.formElementLabel, fonts.medium]}>
+                  Mobile Number
+                </Text>
+                <TextInput
+                  style={[styles.formElementInput, fonts.regular]}
+                  autoCapitalize={"none"}
+                  autoCorrect={false}
+                  keyboardType="phone-pad"
+                  onChangeText={handleChange("phone")}
+                  onBlur={handleBlur("phone")}
+                  value={values.phone}
+                />
+              </View>
+
+              <View style={styles.formElementWrapper}>
+                <Text style={[styles.formElementLabel, fonts.medium]}>
+                  Email
+                </Text>
+                <TextInput
+                  style={[styles.formElementInput, fonts.regular]}
+                  autoCapitalize={"none"}
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                />
+              </View>
+
+              <View style={styles.formElementWrapper}>
+                <Text style={[styles.formElementLabel, fonts.medium]}>
+                  Password
+                </Text>
+                <TextInput
+                  style={[styles.formElementInput, fonts.regular]}
+                  secureTextEntry={true}
+                  keyboardType="default"
+                  autoCapitalize={"none"}
+                  autoCorrect={false}
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  value={values.password}
+                />
+              </View>
+
+              <Pressable
+                style={styles.loginButton(isValid)}
+                onPress={handleSubmit}
+              >
+                <Text style={[styles.loginButtonText, fonts.medium]}>
+                  Create Account
+                </Text>
+              </Pressable>
+            </View>
+          </>
+        )}
+      </Formik>
 
       {/* Bottom Task */}
       <View style={[styles.newAccountWrapper]}>
@@ -83,15 +158,18 @@ const Signup = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: "100%",
     alignItems: "center",
     padding: utils.maxSpacing,
+  },
+  scrollWrapper: {
+    flexShrink: 1,
+    flexGrow: 0,
   },
   screenTitle: { fontSize: 42 },
   formWrapper: {
@@ -113,15 +191,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textDecorationLine: "none",
   },
-  loginButton: {
+  dropDownElement: {
+    width: "100%",
+    backgroundColor: "transparent",
+    borderBottomWidth: 1,
+    borderBottomColor: colors.mediumGray,
+    paddingHorizontal: 0,
+  },
+  dropDownText: {
+    textAlign: "left",
+    marginLeft: 0,
+  },
+  loginButton: (isValid) => ({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
-    backgroundColor: colors.tintBrown,
+    backgroundColor: isValid ? colors.tintBrown : "#ccc",
     paddingHorizontal: 8,
     paddingVertical: 12,
     borderRadius: 50,
-  },
+  }),
   loginButtonText: {
     color: "#fff",
     fontSize: 18,

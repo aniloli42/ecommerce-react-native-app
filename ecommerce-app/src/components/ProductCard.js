@@ -15,7 +15,7 @@ const ProductCard = ({ index, product, price }) => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.wrapper(index)}>
       <TouchableOpacity onPress={() => navigation.navigate("Product")}>
         <ImageBackground
           style={styles.productImage}
@@ -34,11 +34,11 @@ const ProductCard = ({ index, product, price }) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
+  wrapper: (index) => ({
     marginRight: index % 2 === 0 ? utils.midSpacing : 0,
     marginVertical: 6,
     flexBasis: "48%",
-  },
+  }),
   productImage: {
     width: "100%",
     height: 200,
