@@ -6,11 +6,25 @@ import {
   TextInput,
   StatusBar,
 } from "react-native";
+import { auth, signInWithEmailAndPassword } from "../../firebase";
+import { useState } from "react";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
 const Login = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignIn = async () => {
+    try {
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      alert(response);
+    } catch (error) {
+      alert("Check Your Email and Password");
+    }
+  };
+
   return (
     <View
       style={{
@@ -76,6 +90,7 @@ const Login = ({ navigation }) => {
                   },
                   fonts.regular,
                 ]}
+                onChangeText={(text) => setEmail(text)}
               />
             </View>
 
@@ -107,6 +122,8 @@ const Login = ({ navigation }) => {
                   },
                   fonts.regular,
                 ]}
+                secureTextEntry
+                onChangeText={(text) => setPassword(text)}
               />
             </View>
 
@@ -120,7 +137,7 @@ const Login = ({ navigation }) => {
                 paddingVertical: 12,
                 borderRadius: 50,
               }}
-              onPress={() => navigation.navigate("Tab", { screen: "Home" })}
+              onPress={handleSignIn}
             >
               <Text
                 style={[

@@ -2,6 +2,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import "@react-native-async-storage/async-storage";
 
 import Ionic from "react-native-vector-icons/Ionicons";
 
@@ -42,6 +43,7 @@ import {
 } from "./src/screens";
 import { StatusBar } from "expo-status-bar";
 import colors from "./src/styles/colors";
+import UserContext from "./src/context/UserContext";
 
 const AppStack = createNativeStackNavigator();
 const TabStack = createBottomTabNavigator();
@@ -117,22 +119,24 @@ const App = () => {
   if (!loaded) return <AppLoading />;
 
   return (
-    <NavigationContainer
-      theme={{
-        colors: {
-          background: "#fff",
-          card: "#fff",
-        },
-      }}
-    >
-      <AppStack.Navigator screenOptions={{ headerShown: false }}>
-        <AppStack.Screen name="Home" component={Home} />
-        <AppStack.Screen name="Login" component={Login} />
-        <AppStack.Screen name="Signup" component={Signup} />
-        <AppStack.Screen name="Product" component={Product} />
-        <AppStack.Screen name="Tab" component={TabStackScreen} />
-      </AppStack.Navigator>
-    </NavigationContainer>
+    <UserContext>
+      <NavigationContainer
+        theme={{
+          colors: {
+            background: "#fff",
+            card: "#fff",
+          },
+        }}
+      >
+        <AppStack.Navigator screenOptions={{ headerShown: false }}>
+          <AppStack.Screen name="Home" component={Home} />
+          <AppStack.Screen name="Login" component={Login} />
+          <AppStack.Screen name="Signup" component={Signup} />
+          <AppStack.Screen name="Product" component={Product} />
+          <AppStack.Screen name="Tab" component={TabStackScreen} />
+        </AppStack.Navigator>
+      </NavigationContainer>
+    </UserContext>
   );
 };
 
