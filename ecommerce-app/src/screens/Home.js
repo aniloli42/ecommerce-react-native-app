@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
+import utils from "../styles/utils";
 
 const Home = ({ navigation }) => {
   return (

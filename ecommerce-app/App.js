@@ -1,9 +1,9 @@
+import { useEffect } from "react";
+
 // 3rd Party Packages
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import "@react-native-async-storage/async-storage";
-
 import Ionic from "react-native-vector-icons/Ionicons";
 
 import {
@@ -41,12 +41,13 @@ import {
   Settings,
   Signup,
 } from "./src/screens";
-import { StatusBar } from "expo-status-bar";
-import colors from "./src/styles/colors";
-import UserContext from "./src/context/UserContext";
 
 const AppStack = createNativeStackNavigator();
 const TabStack = createBottomTabNavigator();
+
+import { auth } from "./firebase";
+import UserContext, { useUserContext } from "./src/context/UserContext";
+import colors from "./src/styles/colors";
 
 const TabStackScreen = () => {
   return (
@@ -92,9 +93,17 @@ const TabStackScreen = () => {
   );
 };
 
-const isAuth = false;
-
 const App = () => {
+  const { isLogged, setUser } = useUserContext();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      user != null ? setUser(user) : setUser(null);
+    });
+
+    return () => unsubscribe;
+  }, []);
+
   const [loaded] = useFonts({
     Poppins_100Thin,
     Poppins_100Thin_Italic,
@@ -119,25 +128,36 @@ const App = () => {
   if (!loaded) return <AppLoading />;
 
   return (
-    <UserContext>
-      <NavigationContainer
-        theme={{
-          colors: {
-            background: "#fff",
-            card: "#fff",
-          },
-        }}
-      >
-        <AppStack.Navigator screenOptions={{ headerShown: false }}>
-          <AppStack.Screen name="Home" component={Home} />
-          <AppStack.Screen name="Login" component={Login} />
-          <AppStack.Screen name="Signup" component={Signup} />
-          <AppStack.Screen name="Product" component={Product} />
-          <AppStack.Screen name="Tab" component={TabStackScreen} />
-        </AppStack.Navigator>
-      </NavigationContainer>
-    </UserContext>
+    <NavigationContainer
+      theme={{
+        ...DefaultTheme,
+        colors: {
+          ...DefaultTheme.colors,
+          background: "#fff",
+          card: "#fff",
+        },
+      }}
+    >
+      <AppStack.Navigator screenOptions={{ headerShown: false }}>
+        {isLogged ? (
+          <>
+            <AppStack.Screen name="Tab" component={TabStackScreen} />
+            <AppStack.Screen name="Product" component={Product} />
+          </>
+        ) : (
+          <>
+            <AppStack.Screen name="Home" component={Home} />
+            <AppStack.Screen name="Login" component={Login} />
+            <AppStack.Screen name="Signup" component={Signup} />
+          </>
+        )}
+      </AppStack.Navigator>
+    </NavigationContainer>
   );
 };
 
-export default App;
+export default () => (
+  <UserContext>
+    <App />
+  </UserContext>
+);

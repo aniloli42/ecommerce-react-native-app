@@ -9,7 +9,11 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import { auth, createUserWithEmailAndPassword } from "../../firebase";
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "../../firebase";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
@@ -42,7 +46,18 @@ const Signup = ({ navigation }) => {
           phone: "",
         }}
         validationSchema={signUpSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={async (values) => {
+          await createUserWithEmailAndPassword(
+            auth,
+            values.email,
+            values.password,
+            values.name,
+            values.gender,
+            values.phone
+          );
+
+          await sendEmailVerification(auth.currentUser);
+        }}
         validateOnMount={true}
       >
         {({ isValid, handleSubmit, handleChange, handleBlur, values }) => (

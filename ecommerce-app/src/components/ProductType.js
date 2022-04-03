@@ -9,6 +9,7 @@ const ProductType = ({ product, handleFilter, pType }) => {
   let productIcon;
   if (product === "Ring") productIcon = "ring";
   if (product === "Necklace") productIcon = "necklace";
+  if (product === "Ear Ring") productIcon = "ornament-variant";
 
   return (
     <TouchableOpacity

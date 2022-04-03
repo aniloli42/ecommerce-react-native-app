@@ -77,47 +77,48 @@ const Dashboard = () => {
       />
 
       {/* All Products & Types Wrapper */}
-      <ScrollView>
-        {/* Products Category */}
-        <Text style={[styles.productText, fonts.medium]}>Products</Text>
+      <FlatList
+        ListHeaderComponent={
+          <>
+            {/* Products Category */}
+            <Text style={[styles.productText, fonts.medium]}>Products</Text>
 
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          style={styles.scrollContainer}
-          contentContainerStyle={styles.productTypeScrollWrapper}
-        >
-          <ProductType
-            product="Ring"
-            handleFilter={handleFilter}
-            pType={pType}
-          />
-          <ProductType
-            product="Ear Ring"
-            handleFilter={handleFilter}
-            pType={pType}
-          />
-          <ProductType
-            product="Necklace"
-            handleFilter={handleFilter}
-            pType={pType}
-          />
-        </ScrollView>
-
-        <FlatList
-          data={filteredProduct}
-          horizontal={false}
-          showsVerticalScrollIndicator={false}
-          numColumns={2}
-          keyExtractor={(item) => item.id}
-          scrollEnabled={false}
-          renderItem={({ index, item }) => (
-            <ProductCard {...item} index={index} />
-          )}
-          contentContainerStyle={styles.productsScrollWrapper}
-        />
-      </ScrollView>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              style={styles.scrollContainer}
+              contentContainerStyle={styles.productTypeScrollWrapper}
+            >
+              <ProductType
+                product="Ring"
+                handleFilter={handleFilter}
+                pType={pType}
+              />
+              <ProductType
+                product="Ear Ring"
+                handleFilter={handleFilter}
+                pType={pType}
+              />
+              <ProductType
+                product="Necklace"
+                handleFilter={handleFilter}
+                pType={pType}
+              />
+            </ScrollView>
+          </>
+        }
+        data={filteredProduct}
+        horizontal={false}
+        showsVerticalScrollIndicator={false}
+        numColumns={2}
+        keyExtractor={(item) => item.id}
+        renderItem={({ index, item }) => (
+          <ProductCard {...item} index={index} />
+        )}
+        contentContainerStyle={styles.productsScrollWrapper}
+        initialNumToRender={6}
+      />
     </View>
   );
 };
@@ -149,11 +150,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   productText: {
-    marginHorizontal: utils.maxSpacing,
     fontSize: 18,
   },
   productTypeScrollWrapper: {
-    paddingHorizontal: utils.maxSpacing,
     marginVertical: utils.midSpacing,
   },
   scrollContainer: {

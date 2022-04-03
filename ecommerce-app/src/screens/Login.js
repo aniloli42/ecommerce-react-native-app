@@ -2,31 +2,20 @@ import {
   View,
   Text,
   TouchableOpacity,
-  KeyboardAvoidingView,
   TextInput,
   StatusBar,
   StyleSheet,
+  Pressable,
 } from "react-native";
 import { auth, signInWithEmailAndPassword } from "../../firebase";
-import { useState } from "react";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import utils from "../styles/utils";
+import { loginSchema } from "../schemas/userSchema";
+import { Formik } from "formik";
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSignIn = async () => {
-    try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      alert(response);
-    } catch (error) {
-      alert("Check Your Email and Password");
-    }
-  };
-
   return (
     <View style={styles.wrapper}>
       <StatusBar
@@ -36,38 +25,72 @@ const Login = ({ navigation }) => {
       />
       <Text style={[styles.screenTitle, fonts.medium]}>Login</Text>
 
-      {/* Form */}
-      <KeyboardAvoidingView style={styles.formWrapper}>
-        <View style={styles.formElementWrapper}>
-          <Text style={[styles.formElementLabel, fonts.medium]}>Email</Text>
-          <TextInput
-            style={[styles.formElementInput, fonts.regular]}
-            onChangeText={(text) => setEmail(text)}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-        </View>
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        validationSchema={loginSchema}
+        onSubmit={async (values) => {
+          try {
+            await signInWithEmailAndPassword(
+              auth,
+              values.email,
+              values.password
+            );
+          } catch (error) {
+            alert(error.message);
+          }
+        }}
+        validateOnMount={true}
+      >
+        {({ isValid, handleSubmit, handleChange, handleBlur, values }) => (
+          <>
+            {/* Form */}
+            <View style={styles.formWrapper}>
+              <View style={styles.formElementWrapper}>
+                <Text style={[styles.formElementLabel, fonts.medium]}>
+                  Email
+                </Text>
+                <TextInput
+                  style={[styles.formElementInput, fonts.regular]}
+                  autoCapitalize={"none"}
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  value={values.email}
+                />
+              </View>
 
-        <View style={styles.formElementWrapper}>
-          <Text style={[styles.formElementLabel, fonts.medium]}>Password</Text>
-          <TextInput
-            style={[styles.formElementInput, fonts.regular]}
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry={true}
-            keyboardType="default"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-        </View>
+              <View style={styles.formElementWrapper}>
+                <Text style={[styles.formElementLabel, fonts.medium]}>
+                  Password
+                </Text>
+                <TextInput
+                  style={[styles.formElementInput, fonts.regular]}
+                  secureTextEntry={true}
+                  keyboardType="default"
+                  autoCapitalize={"none"}
+                  autoCorrect={false}
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  value={values.password}
+                />
+              </View>
 
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => navigation.navigate("Tab", { screen: "Home" })}
-        >
-          <Text style={[styles.loginButtonText, fonts.medium]}>Login</Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+              <Pressable
+                style={styles.loginButton(isValid)}
+                onPress={handleSubmit}
+              >
+                <Text style={[styles.loginButtonText, fonts.medium]}>
+                  Login
+                </Text>
+              </Pressable>
+            </View>
+          </>
+        )}
+      </Formik>
 
       {/* Bottom Task */}
       <View style={[styles.newAccountWrapper]}>
@@ -108,15 +131,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textDecorationLine: "none",
   },
-  loginButton: {
+  loginButton: (isValid) => ({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
-    backgroundColor: colors.tintBrown,
+    backgroundColor: isValid ? colors.tintBrown : "#ccc",
     paddingHorizontal: 8,
     paddingVertical: 12,
     borderRadius: 50,
-  },
+  }),
   loginButtonText: {
     color: "#fff",
     fontSize: 18,
