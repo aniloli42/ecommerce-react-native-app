@@ -1,18 +1,20 @@
-import { StyleSheet, Text, Image, View } from "react-native";
-import React from "react";
+import { StyleSheet, Text, Image, View, Pressable } from "react-native";
 import { spacing } from "../styles/utils";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
+import MaterialsIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import { deleteDoc, doc } from "firebase/firestore";
+import { firebaseDB } from "../../firebase";
+const CartProduct = ({ product, type, id, price, image, size }) => {
+  const removeFromCart = async () => {
+    await deleteDoc(doc(firebaseDB, "cartProducts", id));
+  };
 
-const CartProduct = ({ product, price }) => {
   return (
     <View style={styles.cartProductWrapper}>
       {/* Image View */}
       <View>
-        <Image
-          source={require("../../assets/IMG_8633.jpeg")}
-          style={styles.productImage}
-        />
+        <Image source={{ uri: image }} style={styles.productImage} />
       </View>
 
       {/* Details View */}
@@ -24,10 +26,15 @@ const CartProduct = ({ product, price }) => {
         <Text style={[styles.priceText, fonts.light]}>Rs. {price}</Text>
 
         {/* Product Size */}
-        <Text style={[styles.sizeText, fonts.light]}>M</Text>
+        {type == "Ring" && (
+          <Text style={[styles.sizeText, fonts.light]}>{size}</Text>
+        )}
       </View>
 
       {/* Product Remove View */}
+      <Pressable style={styles.deleteButton} onPress={removeFromCart}>
+        <MaterialsIcon name="delete" size={20} color="red" />
+      </Pressable>
     </View>
   );
 };
@@ -39,6 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: spacing.min,
     marginBottom: spacing.min,
+    alignItems: "flex-start",
   },
   productImage: {
     width: 100,
@@ -49,6 +57,7 @@ const styles = StyleSheet.create({
   productContentWrapper: {
     marginHorizontal: spacing.mid,
     alignItems: "flex-start",
+    flex: 1,
   },
   productTitle: {
     fontSize: 16,
@@ -71,5 +80,16 @@ const styles = StyleSheet.create({
     elevation: 3,
     fontSize: 12,
     backgroundColor: colors.white,
+  },
+  deleteButton: {
+    padding: spacing.min * 0.65,
+    borderWidth: 1,
+    borderColor: colors.lightGray,
+    backgroundColor: colors.white,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    borderRadius: 50,
+    marginTop: spacing.min * 0.25,
+    marginRight: spacing.min,
   },
 });

@@ -1,4 +1,12 @@
-import { FlatList, View, Text, StatusBar, StyleSheet } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  FlatList,
+  View,
+  Text,
+  StatusBar,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import BackButton from "../components/BackButton";
@@ -6,33 +14,36 @@ import fonts from "../styles/fonts";
 import colors from "../styles/colors";
 import { spacing } from "../styles/utils";
 import CartProduct from "../components/CartProduct";
-import { TotalProductCharge } from "../components";
-
-const cartProd = [
-  {
-    product: "Ear Ring",
-    price: 450,
-    type: "Ear Ring",
-  },
-  {
-    product: "Finger Ring",
-    price: 700,
-    type: "Ring",
-  },
-  // {
-  //   product: "Ear Ring 2",
-  //   price: 450,
-  //   type: "Ear Ring",
-  // },
-  // {
-  //   product: "Finger Ring 2",
-  //   price: 700,
-  //   type: "Ring",
-  // },
-];
+import { firebaseDB } from "../../firebase";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { useUserContext } from "../context/UserContext";
 
 const Cart = () => {
   const navigation = useNavigation();
+  const { user } = useUserContext();
+
+  const [cart, setCart] = useState(null);
+
+  useEffect(() => {
+    const q = query(
+      collection(firebaseDB, "cartProducts"),
+      where("user", "==", user.uid)
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const cartArray = [];
+      querySnapshot.forEach((doc) => {
+        cartArray.push({ id: doc.id, ...doc.data() });
+      });
+
+      setCart(cartArray);
+    });
+
+    return () => {
+      unsubscribe;
+    };
+  }, []);
+
+  console.log(cart);
 
   return (
     <View style={styles.wrapper}>
@@ -48,13 +59,18 @@ const Cart = () => {
         <Text style={[styles.screenTitle, fonts.light]}> My Cart</Text>
       </View>
 
-      {/* Cart Products */}
       <FlatList
-        data={cartProd}
-        keyExtractor={(item) => item.product}
+        data={cart}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => <CartProduct {...item} />}
         contentContainerStyle={styles.productListContentWrapper}
       />
+
+      <View style={styles.buttonWrapper}>
+        <Pressable style={styles.checkoutButton}>
+          <Text style={[styles.checkoutText, fonts.medium]}>Checkout</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -82,6 +98,20 @@ const styles = StyleSheet.create({
 
   productListContentWrapper: {
     paddingVertical: spacing.mid,
+  },
+  buttonWrapper: {
+    margin: spacing.min,
+  },
+  checkoutButton: {
+    backgroundColor: colors.tintBrown,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: spacing.min,
+    borderRadius: 50,
+  },
+  checkoutText: {
+    color: colors.white,
+    fontSize: 18,
   },
 });
 

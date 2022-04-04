@@ -1,29 +1,33 @@
 import {
   View,
+  Pressable,
   Text,
   ImageBackground,
-  TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
-import { spacing } from "../styles/utils";
 
-const ProductCard = ({ product, price }) => {
+const ProductCard = ({ id, product, price, images }) => {
   const navigation = useNavigation();
-
   return (
     <View>
-      <TouchableOpacity onPress={() => navigation.navigate("Product")}>
+      <Pressable
+        onPress={() =>
+          navigation.navigate("Product", {
+            productId: id,
+          })
+        }
+        style={styles.productImageWrapper}
+      >
         <ImageBackground
           style={styles.productImage}
-          source={require("../../assets/IMG_1028.jpeg")}
+          source={{ uri: images[0] }}
         />
         <Text style={[fonts.medium, styles.productName]}>{product}</Text>
         <Text style={[fonts.regular, styles.productPrice]}>Rs. {price}</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };
@@ -35,6 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: "hidden",
     position: "relative",
+    backgroundColor: colors.lightGray,
   },
   productName: {
     marginTop: 8,

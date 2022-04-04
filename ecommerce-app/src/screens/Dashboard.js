@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   ScrollView,
   Text,
@@ -12,31 +12,12 @@ import { FlatGrid } from "react-native-super-grid";
 import Entypo from "react-native-vector-icons/Entypo";
 
 // Custom
+import { firebaseDB } from "../../firebase";
 import fonts from "../styles/fonts";
 import { spacing } from "../styles/utils";
 import { ProductCard, ProductType } from "../components";
 import colors from "../styles/colors";
-
-const EProducts = [
-  {
-    id: 1,
-    type: "Ring",
-    product: "Diamond 1",
-    price: 500,
-  },
-  {
-    id: 2,
-    type: "Ear Ring",
-    product: "Ear 1",
-    price: 400,
-  },
-  {
-    id: 3,
-    type: "Necklace",
-    product: "Gold Necklace 1",
-    price: 500,
-  },
-];
+import { collection, getDocs } from "firebase/firestore";
 
 const PRODUCTS_TYPES = [
   {
@@ -51,15 +32,40 @@ const PRODUCTS_TYPES = [
 ];
 
 const Dashboard = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [pType, setPType] = useState("All");
-  const [filteredProduct, setFilteredProduct] = useState(EProducts);
+  const [filteredProduct, setFilteredProduct] = useState([]);
+
+  const getProducts = async () => {
+    setLoading(true);
+
+    const productCollectionRef = collection(firebaseDB, "products");
+    const productsSnapshot = await getDocs(productCollectionRef);
+    const resProducts = productsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setLoading(false);
+    setProducts(resProducts);
+  };
 
   useEffect(() => {
-    let Products = EProducts;
+    getProducts();
+    return () => {
+      setProducts([]);
+      setFilteredProduct([]);
+      setSearchText("");
+    };
+  }, []);
 
-    if (searchText.trim() === "" && pType === "All")
-      return setFilteredProduct(Products);
+  useEffect(() => {
+    let Products = products;
+
+    if (searchText.trim() === "" && pType === "All") {
+      return setFilteredProduct(products);
+    }
 
     if (pType !== "All") {
       Products = Products.filter(({ type }) => type === pType);
@@ -72,7 +78,7 @@ const Dashboard = () => {
     }
 
     setFilteredProduct(Products);
-  }, [searchText, pType]);
+  }, [searchText, pType, products]);
 
   const handleFilter = (productType) => {
     if (productType === pType) return setPType("All");
@@ -112,16 +118,16 @@ const Dashboard = () => {
       </View>
 
       {/* All Products & Types Wrapper */}
-
       <FlatGrid
         data={filteredProduct}
-        keyExtractor={(item) => item.id}
         horizontal={false}
         initialNumToRender={6}
         renderItem={({ item }) => <ProductCard {...item} />}
         ListHeaderComponentStyle={styles.productsHeaderScrollWrapper}
         spacing={spacing.mid * 0.75}
         showsVerticalScrollIndicator={false}
+        refreshing={loading}
+        onRefresh={() => getProducts()}
         ListHeaderComponent={
           <>
             {/* Products Category */}
