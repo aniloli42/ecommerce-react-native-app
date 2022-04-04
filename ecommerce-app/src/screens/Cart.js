@@ -43,8 +43,6 @@ const Cart = () => {
     };
   }, []);
 
-  console.log(cart);
-
   return (
     <View style={styles.wrapper}>
       <StatusBar
@@ -64,13 +62,27 @@ const Cart = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <CartProduct {...item} />}
         contentContainerStyle={styles.productListContentWrapper}
+        ListFooterComponent={
+          cart == null ||
+          (cart.length == 0 && (
+            <>
+              <View style={styles.notFoundWrapper}>
+                <Text style={[styles.notFoundText, fonts.regular]}>
+                  No Products in Cart
+                </Text>
+              </View>
+            </>
+          ))
+        }
       />
 
-      <View style={styles.buttonWrapper}>
-        <Pressable style={styles.checkoutButton}>
-          <Text style={[styles.checkoutText, fonts.medium]}>Checkout</Text>
-        </Pressable>
-      </View>
+      {cart.length != 0 && (
+        <View style={styles.buttonWrapper}>
+          <Pressable style={styles.checkoutButton}>
+            <Text style={[styles.checkoutText, fonts.medium]}>Checkout</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };
@@ -112,6 +124,13 @@ const styles = StyleSheet.create({
   checkoutText: {
     color: colors.white,
     fontSize: 18,
+  },
+  notFoundText: {
+    fontSize: 18,
+    color: colors.mediumGray,
+  },
+  notFoundWrapper: {
+    marginHorizontal: spacing.min,
   },
 });
 
