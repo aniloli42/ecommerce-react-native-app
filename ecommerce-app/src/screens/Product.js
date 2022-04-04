@@ -97,6 +97,8 @@ const styles = StyleSheet.create({
   backButtonWrapper: {
     padding: spacing.min,
     backgroundColor: colors.white,
+    borderBottomColor: colors.lightGray,
+    borderBottomWidth: 1,
   },
   productImage: {
     width: "100%",

@@ -1,5 +1,5 @@
 export default colors = {
-  lightGray: "#F9F9F9",
+  lightGray: "#e9e9e9",
   tintBrown: "#48393A",
   mediumGray: "#aaa",
   white: "#fff",

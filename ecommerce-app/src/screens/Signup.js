@@ -186,9 +186,9 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexGrow: 0,
   },
-  screenTitle: { fontSize: 42 },
+  screenTitle: { fontSize: 32 },
   formWrapper: {
-    marginTop: spacing.max * 2,
+    marginTop: spacing.max,
     width: "84%",
   },
   formElementWrapper: {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
-    backgroundColor: isValid ? colors.tintBrown : "#ccc",
+    backgroundColor: isValid ? colors.tintBrown : colors.lightGray,
     paddingHorizontal: 8,
     paddingVertical: 12,
     borderRadius: 50,

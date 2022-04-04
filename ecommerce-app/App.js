@@ -47,6 +47,7 @@ const TabStack = createBottomTabNavigator();
 
 import { auth } from "./firebase";
 import UserContext, { useUserContext } from "./src/context/UserContext";
+import ProductContext from "./src/context/ProductContext";
 import colors from "./src/styles/colors";
 
 const TabStackScreen = () => {
@@ -101,7 +102,7 @@ const App = () => {
       user != null ? setUser(user) : setUser(null);
     });
 
-    return () => unsubscribe;
+    return unsubscribe;
   }, []);
 
   const [loaded] = useFonts({
@@ -138,20 +139,22 @@ const App = () => {
         },
       }}
     >
-      <AppStack.Navigator screenOptions={{ headerShown: false }}>
-        {isLogged ? (
-          <>
-            <AppStack.Screen name="Tab" component={TabStackScreen} />
-            <AppStack.Screen name="Product" component={Product} />
-          </>
-        ) : (
-          <>
-            <AppStack.Screen name="Home" component={Home} />
-            <AppStack.Screen name="Login" component={Login} />
-            <AppStack.Screen name="Signup" component={Signup} />
-          </>
-        )}
-      </AppStack.Navigator>
+      <ProductContext>
+        <AppStack.Navigator screenOptions={{ headerShown: false }}>
+          {isLogged ? (
+            <>
+              <AppStack.Screen name="Tab" component={TabStackScreen} />
+              <AppStack.Screen name="Product" component={Product} />
+            </>
+          ) : (
+            <>
+              <AppStack.Screen name="Home" component={Home} />
+              <AppStack.Screen name="Login" component={Login} />
+              <AppStack.Screen name="Signup" component={Signup} />
+            </>
+          )}
+        </AppStack.Navigator>
+      </ProductContext>
     </NavigationContainer>
   );
 };

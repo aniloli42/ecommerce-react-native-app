@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   brandImageWrapper: {
     width: 150,
     height: 150,
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.white,
+    overflow: "hidden",
     borderRadius: 36,
     marginTop: spacing.max * 2,
     justifyContent: "center",

@@ -6,6 +6,7 @@ import {
   StatusBar,
   StyleSheet,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { auth, signInWithEmailAndPassword } from "../../firebase";
 
@@ -17,7 +18,10 @@ import { Formik } from "formik";
 
 const Login = ({ navigation }) => {
   return (
-    <View style={styles.wrapper}>
+    <ScrollView
+      contentContainerStyle={styles.wrapper}
+      style={styles.scrollWrapper}
+    >
       <StatusBar
         backgroundColor="white"
         barStyle="dark-content"
@@ -101,7 +105,7 @@ const Login = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -111,9 +115,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: spacing.max,
   },
+  scrollWrapper: {
+    flexShrink: 1,
+    flexGrow: 0,
+  },
   screenTitle: { fontSize: 32 },
   formWrapper: {
-    marginTop: spacing.max * 2,
+    marginTop: spacing.max,
     width: "84%",
   },
   formElementWrapper: {
@@ -135,7 +143,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 30,
-    backgroundColor: isValid ? colors.tintBrown : "#ccc",
+    backgroundColor: isValid ? colors.tintBrown : colors.lightGray,
     paddingHorizontal: 8,
     paddingVertical: 12,
     borderRadius: 50,

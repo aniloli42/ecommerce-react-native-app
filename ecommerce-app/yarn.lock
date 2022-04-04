@@ -5309,6 +5309,13 @@ react-native-select-dropdown@^1.9.0:
   resolved "https://registry.yarnpkg.com/react-native-select-dropdown/-/react-native-select-dropdown-1.9.0.tgz#ce22e480f196020573180dbefb81d0ac84ee8f3d"
   integrity sha512-YRVONpSDDcuEu3fdKjRrVgOikZ3opxQYVJetXNXJsmiHjqOE2bSmOsA0Yj5d7Ob26FapMRdLT/r/GL4O35rNBQ==
 
+react-native-super-grid@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-super-grid/-/react-native-super-grid-4.2.0.tgz#df07d88d58f232cb2e01e0752f5279cc3b366ca4"
+  integrity sha512-5GpdcXwnwizjWECY7APpyoMyGEAieRy0hxCJl8JQAodg2IigWYx10eDHrW/b1Rw1hsZVNyo4qSrAM3iOLW2XPw==
+  dependencies:
+    prop-types "^15.6.0"
+
 react-native-vector-icons@^9.1.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-9.1.0.tgz#52eaa205f5954d567b7048eb93d58ac854a2c59e"

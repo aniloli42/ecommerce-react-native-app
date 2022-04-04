@@ -6,6 +6,7 @@ import fonts from "../styles/fonts";
 import colors from "../styles/colors";
 import { spacing } from "../styles/utils";
 import CartProduct from "../components/CartProduct";
+import { TotalProductCharge } from "../components";
 
 const cartProd = [
   {
@@ -54,22 +55,6 @@ const Cart = () => {
         renderItem={({ item }) => <CartProduct {...item} />}
         contentContainerStyle={styles.productListContentWrapper}
       />
-
-      {/* Product Total */}
-      <View>
-        <View>
-          <Text>Total:</Text>
-          <Text>900</Text>
-        </View>
-        <View>
-          <Text>Shipping:</Text>
-          <Text>100</Text>
-        </View>
-        <View>
-          <Text>Grand Total:</Text>
-          <Text>1000</Text>
-        </View>
-      </View>
     </View>
   );
 };
@@ -84,6 +69,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: spacing.min,
     backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.lightGray,
   },
   screenTitle: {
     color: colors.tintBrown,

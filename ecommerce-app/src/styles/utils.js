@@ -6,9 +6,9 @@ const heading = {
 };
 
 const spacing = {
-  min: 10,
-  mid: 14,
-  max: 18,
+  min: 16,
+  mid: 20,
+  max: 24,
 };
 
 export { spacing, heading };
