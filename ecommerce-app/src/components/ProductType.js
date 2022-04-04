@@ -3,7 +3,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // custom
 import colors from "../styles/colors";
-import utils from "../styles/utils";
+import { spacing } from "../styles/utils";
 
 const ProductType = ({ product, handleFilter, pType }) => {
   let productIcon;
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: colors.white,
     elevation: 1,
-    marginRight: utils.midSpacing,
-    paddingHorizontal: utils.minSpacing,
+    marginRight: spacing.min,
+    paddingHorizontal: spacing.min,
     borderWidth: 2,
     borderColor: pType === product ? "red" : "transparent",
   }),

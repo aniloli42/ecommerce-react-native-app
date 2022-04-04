@@ -11,7 +11,7 @@ import { auth, signInWithEmailAndPassword } from "../../firebase";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import utils from "../styles/utils";
+import { spacing } from "../styles/utils";
 import { loginSchema } from "../schemas/userSchema";
 import { Formik } from "formik";
 
@@ -109,15 +109,15 @@ const styles = StyleSheet.create({
   wrapper: {
     height: "100%",
     alignItems: "center",
-    padding: utils.maxSpacing,
+    padding: spacing.max,
   },
-  screenTitle: { fontSize: 42 },
+  screenTitle: { fontSize: 32 },
   formWrapper: {
-    marginTop: utils.maxSpacing * 2,
+    marginTop: spacing.max * 2,
     width: "84%",
   },
   formElementWrapper: {
-    marginTop: utils.maxSpacing * 1.5,
+    marginTop: spacing.max * 1.5,
   },
   formElementLabel: {
     fontSize: 16,

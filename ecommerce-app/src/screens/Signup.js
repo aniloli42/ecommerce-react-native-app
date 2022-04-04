@@ -17,7 +17,7 @@ import {
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import utils from "../styles/utils";
+import { spacing } from "../styles/utils";
 import { Formik } from "formik";
 import { signUpSchema } from "../schemas/userSchema";
 import SelectDropdown from "react-native-select-dropdown";
@@ -180,7 +180,7 @@ const Signup = ({ navigation }) => {
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
-    padding: utils.maxSpacing,
+    padding: spacing.max,
   },
   scrollWrapper: {
     flexShrink: 1,
@@ -188,11 +188,11 @@ const styles = StyleSheet.create({
   },
   screenTitle: { fontSize: 42 },
   formWrapper: {
-    marginTop: utils.maxSpacing * 2,
+    marginTop: spacing.max * 2,
     width: "84%",
   },
   formElementWrapper: {
-    marginTop: utils.maxSpacing * 1.5,
+    marginTop: spacing.max * 1.5,
   },
   formElementLabel: {
     fontSize: 16,

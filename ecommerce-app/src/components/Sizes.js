@@ -1,6 +1,6 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import colors from "../styles/colors";
-import utils from "../styles/utils";
+import { spacing } from "../styles/utils";
 
 const Sizes = ({ size, handleSize, chooseSize, id }) => {
   return (
@@ -15,7 +15,7 @@ const Sizes = ({ size, handleSize, chooseSize, id }) => {
 
 const styles = StyleSheet.create({
   sizeTypeWrapper: (chooseSize, id) => ({
-    marginRight: utils.maxSpacing,
+    marginRight: spacing.max,
     width: 48,
     height: 48,
     justifyContent: "center",

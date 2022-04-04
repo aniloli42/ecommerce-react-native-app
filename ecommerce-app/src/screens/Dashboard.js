@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 
 // Custom
 import fonts from "../styles/fonts";
-import utils from "../styles/utils";
+import { spacing } from "../styles/utils";
 import { ProductCard, ProductType } from "../components";
 import colors from "../styles/colors";
 import { Link } from "@react-navigation/native";
@@ -128,12 +128,11 @@ const styles = StyleSheet.create({
   profileImageWrapper: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    paddingHorizontal: utils.maxSpacing,
-    paddingVertical: utils.minSpacing,
+    padding: spacing.min,
     alignItems: "center",
   },
   brandText: {
-    paddingHorizontal: utils.maxSpacing,
+    paddingHorizontal: spacing.min,
     fontSize: 24,
     flexWrap: "wrap",
   },
@@ -143,9 +142,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: colors.lightGray,
     fontSize: 14,
-    marginTop: utils.midSpacing,
-    marginBottom: utils.minSpacing,
-    marginHorizontal: utils.maxSpacing,
+    marginTop: spacing.mid,
+    marginBottom: spacing.min,
+    marginHorizontal: spacing.min,
     textAlignVertical: "bottom",
     elevation: 2,
   },
@@ -153,15 +152,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   productTypeScrollWrapper: {
-    marginVertical: utils.midSpacing,
+    marginVertical: spacing.min,
   },
   scrollContainer: {
     flexGrow: 0,
     flexShrink: 0,
   },
   productsScrollWrapper: {
-    paddingHorizontal: utils.maxSpacing,
-    paddingVertical: utils.midSpacing,
+    paddingHorizontal: spacing.min,
+    paddingVertical: spacing.mid,
   },
 });
 

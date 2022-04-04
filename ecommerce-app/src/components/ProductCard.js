@@ -9,7 +9,7 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
-import utils from "../styles/utils";
+import { spacing } from "../styles/utils";
 
 const ProductCard = ({ index, product, price }) => {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ const ProductCard = ({ index, product, price }) => {
 
 const styles = StyleSheet.create({
   wrapper: (index) => ({
-    marginRight: index % 2 === 0 ? utils.midSpacing : 0,
+    marginRight: index % 2 === 0 ? spacing.mid : 0,
     marginVertical: 6,
     flexBasis: "48%",
   }),

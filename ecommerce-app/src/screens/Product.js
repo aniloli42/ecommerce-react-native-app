@@ -13,10 +13,10 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 import Ionic from "react-native-vector-icons/Ionicons";
-import utils from "../styles/utils";
+import { spacing } from "../styles/utils";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import { Sizes } from "../components";
+import { BackButton, Sizes } from "../components";
 
 const productImage = require("../../assets/IMG_8616.jpeg");
 const productImage2 = require("../../assets/IMG_8633.jpeg");
@@ -44,12 +44,7 @@ const Product = () => {
         animated={true}
       />
       <View style={styles.backButtonWrapper}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionic name="arrow-back" size={27} color={"#000"} />
-        </TouchableOpacity>
+        <BackButton callback={() => navigation.goBack()} />
       </View>
 
       {/* Product Details */}
@@ -100,16 +95,8 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   backButtonWrapper: {
-    paddingLeft: utils.maxSpacing,
-    marginBottom: utils.midSpacing,
-  },
-  backButton: {
-    width: 32,
-    height: 32,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 50,
-    marginTop: utils.minSpacing,
+    padding: spacing.min,
+    backgroundColor: colors.white,
   },
   productImage: {
     width: "100%",
@@ -122,14 +109,14 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   productDetailWrapper: {
-    paddingBottom: utils.maxSpacing,
+    paddingBottom: spacing.max,
   },
   titlePriceWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: utils.midSpacing,
-    paddingHorizontal: utils.maxSpacing,
+    marginTop: spacing.mid,
+    paddingHorizontal: spacing.min,
   },
   productTitle: {
     fontSize: 20,
@@ -142,30 +129,30 @@ const styles = StyleSheet.create({
   },
   productSizeTitle: {
     fontSize: 18,
-    marginTop: utils.maxSpacing,
-    paddingHorizontal: utils.maxSpacing,
+    marginTop: spacing.max,
+    paddingHorizontal: spacing.min,
   },
   productSizesScrollWrapper: {
-    paddingVertical: utils.minSpacing,
-    paddingHorizontal: utils.maxSpacing,
+    paddingVertical: spacing.min,
+    paddingHorizontal: spacing.min,
   },
   buttonWrapper: {
-    paddingHorizontal: utils.maxSpacing,
+    paddingHorizontal: spacing.min,
   },
   button: {
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: utils.midSpacing,
-    paddingHorizontal: utils.minSpacing,
+    paddingVertical: spacing.mid,
+    paddingHorizontal: spacing.min,
     borderRadius: 10,
   },
   addToCartButton: {
     backgroundColor: colors.mediumGray,
-    marginTop: utils.maxSpacing,
+    marginTop: spacing.max,
   },
   buyNowButton: {
     backgroundColor: colors.tintBrown,
-    marginVertical: utils.midSpacing,
+    marginVertical: spacing.mid,
   },
   buttonText: {
     color: colors.white,

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import fonts from "../styles/fonts";
 import colors from "../styles/colors";
-import utils from "../styles/utils";
+import { spacing } from "../styles/utils";
 
 const Home = ({ navigation }) => {
   return (
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     height: 150,
     backgroundColor: colors.lightGray,
     borderRadius: 36,
-    marginTop: utils.maxSpacing * 2,
+    marginTop: spacing.max * 2,
     justifyContent: "center",
     alignItems: "center",
     elevation: 3,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     height: 270,
   },
   textWrapper: {
-    marginTop: utils.maxSpacing,
+    marginTop: spacing.max,
   },
   brandText: {
     color: "#fff",
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     lineHeight: 42,
   },
   buttonWrapper: {
-    margin: utils.maxSpacing,
+    margin: spacing.max,
     width: "80%",
   },
   button: {
