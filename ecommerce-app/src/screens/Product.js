@@ -19,21 +19,21 @@ import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { BackButton, Sizes } from "../components";
 import { firebaseDB } from "../../firebase";
-import { collection, setDoc, onSnapshot, doc } from "firebase/firestore";
-
+import { collection, addDoc, onSnapshot, doc } from "firebase/firestore";
 import { useUserContext } from "../context/UserContext";
 
 const { width } = Dimensions.get("window");
 
 const Product = () => {
-  const { user } = useUserContext();
-  const [product, setProduct] = useState(null);
-  const [chooseSize, setChooseSize] = useState(0);
   const navigation = useNavigation();
   const route = useRoute();
   const { productId } = route.params;
+
   const scrollX = new Animated.Value(0);
   let position = Animated.divide(scrollX, width);
+
+  const [product, setProduct] = useState(null);
+  const [chooseSize, setChooseSize] = useState(0);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -50,29 +50,11 @@ const Product = () => {
     if (product == null) return;
     if (product?.type !== "Ring") return;
 
-    setChooseSize(product.size[0]);
+    setChooseSize(product.sizes[0]);
   }, [product]);
 
   const handleSize = (value) => {
     setChooseSize(value);
-  };
-
-  const addToCartHandler = async () => {
-    try {
-      const cartRef = collection(firebaseDB, "cartProducts");
-      await setDoc(doc(cartRef, product.id), {
-        product: product.product,
-        image: product.images[0],
-        price: product.price,
-        size: chooseSize,
-        type: product.type,
-        user: user.uid,
-      });
-
-      alert("Cart Added");
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
@@ -143,40 +125,46 @@ const Product = () => {
             <Text style={[fonts.regular, styles.descText]}>{product.desc}</Text>
           </View>
         )}
-
-        {product?.size && (
+        {product?.stock === true ? (
           <>
-            {/* Product Sizes */}
-            <Text style={[fonts.regular, styles.productSizeTitle]}>Sizes</Text>
+            {product?.type === "Ring" && product?.sizes?.length !== 0 && (
+              <>
+                {/* Product Sizes */}
+                <Text style={[fonts.regular, styles.productSizeTitle]}>
+                  Sizes
+                </Text>
 
-            <FlatList
-              keyExtractor={(_, index) => index}
-              data={product?.size}
-              horizontal={true}
-              renderItem={({ item }) => (
-                <Sizes
-                  size={item}
-                  chooseSize={chooseSize}
-                  handleSize={handleSize}
+                <FlatList
+                  keyExtractor={(_, index) => index}
+                  data={product?.sizes}
+                  horizontal={true}
+                  renderItem={({ item }) => {
+                    return (
+                      <Sizes
+                        size={item}
+                        chooseSize={chooseSize}
+                        handleSize={handleSize}
+                      />
+                    );
+                  }}
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.productSizesScrollWrapper}
                 />
-              )}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.productSizesScrollWrapper}
-            />
+              </>
+            )}
+            <View style={styles.buttonWrapper}>
+              <Pressable style={[styles.buyNowButton, styles.button]}>
+                <Text style={[fonts.medium, styles.buttonText]}>Buy Now</Text>
+              </Pressable>
+            </View>
           </>
+        ) : (
+          <View style={styles.buttonWrapper}>
+            <Text style={[fonts.regular, styles.outOfStockText]}>
+              Sorry, Product is out of stock.
+            </Text>
+          </View>
         )}
-        <View style={styles.buttonWrapper}>
-          <Pressable
-            style={[styles.addToCartButton, styles.button]}
-            onPress={addToCartHandler}
-          >
-            <Text style={[fonts.medium, styles.buttonText]}>Add To Cart</Text>
-          </Pressable>
-
-          <Pressable style={[styles.buyNowButton, styles.button]}>
-            <Text style={[fonts.medium, styles.buttonText]}>Buy Now</Text>
-          </Pressable>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -218,7 +206,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   descText: {
-    fontSize: 18,
+    fontSize: 16,
     color: colors.mediumGray,
   },
   titlePriceWrapper: {
@@ -237,8 +225,9 @@ const styles = StyleSheet.create({
     color: colors.mediumGray,
     fontSize: 18,
   },
+
   productSizeTitle: {
-    fontSize: 18,
+    fontSize: 16,
     marginTop: spacing.max,
     paddingHorizontal: spacing.min,
   },
@@ -255,9 +244,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: spacing.min,
     borderRadius: 50,
-  },
-  addToCartButton: {
-    backgroundColor: colors.mediumGray,
   },
   buyNowButton: {
     backgroundColor: colors.tintBrown,
@@ -277,6 +263,10 @@ const styles = StyleSheet.create({
     margin: 8,
     borderRadius: 5,
   }),
+  outOfStockText: {
+    fontSize: 16,
+    color: "red",
+  },
 });
 
 export default Product;

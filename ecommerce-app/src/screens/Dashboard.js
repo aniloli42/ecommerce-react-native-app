@@ -17,7 +17,13 @@ import fonts from "../styles/fonts";
 import { spacing } from "../styles/utils";
 import { ProductCard, ProductType } from "../components";
 import colors from "../styles/colors";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 
 const PRODUCTS_TYPES = [
   {
@@ -52,11 +58,21 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    getProducts();
+    const q = query(
+      collection(firebaseDB, "products"),
+      where("stock", "==", true)
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const productArray = [];
+      querySnapshot.forEach((doc) => {
+        productArray.push({ id: doc.id, ...doc.data() });
+      });
+
+      setProducts(productArray);
+    });
+
     return () => {
-      setProducts([]);
-      setFilteredProduct([]);
-      setSearchText("");
+      unsubscribe;
     };
   }, []);
 

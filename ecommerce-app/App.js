@@ -32,7 +32,6 @@ import AppLoading from "expo-app-loading";
 
 // Components
 import {
-  Cart,
   Dashboard,
   Home,
   Login,
@@ -65,10 +64,6 @@ const TabStackScreen = () => {
             iconName = focused ? "home" : "home-outline";
           }
 
-          if (route.name === "Cart") {
-            iconName = focused ? "cart" : "cart-outline";
-          }
-
           if (route.name === "OrderHistory") {
             iconName = focused
               ? "ios-reorder-four"
@@ -83,7 +78,6 @@ const TabStackScreen = () => {
       })}
     >
       <TabStack.Screen name="Home" component={Dashboard} />
-      <TabStack.Screen name="Cart" component={Cart} />
       <TabStack.Screen
         name="OrderHistory"
         component={OrderHistory}
