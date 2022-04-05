@@ -44,19 +44,6 @@ const Dashboard = () => {
   const [pType, setPType] = useState("All");
   const [filteredProduct, setFilteredProduct] = useState([]);
 
-  const getProducts = async () => {
-    setLoading(true);
-
-    const productCollectionRef = collection(firebaseDB, "products");
-    const productsSnapshot = await getDocs(productCollectionRef);
-    const resProducts = productsSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setLoading(false);
-    setProducts(resProducts);
-  };
-
   useEffect(() => {
     const q = query(
       collection(firebaseDB, "products"),
@@ -142,8 +129,6 @@ const Dashboard = () => {
         ListHeaderComponentStyle={styles.productsHeaderScrollWrapper}
         spacing={spacing.mid * 0.75}
         showsVerticalScrollIndicator={false}
-        refreshing={loading}
-        onRefresh={() => getProducts()}
         ListHeaderComponent={
           <>
             {/* Products Category */}
