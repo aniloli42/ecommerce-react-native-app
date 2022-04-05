@@ -192,8 +192,11 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.lightGray,
     borderBottomWidth: 1,
   },
+
   brandText: {
-    fontSize: 24,
+    color: colors.tintBrown,
+    fontSize: 26,
+    textAlign: "left",
     marginBottom: spacing.min,
   },
   searchBox: (searchText) => ({

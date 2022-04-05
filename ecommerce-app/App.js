@@ -32,11 +32,17 @@ import AppLoading from "expo-app-loading";
 
 // Components
 import {
+  Checkout,
   Dashboard,
+  ForgetPassword,
   Home,
   Login,
   OrderHistory,
+  OrderNote,
+  PrivacyPolicy,
   Product,
+  Profile,
+  Security,
   Settings,
   Signup,
 } from "./src/screens";
@@ -139,12 +145,21 @@ const App = () => {
             <>
               <AppStack.Screen name="Tab" component={TabStackScreen} />
               <AppStack.Screen name="Product" component={Product} />
+              <AppStack.Screen name="Profile" component={Profile} />
+              <AppStack.Screen name="Security" component={Security} />
+              <AppStack.Screen name="Checkout" component={Checkout} />
+              <AppStack.Screen name="OrderNote" component={OrderNote} />
+              <AppStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
             </>
           ) : (
             <>
               <AppStack.Screen name="Home" component={Home} />
               <AppStack.Screen name="Login" component={Login} />
               <AppStack.Screen name="Signup" component={Signup} />
+              <AppStack.Screen
+                name="ForgetPassword"
+                component={ForgetPassword}
+              />
             </>
           )}
         </AppStack.Navigator>

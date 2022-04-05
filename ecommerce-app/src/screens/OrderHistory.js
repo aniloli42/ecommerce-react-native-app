@@ -31,7 +31,7 @@ const OrderHistory = () => {
 
       {/* Screen Title */}
       <View style={styles.headerWrapper}>
-        <Text style={[styles.screenTitle, fonts.light]}> Order History</Text>
+        <Text style={[styles.screenTitle, fonts.regular]}> Order History</Text>
       </View>
     </View>
   );
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    padding: spacing.min,
+    paddingHorizontal: spacing.min,
+    paddingVertical: spacing.min * 0.75,
     backgroundColor: colors.white,
     borderBottomWidth: 1,
     borderBottomColor: colors.lightGray,
