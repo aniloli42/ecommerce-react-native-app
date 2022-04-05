@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   ScrollView,
   Text,
@@ -17,13 +17,7 @@ import fonts from "../styles/fonts";
 import { spacing } from "../styles/utils";
 import { ProductCard, ProductType } from "../components";
 import colors from "../styles/colors";
-import {
-  collection,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 const PRODUCTS_TYPES = [
   {
@@ -39,7 +33,6 @@ const PRODUCTS_TYPES = [
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [pType, setPType] = useState("All");
   const [filteredProduct, setFilteredProduct] = useState([]);
