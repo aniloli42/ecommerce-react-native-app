@@ -7,17 +7,27 @@ import {
   StatusBar,
   StyleSheet,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import Entypo from "react-native-vector-icons/Entypo";
 
 // Custom
-import { firebaseDB } from "../../firebase";
+import { auth, firebaseDB } from "../../firebase";
 import fonts from "../styles/fonts";
 import { spacing } from "../styles/utils";
 import { ProductCard, ProductType } from "../components";
 import colors from "../styles/colors";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+  setDoc,
+  collection,
+  onSnapshot,
+  query,
+  where,
+  doc,
+} from "firebase/firestore";
+import { useUserContext } from "../context/UserContext";
+import { updateProfile } from "firebase/auth";
 
 const PRODUCTS_TYPES = [
   {
@@ -32,11 +42,14 @@ const PRODUCTS_TYPES = [
 ];
 
 const Dashboard = () => {
+  const { temp, setTemp } = useUserContext();
+
   const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [pType, setPType] = useState("All");
   const [filteredProduct, setFilteredProduct] = useState([]);
 
+  // handle product fetching
   useEffect(() => {
     const q = query(
       collection(firebaseDB, "products"),
@@ -56,6 +69,7 @@ const Dashboard = () => {
     };
   }, []);
 
+  // handle search filter
   useEffect(() => {
     let Products = products;
 
@@ -75,6 +89,23 @@ const Dashboard = () => {
 
     setFilteredProduct(Products);
   }, [searchText, pType, products]);
+
+  // Handle SignIn Data
+  useEffect(async () => {
+    if (temp === null) return;
+
+    await setDoc(doc(firebaseDB, "users", auth.currentUser.uid), {
+      name: temp.name,
+      email: auth.currentUser.email,
+      phoneNumber: temp.phoneNumber,
+    });
+
+    await updateProfile(auth.currentUser, {
+      displayName: temp.name,
+    });
+
+    setTemp(null);
+  }, []);
 
   const handleFilter = (productType) => {
     if (productType === pType) return setPType("All");
@@ -146,11 +177,17 @@ const Dashboard = () => {
           </>
         }
         ListFooterComponent={
-          filteredProduct.length === 0 && (
-            <Text style={[styles.notFoundText, fonts.medium]}>
-              Product Not Found!
-            </Text>
-          )
+          <>
+            {products.length === 0 && filteredProduct.length === 0 && (
+              <ActivityIndicator />
+            )}
+
+            {products.length !== 0 && filteredProduct?.length === 0 && (
+              <Text style={[styles.notFoundText, fonts.medium]}>
+                Product Not Found!
+              </Text>
+            )}
+          </>
         }
       />
     </View>

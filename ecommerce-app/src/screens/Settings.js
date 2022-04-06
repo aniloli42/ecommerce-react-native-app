@@ -15,6 +15,7 @@ import { spacing } from "../styles/utils";
 
 import Ionic from "react-native-vector-icons/Ionicons";
 import colors from "../styles/colors";
+import { ScreenHeader } from "../components/";
 
 const Settings = () => {
   const navigation = useNavigation();
@@ -36,9 +37,7 @@ const Settings = () => {
       />
 
       {/* Screen Title */}
-      <View style={styles.headerWrapper}>
-        <Text style={[styles.screenTitle, fonts.regular]}> My Settings</Text>
-      </View>
+      <ScreenHeader screenName={"My Settings"} />
 
       <ScrollView>
         <View>
@@ -90,15 +89,6 @@ const Settings = () => {
 
             {/* Section Content */}
             <View style={styles.sectionContentWrapper}>
-              <Pressable
-                style={[styles.sectionButton]}
-                onPress={() => navigation.navigate("PrivacyPolicy")}
-              >
-                <Text style={[fonts.regular, styles.buttonText]}>
-                  Privacy Policy
-                </Text>
-              </Pressable>
-
               <Pressable style={[styles.sectionButton]} onPress={handleContact}>
                 <Text style={[fonts.regular, styles.buttonText]}>
                   Contact Us
@@ -126,22 +116,6 @@ export default Settings;
 const styles = StyleSheet.create({
   wrapper: {
     height: "100%",
-  },
-  headerWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: spacing.min,
-    paddingVertical: spacing.min * 0.75,
-    backgroundColor: colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.lightGray,
-  },
-  screenTitle: {
-    color: colors.tintBrown,
-    fontSize: 20,
-    flex: 1,
-    textAlign: "center",
   },
   signOutButton: {
     backgroundColor: "#b00",

@@ -1,10 +1,16 @@
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+
+import { ScreenHeader } from "../components";
 
 const Security = () => {
+  const navigation = useNavigation();
   return (
     <View>
-      <Text>Security</Text>
+      <ScreenHeader
+        screenName={"Security"}
+        callback={() => navigation.goBack()}
+      />
     </View>
   );
 };

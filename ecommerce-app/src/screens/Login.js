@@ -15,117 +15,134 @@ import fonts from "../styles/fonts";
 import { spacing } from "../styles/utils";
 import { loginSchema } from "../schemas/userSchema";
 import { Formik } from "formik";
+import { BackButton } from "../components";
 
 const Login = ({ navigation }) => {
   return (
-    <ScrollView
-      contentContainerStyle={styles.wrapper}
-      style={styles.scrollWrapper}
-    >
+    <View style={styles.wrapper}>
       <StatusBar
         backgroundColor="white"
         barStyle="dark-content"
         animated={true}
       />
-      <Text style={[styles.screenTitle, fonts.medium]}>Login</Text>
 
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        validationSchema={loginSchema}
-        onSubmit={async (values) => {
-          try {
-            await signInWithEmailAndPassword(
-              auth,
-              values.email,
-              values.password
-            );
-          } catch (error) {
-            alert(error.message);
-          }
-        }}
-        validateOnMount={true}
-      >
-        {({ isValid, handleSubmit, handleChange, handleBlur, values }) => (
-          <>
-            {/* Form */}
-            <View style={styles.formWrapper}>
-              <View style={styles.formElementWrapper}>
-                <Text style={[styles.formElementLabel, fonts.medium]}>
-                  Email
-                </Text>
-                <TextInput
-                  style={[styles.formElementInput, fonts.regular]}
-                  autoCapitalize={"none"}
-                  autoCorrect={false}
-                  keyboardType="email-address"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                />
-              </View>
-
-              <View style={styles.formElementWrapper}>
-                <Text style={[styles.formElementLabel, fonts.medium]}>
-                  Password
-                </Text>
-                <TextInput
-                  style={[styles.formElementInput, fonts.regular]}
-                  secureTextEntry={true}
-                  keyboardType="default"
-                  autoCapitalize={"none"}
-                  autoCorrect={false}
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                />
-              </View>
-
-              <Pressable
-                style={styles.loginButton(isValid)}
-                onPress={handleSubmit}
-              >
-                <Text style={[styles.loginButtonText, fonts.medium]}>
-                  Login
-                </Text>
-              </Pressable>
-            </View>
-          </>
-        )}
-      </Formik>
-
-      {/* Bottom Task */}
-      <View style={[styles.newAccountWrapper]}>
-        <Text style={[fonts.light]}>Don't have an Account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-          <Text style={[fonts.medium, styles.newAccountButtonText]}>
-            Click Here
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.headerWrapper}>
+        <BackButton callback={() => navigation.goBack()} />
+        <Text style={[styles.screenTitle, fonts.regular]}>Login</Text>
       </View>
-    </ScrollView>
+
+      <ScrollView contentContainerStyle={styles.scrollWrapper}>
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={loginSchema}
+          onSubmit={async (values) => {
+            try {
+              await signInWithEmailAndPassword(
+                auth,
+                values.email,
+                values.password
+              );
+            } catch (error) {
+              alert(error.message);
+            }
+          }}
+          validateOnMount={true}
+        >
+          {({ isValid, handleSubmit, handleChange, handleBlur, values }) => (
+            <>
+              {/* Form */}
+              <View style={styles.formWrapper}>
+                <View style={styles.formElementWrapper}>
+                  <Text style={[styles.formElementLabel, fonts.medium]}>
+                    Email
+                  </Text>
+                  <TextInput
+                    style={[styles.formElementInput, fonts.regular]}
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
+                    keyboardType="email-address"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                  />
+                </View>
+
+                <View style={styles.formElementWrapper}>
+                  <Text style={[styles.formElementLabel, fonts.medium]}>
+                    Password
+                  </Text>
+                  <TextInput
+                    style={[styles.formElementInput, fonts.regular]}
+                    secureTextEntry={true}
+                    keyboardType="default"
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                  />
+                </View>
+
+                <Pressable
+                  style={styles.loginButton(isValid)}
+                  onPress={handleSubmit}
+                >
+                  <Text style={[styles.loginButtonText, fonts.medium]}>
+                    Login
+                  </Text>
+                </Pressable>
+              </View>
+            </>
+          )}
+        </Formik>
+
+        {/* Bottom Task */}
+        <View style={[styles.newAccountWrapper]}>
+          <Text style={[fonts.light]}>Don't have an Account?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+            <Text style={[fonts.medium, styles.newAccountButtonText]}>
+              Click Here
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
     height: "100%",
-    alignItems: "center",
-    padding: spacing.max,
   },
   scrollWrapper: {
-    flexShrink: 1,
-    flexGrow: 0,
+    alignItems: "center",
+    padding: spacing.min,
   },
-  screenTitle: { fontSize: 32 },
+  headerWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: spacing.min,
+    paddingVertical: spacing.min * 0.75,
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.lightGray,
+  },
+  screenTitle: {
+    color: colors.tintBrown,
+    fontSize: 20,
+    flex: 1,
+    textAlign: "center",
+    marginLeft: "-5%",
+  },
   formWrapper: {
-    marginTop: spacing.max,
     width: "84%",
   },
   formElementWrapper: {
-    marginTop: spacing.max * 1.5,
+    marginTop: spacing.min * 1.5,
   },
   formElementLabel: {
     fontSize: 16,

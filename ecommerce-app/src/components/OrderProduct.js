@@ -5,41 +5,55 @@ import fonts from "../styles/fonts";
 import MaterialsIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { deleteDoc, doc } from "firebase/firestore";
 import { firebaseDB } from "../../firebase";
-const CartProduct = ({ product, type, id, price, image, size }) => {
+const OrderProduct = ({
+  id,
+  productPrice,
+  productImage,
+  productTitle,
+  productType,
+  productSize,
+  status,
+}) => {
   const removeFromCart = async () => {
-    await deleteDoc(doc(firebaseDB, "cartProducts", id));
+    await deleteDoc(doc(firebaseDB, "orders", id));
   };
 
   return (
     <View style={styles.cartProductWrapper}>
       {/* Image View */}
       <View>
-        <Image source={{ uri: image }} style={styles.productImage} />
+        <Image source={{ uri: productImage }} style={styles.productImage} />
       </View>
 
       {/* Details View */}
       <View style={styles.productContentWrapper}>
         {/* Product Title */}
-        <Text style={[styles.productTitle, fonts.regular]}>{product}</Text>
+        <Text style={[styles.productTitle, fonts.regular]}>{productTitle}</Text>
 
         {/* Product Price */}
-        <Text style={[styles.priceText, fonts.light]}>Rs. {price}</Text>
+        <Text style={[styles.priceText, fonts.light]}>Rs. {productPrice}</Text>
+
+        <Text style={[styles.productStatus(status), fonts.light]}>
+          {status}
+        </Text>
 
         {/* Product Size */}
-        {type == "Ring" && (
-          <Text style={[styles.sizeText, fonts.light]}>{size}</Text>
+        {productType == "Ring" && (
+          <Text style={[styles.sizeText, fonts.light]}>{productSize}</Text>
         )}
       </View>
 
       {/* Product Remove View */}
-      <Pressable style={styles.deleteButton} onPress={removeFromCart}>
-        <MaterialsIcon name="delete" size={20} color="red" />
-      </Pressable>
+      {status === "pending" && (
+        <Pressable style={styles.deleteButton} onPress={removeFromCart}>
+          <MaterialsIcon name="delete" size={20} color="red" />
+        </Pressable>
+      )}
     </View>
   );
 };
 
-export default CartProduct;
+export default OrderProduct;
 
 const styles = StyleSheet.create({
   cartProductWrapper: {
@@ -50,7 +64,7 @@ const styles = StyleSheet.create({
   },
   productImage: {
     width: 100,
-    height: 120,
+    height: 140,
     borderRadius: 15,
     backgroundColor: "#ccc",
   },
@@ -65,20 +79,20 @@ const styles = StyleSheet.create({
   },
   priceText: {
     fontSize: 14,
-    marginTop: spacing.min * 0.25,
+    marginTop: spacing.min * 0.05,
     color: colors.mediumGray,
   },
   sizeText: {
-    marginVertical: spacing.min,
+    marginTop: spacing.min * 0.25,
     borderWidth: 1,
-    borderColor: "red",
+    borderColor: "lightgray",
     textAlign: "center",
-    textAlignVertical: "center",
-    width: 32,
-    height: 32,
+    textAlignVertical: "bottom",
+    width: 26,
+    height: 26,
     borderRadius: 50,
     elevation: 3,
-    fontSize: 12,
+    fontSize: 14,
     backgroundColor: colors.white,
   },
   deleteButton: {
@@ -92,4 +106,26 @@ const styles = StyleSheet.create({
     marginTop: spacing.min * 0.25,
     marginRight: spacing.min,
   },
+
+  // product status
+  productStatus: (status) => ({
+    backgroundColor:
+      status === "pending"
+        ? colors.pending
+        : status === "processing"
+        ? colors.processing
+        : status === "delivered"
+        ? colors.delivered
+        : status === "rejected"
+        ? colors.rejected
+        : status === "shipping"
+        ? colors.shipping
+        : colors.lightGray,
+    paddingHorizontal: spacing.min * 0.75,
+    paddingVertical: spacing.min * 0.15,
+    borderRadius: 50,
+    color: colors.white,
+    fontSize: 12,
+    marginVertical: spacing.min * 0.35,
+  }),
 });

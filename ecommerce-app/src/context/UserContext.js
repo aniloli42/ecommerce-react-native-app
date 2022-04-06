@@ -7,6 +7,7 @@ export default ({ children }) => {
   // User State Management
   const [user, setUser] = useState(null);
   const [isLogged, setIsLogged] = useState(false);
+  const [temp, setTemp] = useState(null);
 
   useEffect(() => {
     if (user == null) return setIsLogged(false);
@@ -15,7 +16,7 @@ export default ({ children }) => {
   }, [user]);
 
   return (
-    <UserContext.Provider value={{ user, setUser, isLogged }}>
+    <UserContext.Provider value={{ user, setUser, isLogged, temp, setTemp }}>
       {children}
     </UserContext.Provider>
   );

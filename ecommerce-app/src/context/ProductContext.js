@@ -5,20 +5,10 @@ export const useProductContext = () => useContext(ProductContext);
 
 export default ({ children }) => {
   // Product State Management
-  const [cart, setCart] = useState(null);
-
-  const addToCart = (product) => {
-    setCart((prevCart) => ({ ...prevCart, product }));
-  };
-
-  const removeFromCart = (product) => {
-    setCart((prevCart) => {
-      return prevCart.filter((cartProduct) => cartProduct.id !== product.id);
-    });
-  };
+  const [product, setProduct] = useState(null);
 
   return (
-    <ProductContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <ProductContext.Provider value={{ product, setProduct }}>
       {children}
     </ProductContext.Provider>
   );

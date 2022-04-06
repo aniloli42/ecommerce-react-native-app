@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   View,
   Text,
@@ -9,187 +8,174 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import {
-  auth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "../../firebase";
+import { auth, createUserWithEmailAndPassword } from "../../firebase";
 
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { spacing } from "../styles/utils";
-import { Formik } from "formik";
+import { Formik, setIn } from "formik";
 import { signUpSchema } from "../schemas/userSchema";
-import SelectDropdown from "react-native-select-dropdown";
-
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { BackButton } from "../components/";
+import { useUserContext } from "../context/UserContext";
 
 const Signup = ({ navigation }) => {
+  const { setTemp } = useUserContext();
+
   return (
-    <ScrollView
-      contentContainerStyle={styles.wrapper}
-      style={styles.scrollWrapper}
-    >
+    <View style={styles.wrapper}>
       <StatusBar
         backgroundColor="white"
         barStyle="dark-content"
         animated={true}
       />
-      <Text style={[styles.screenTitle, fonts.medium]}>Sign Up</Text>
 
-      <Formik
-        initialValues={{
-          name: "",
-          email: "",
-          password: "",
-          gender: "Female",
-          phone: "",
-        }}
-        validationSchema={signUpSchema}
-        onSubmit={async (values) => {
-          await createUserWithEmailAndPassword(
-            auth,
-            values.email,
-            values.password,
-            values.name,
-            values.gender,
-            values.phone
-          );
-
-          await sendEmailVerification(auth.currentUser);
-        }}
-        validateOnMount={true}
-      >
-        {({ isValid, handleSubmit, handleChange, handleBlur, values }) => (
-          <>
-            {/* Form */}
-            <View style={styles.formWrapper}>
-              <View style={styles.formElementWrapper}>
-                <Text style={[styles.formElementLabel, fonts.medium]}>
-                  Name
-                </Text>
-                <TextInput
-                  style={[styles.formElementInput, fonts.regular]}
-                  autoCapitalize={"none"}
-                  autoCorrect={false}
-                  keyboardType="default"
-                  onChangeText={handleChange("name")}
-                  onBlur={handleBlur("name")}
-                  value={values.name}
-                />
-              </View>
-
-              <View style={styles.formElementWrapper}>
-                <Text style={[styles.formElementLabel, fonts.medium]}>
-                  Gender
-                </Text>
-                <SelectDropdown
-                  data={["Female", "Male", "Third Gender"]}
-                  defaultValue={values.gender}
-                  onSelect={handleChange("gender")}
-                  buttonTextAfterSelection={(selectedItem) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item) => {
-                    return item;
-                  }}
-                  buttonStyle={styles.dropDownElement}
-                  buttonTextStyle={styles.dropDownText}
-                  renderDropdownIcon={(isOpened) => (
-                    <FontAwesome
-                      name={isOpened ? "chevron-up" : "chevron-down"}
-                      color={colors.mediumGray}
-                      size={16}
-                    />
-                  )}
-                />
-              </View>
-
-              <View style={styles.formElementWrapper}>
-                <Text style={[styles.formElementLabel, fonts.medium]}>
-                  Mobile Number
-                </Text>
-                <TextInput
-                  style={[styles.formElementInput, fonts.regular]}
-                  autoCapitalize={"none"}
-                  autoCorrect={false}
-                  keyboardType="phone-pad"
-                  onChangeText={handleChange("phone")}
-                  onBlur={handleBlur("phone")}
-                  value={values.phone}
-                />
-              </View>
-
-              <View style={styles.formElementWrapper}>
-                <Text style={[styles.formElementLabel, fonts.medium]}>
-                  Email
-                </Text>
-                <TextInput
-                  style={[styles.formElementInput, fonts.regular]}
-                  autoCapitalize={"none"}
-                  autoCorrect={false}
-                  keyboardType="email-address"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                />
-              </View>
-
-              <View style={styles.formElementWrapper}>
-                <Text style={[styles.formElementLabel, fonts.medium]}>
-                  Password
-                </Text>
-                <TextInput
-                  style={[styles.formElementInput, fonts.regular]}
-                  secureTextEntry={true}
-                  keyboardType="default"
-                  autoCapitalize={"none"}
-                  autoCorrect={false}
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                />
-              </View>
-
-              <Pressable
-                style={styles.loginButton(isValid)}
-                onPress={handleSubmit}
-              >
-                <Text style={[styles.loginButtonText, fonts.medium]}>
-                  Create Account
-                </Text>
-              </Pressable>
-            </View>
-          </>
-        )}
-      </Formik>
-
-      {/* Bottom Task */}
-      <View style={[styles.newAccountWrapper]}>
-        <Text style={[fonts.light]}>Already have an Account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={[fonts.medium, styles.newAccountButtonText]}>
-            Click Here
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.headerWrapper}>
+        <BackButton callback={() => navigation.goBack()} />
+        <Text style={[styles.screenTitle, fonts.regular]}>Sign Up</Text>
       </View>
-    </ScrollView>
+
+      <ScrollView contentContainerStyle={styles.scrollWrapper}>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            password: "",
+            phoneNumber: "",
+          }}
+          validationSchema={signUpSchema}
+          onSubmit={async (values) => {
+            try {
+              const { name, phoneNumber, email, password } = values;
+
+              await createUserWithEmailAndPassword(auth, email, password);
+
+              setTemp({ name, phoneNumber });
+            } catch (error) {
+              alert("Check All Inputs or Email is already used.");
+            }
+          }}
+          validateOnMount={true}
+        >
+          {({ isValid, handleSubmit, handleChange, handleBlur, values }) => (
+            <>
+              {/* Form */}
+              <View style={styles.formWrapper}>
+                <View style={styles.formElementWrapper}>
+                  <Text style={[styles.formElementLabel, fonts.medium]}>
+                    Name
+                  </Text>
+                  <TextInput
+                    style={[styles.formElementInput, fonts.regular]}
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
+                    keyboardType="default"
+                    onChangeText={handleChange("name")}
+                    onBlur={handleBlur("name")}
+                    value={values.name}
+                  />
+                </View>
+
+                <View style={styles.formElementWrapper}>
+                  <Text style={[styles.formElementLabel, fonts.medium]}>
+                    Mobile Number
+                  </Text>
+                  <TextInput
+                    style={[styles.formElementInput, fonts.regular]}
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
+                    keyboardType="phone-pad"
+                    onChangeText={handleChange("phoneNumber")}
+                    onBlur={handleBlur("phoneNumber")}
+                    value={values.phoneNumber}
+                  />
+                </View>
+
+                <View style={styles.formElementWrapper}>
+                  <Text style={[styles.formElementLabel, fonts.medium]}>
+                    Email
+                  </Text>
+                  <TextInput
+                    style={[styles.formElementInput, fonts.regular]}
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
+                    keyboardType="email-address"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                  />
+                </View>
+
+                <View style={styles.formElementWrapper}>
+                  <Text style={[styles.formElementLabel, fonts.medium]}>
+                    Password
+                  </Text>
+                  <TextInput
+                    style={[styles.formElementInput, fonts.regular]}
+                    secureTextEntry={true}
+                    keyboardType="default"
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                  />
+                </View>
+
+                <Pressable
+                  style={styles.loginButton(isValid)}
+                  onPress={handleSubmit}
+                >
+                  <Text style={[styles.loginButtonText, fonts.medium]}>
+                    Create Account
+                  </Text>
+                </Pressable>
+              </View>
+            </>
+          )}
+        </Formik>
+
+        {/* Bottom Task */}
+        <View style={[styles.newAccountWrapper]}>
+          <Text style={[fonts.light]}>Already have an Account?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={[fonts.medium, styles.newAccountButtonText]}>
+              Click Here
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    alignItems: "center",
-    padding: spacing.max,
+    height: "100%",
   },
   scrollWrapper: {
-    flexShrink: 1,
-    flexGrow: 0,
+    alignItems: "center",
+    padding: spacing.min,
   },
-  screenTitle: { fontSize: 32 },
+  headerWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: spacing.min,
+    paddingVertical: spacing.min * 0.75,
+    backgroundColor: colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.lightGray,
+  },
+  screenTitle: {
+    color: colors.tintBrown,
+    fontSize: 20,
+    flex: 1,
+    textAlign: "center",
+    marginLeft: "-5%",
+  },
   formWrapper: {
-    marginTop: spacing.max,
-    width: "84%",
+    paddingVertical: spacing.min * 0.25,
+    width: "90%",
   },
   formElementWrapper: {
     marginTop: spacing.max * 1.5,
@@ -205,17 +191,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     fontSize: 18,
     textDecorationLine: "none",
-  },
-  dropDownElement: {
-    width: "100%",
-    backgroundColor: "transparent",
-    borderBottomWidth: 1,
-    borderBottomColor: colors.mediumGray,
-    paddingHorizontal: 0,
-  },
-  dropDownText: {
-    textAlign: "left",
-    marginLeft: 0,
   },
   loginButton: (isValid) => ({
     alignItems: "center",

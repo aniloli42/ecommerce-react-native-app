@@ -38,8 +38,6 @@ import {
   Home,
   Login,
   OrderHistory,
-  OrderNote,
-  PrivacyPolicy,
   Product,
   Profile,
   Security,
@@ -50,7 +48,8 @@ import {
 const AppStack = createNativeStackNavigator();
 const TabStack = createBottomTabNavigator();
 
-import { auth } from "./firebase";
+import { auth, firebaseDB } from "./firebase";
+import { getDoc, doc } from "firebase/firestore";
 import UserContext, { useUserContext } from "./src/context/UserContext";
 import ProductContext from "./src/context/ProductContext";
 import colors from "./src/styles/colors";
@@ -98,8 +97,15 @@ const App = () => {
   const { isLogged, setUser } = useUserContext();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      user != null ? setUser(user) : setUser(null);
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (!user) return setUser(null);
+
+      const userCollection = doc(firebaseDB, "users", user.uid);
+      const userSnap = await getDoc(userCollection);
+
+      if (!userSnap.exists()) return;
+      const resUser = userSnap.data();
+      setUser(resUser);
     });
 
     return unsubscribe;
@@ -148,8 +154,6 @@ const App = () => {
               <AppStack.Screen name="Profile" component={Profile} />
               <AppStack.Screen name="Security" component={Security} />
               <AppStack.Screen name="Checkout" component={Checkout} />
-              <AppStack.Screen name="OrderNote" component={OrderNote} />
-              <AppStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
             </>
           ) : (
             <>

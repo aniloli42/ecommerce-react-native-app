@@ -17,16 +17,18 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { spacing } from "../styles/utils";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
-import { BackButton, Sizes } from "../components";
+import { ScreenHeader, Sizes } from "../components";
 import { firebaseDB } from "../../firebase";
-import { collection, addDoc, onSnapshot, doc } from "firebase/firestore";
-import { useUserContext } from "../context/UserContext";
+import { onSnapshot, doc } from "firebase/firestore";
+import { useProductContext } from "../context/ProductContext";
 
 const { width } = Dimensions.get("window");
 
 const Product = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const { setProduct: addProduct } = useProductContext();
+
   const { productId } = route.params;
 
   const scrollX = new Animated.Value(0);
@@ -57,6 +59,22 @@ const Product = () => {
     setChooseSize(value);
   };
 
+  const handleBuy = () => {
+    const prodObj = {
+      productId: product.id,
+      productPrice: product.price,
+      productType: product.type,
+      productImage: product.images[0],
+      productTitle: product.product,
+      productSize: product.type === "Ring" ? parseInt(chooseSize) : null,
+      status: "pending",
+    };
+
+    addProduct(prodObj);
+
+    navigation.navigate("Checkout");
+  };
+
   return (
     <SafeAreaView style={styles.wrapper}>
       <StatusBar
@@ -64,9 +82,8 @@ const Product = () => {
         barStyle="dark-content"
         animated={true}
       />
-      <View style={styles.backButtonWrapper}>
-        <BackButton callback={() => navigation.goBack()} />
-      </View>
+
+      <ScreenHeader screenName={""} callback={() => navigation.goBack()} />
 
       {/* Product Details */}
       <ScrollView
@@ -153,7 +170,10 @@ const Product = () => {
               </>
             )}
             <View style={styles.buttonWrapper}>
-              <Pressable style={[styles.buyNowButton, styles.button]}>
+              <Pressable
+                style={[styles.buyNowButton, styles.button]}
+                onPress={handleBuy}
+              >
                 <Text style={[fonts.medium, styles.buttonText]}>Buy Now</Text>
               </Pressable>
             </View>
@@ -173,12 +193,6 @@ const Product = () => {
 const styles = StyleSheet.create({
   wrapper: {
     height: "100%",
-  },
-  backButtonWrapper: {
-    padding: spacing.min,
-    backgroundColor: colors.white,
-    borderBottomColor: colors.lightGray,
-    borderBottomWidth: 1,
   },
   imageScrollWrapper: {
     height: 350,

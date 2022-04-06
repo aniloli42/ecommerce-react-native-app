@@ -1,25 +1,34 @@
 import { useState, useEffect } from "react";
-import {
-  FlatList,
-  View,
-  Text,
-  StatusBar,
-  StyleSheet,
-  Pressable,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { FlatList, View, Text, StatusBar, StyleSheet } from "react-native";
 
 import fonts from "../styles/fonts";
-import colors from "../styles/colors";
 import { spacing } from "../styles/utils";
-import CartProduct from "../components/CartProduct";
-import { firebaseDB } from "../../firebase";
+import OrderProduct from "../components/OrderProduct";
+import { firebaseDB, auth } from "../../firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { useUserContext } from "../context/UserContext";
+import { ScreenHeader } from "../components/";
+import colors from "../styles/colors";
 
 const OrderHistory = () => {
-  const navigation = useNavigation();
-  const { user } = useUserContext();
+  const [orderHistory, setOrderHistory] = useState(null);
+
+  // handle product fetching
+  useEffect(() => {
+    const q = query(
+      collection(firebaseDB, "orders"),
+      where("userId", "==", auth.currentUser.uid)
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const orderHistoryArray = [];
+      querySnapshot.forEach((doc) => {
+        orderHistoryArray.push({ id: doc.id, ...doc.data() });
+      });
+
+      setOrderHistory(orderHistoryArray);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <View style={styles.wrapper}>
@@ -30,9 +39,19 @@ const OrderHistory = () => {
       />
 
       {/* Screen Title */}
-      <View style={styles.headerWrapper}>
-        <Text style={[styles.screenTitle, fonts.regular]}> Order History</Text>
-      </View>
+      <ScreenHeader screenName={"Order History"} />
+
+      <FlatList
+        data={orderHistory}
+        renderItem={({ item }) => <OrderProduct {...item} />}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.orderScrollWrapper}
+        ListHeaderComponent={
+          orderHistory?.length === 0 && (
+            <Text style={[fonts.regular, styles.noOrder]}>No Orders Yet.</Text>
+          )
+        }
+      />
     </View>
   );
 };
@@ -41,21 +60,13 @@ const styles = StyleSheet.create({
   wrapper: {
     height: "100%",
   },
-  headerWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: spacing.min,
-    paddingVertical: spacing.min * 0.75,
-    backgroundColor: colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.lightGray,
+  orderScrollWrapper: {
+    paddingVertical: spacing.min,
   },
-  screenTitle: {
-    color: colors.tintBrown,
-    fontSize: 20,
-    flex: 1,
-    textAlign: "center",
+  noOrder: {
+    fontSize: 16,
+    color: colors.mediumGray,
+    marginHorizontal: spacing.min,
   },
 });
 

@@ -7,7 +7,5 @@ export { default as Settings } from "./Settings";
 export { default as OrderHistory } from "./OrderHistory";
 export { default as Profile } from "./Profile";
 export { default as Security } from "./Security";
-export { default as PrivacyPolicy } from "./PrivacyPolicy";
 export { default as Checkout } from "./Checkout";
 export { default as ForgetPassword } from "./ForgetPassword";
-export { default as OrderNote } from "./OrderNote";

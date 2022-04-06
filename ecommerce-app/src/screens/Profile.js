@@ -1,14 +1,31 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { View } from "react-native";
+
+import { EditProfile, ScreenHeader, ViewProfile } from "../components";
+import { auth } from "../../firebase";
 
 const Profile = () => {
+  const [isEdit, setIsEdit] = useState(true);
+
+  const handleEdit = () => setIsEdit((prev) => !prev);
+
+  const navigation = useNavigation();
+
   return (
     <View>
-      <Text>Profile</Text>
+      <ScreenHeader
+        screenName={"Profile"}
+        callback={() => navigation.goBack()}
+      />
+
+      {isEdit ? (
+        <EditProfile handleEdit={handleEdit} />
+      ) : (
+        <ViewProfile handleEdit={handleEdit} />
+      )}
     </View>
   );
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({});
