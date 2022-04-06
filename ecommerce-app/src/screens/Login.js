@@ -15,7 +15,7 @@ import fonts from "../styles/fonts";
 import { spacing } from "../styles/utils";
 import { loginSchema } from "../schemas/userSchema";
 import { Formik } from "formik";
-import { BackButton } from "../components";
+import { ScreenHeader } from "../components";
 
 const Login = ({ navigation }) => {
   return (
@@ -26,10 +26,7 @@ const Login = ({ navigation }) => {
         animated={true}
       />
 
-      <View style={styles.headerWrapper}>
-        <BackButton callback={() => navigation.goBack()} />
-        <Text style={[styles.screenTitle, fonts.regular]}>Login</Text>
-      </View>
+      <ScreenHeader screenName={"Login"} callback={() => navigation.goBack()} />
 
       <ScrollView contentContainerStyle={styles.scrollWrapper}>
         <Formik
@@ -99,6 +96,15 @@ const Login = ({ navigation }) => {
           )}
         </Formik>
 
+        <Pressable
+          style={styles.forgetButton}
+          onPress={() => navigation.navigate("ForgetPassword")}
+        >
+          <Text style={[fonts.regular, styles.forgetText]}>
+            Forget password?
+          </Text>
+        </Pressable>
+
         {/* Bottom Task */}
         <View style={[styles.newAccountWrapper]}>
           <Text style={[fonts.light]}>Don't have an Account?</Text>
@@ -121,23 +127,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: spacing.min,
   },
-  headerWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: spacing.min,
-    paddingVertical: spacing.min * 0.75,
-    backgroundColor: colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.lightGray,
-  },
-  screenTitle: {
-    color: colors.tintBrown,
-    fontSize: 20,
-    flex: 1,
-    textAlign: "center",
-    marginLeft: "-5%",
-  },
+
   formWrapper: {
     width: "84%",
   },
@@ -176,6 +166,17 @@ const styles = StyleSheet.create({
   newAccountButtonText: {
     marginLeft: 7,
     color: colors.tintBrown,
+  },
+
+  // forget Password
+
+  forgetButton: {
+    marginTop: spacing.mid * 1.5,
+  },
+
+  forgetText: {
+    fontSize: 15,
+    color: colors.mediumGray,
   },
 });
 

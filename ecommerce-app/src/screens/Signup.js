@@ -13,10 +13,10 @@ import { auth, createUserWithEmailAndPassword } from "../../firebase";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import { spacing } from "../styles/utils";
-import { Formik, setIn } from "formik";
+import { Formik } from "formik";
 import { signUpSchema } from "../schemas/userSchema";
-import { BackButton } from "../components/";
 import { useUserContext } from "../context/UserContext";
+import ScreenHeader from "../components/ScreenHeader";
 
 const Signup = ({ navigation }) => {
   const { setTemp } = useUserContext();
@@ -29,10 +29,10 @@ const Signup = ({ navigation }) => {
         animated={true}
       />
 
-      <View style={styles.headerWrapper}>
-        <BackButton callback={() => navigation.goBack()} />
-        <Text style={[styles.screenTitle, fonts.regular]}>Sign Up</Text>
-      </View>
+      <ScreenHeader
+        screenName={"Sign up"}
+        callback={() => navigation.goBack()}
+      />
 
       <ScrollView contentContainerStyle={styles.scrollWrapper}>
         <Formik
@@ -155,23 +155,6 @@ const styles = StyleSheet.create({
   scrollWrapper: {
     alignItems: "center",
     padding: spacing.min,
-  },
-  headerWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: spacing.min,
-    paddingVertical: spacing.min * 0.75,
-    backgroundColor: colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.lightGray,
-  },
-  screenTitle: {
-    color: colors.tintBrown,
-    fontSize: 20,
-    flex: 1,
-    textAlign: "center",
-    marginLeft: "-5%",
   },
   formWrapper: {
     paddingVertical: spacing.min * 0.25,

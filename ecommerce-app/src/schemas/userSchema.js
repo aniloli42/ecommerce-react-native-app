@@ -31,3 +31,27 @@ export const profileSchema = yup.object().shape({
     .min(10, "Number Must be at least 10 numbers")
     .required(),
 });
+
+export const emailChangeSchema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup
+    .string()
+    .required()
+    .min(8, "Password must be greater than 7 characters."),
+});
+
+export const passwordForgetSchema = yup.object().shape({
+  email: yup.string().email().required(),
+});
+
+export const passwordChangeSchema = yup.object().shape({
+  oldPassword: yup
+    .string()
+    .required()
+    .min(8, "Password must be greater than 7 characters."),
+
+  newPassword: yup
+    .string()
+    .required()
+    .min(8, "Password must be greater than 7 characters."),
+});

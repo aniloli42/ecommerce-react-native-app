@@ -48,7 +48,7 @@ const OrderHistory = () => {
         contentContainerStyle={styles.orderScrollWrapper}
         ListHeaderComponent={
           orderHistory?.length === 0 && (
-            <Text style={[fonts.regular, styles.noOrder]}>No Orders Yet.</Text>
+            <Text style={[fonts.regular, styles.noOrder]}>No Order Yet.</Text>
           )
         }
       />

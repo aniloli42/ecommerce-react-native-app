@@ -6,7 +6,7 @@ import { EditProfile, ScreenHeader, ViewProfile } from "../components";
 import { auth } from "../../firebase";
 
 const Profile = () => {
-  const [isEdit, setIsEdit] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleEdit = () => setIsEdit((prev) => !prev);
 
