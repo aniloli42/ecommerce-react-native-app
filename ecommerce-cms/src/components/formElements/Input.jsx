@@ -9,7 +9,8 @@ const Input = (props) => {
         type="text"
         {...props}
         {...field}
-        className="rounded bg-gray-700 focus:ring-1 focus:ring-gray-500 outline-none p-2 text-white"
+        className="rounded-md bg-gray-700  outline-none  text-white
+        "
         autoComplete="false"
         autoCorrect="false"
         inputMode="text"

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import image from '../../assets/IMG_1086.jpeg';
 
 const OrderTable = () => {
   return (
@@ -11,10 +12,16 @@ const OrderTable = () => {
                 Product Name
               </th>
               <th className="text-gray-500 font-medium text-sm py-2 pr-4">
+                Product Image
+              </th>
+              <th className="text-gray-500 font-medium text-sm py-2 pr-4">
                 Order By
               </th>
               <th className="text-gray-500 font-medium text-sm py-2 pr-4">
-                Price
+                Contact
+              </th>
+              <th className="text-gray-500 font-medium text-sm py-2 pr-4">
+                Total Price
               </th>
 
               <th className="text-gray-500 font-medium text-sm py-2 pr-4">
@@ -31,7 +38,17 @@ const OrderTable = () => {
                 Diamond Ring
               </td>
               <td className="text-gray-400 font-light text-base py-2 pr-4  ">
+                <img
+                  src={image}
+                  alt="product image"
+                  className="w-16 h-16 rounded-md object-cover"
+                />
+              </td>
+              <td className="text-gray-400 font-light text-base py-2 pr-4  ">
                 Anil Oli
+              </td>
+              <td className="text-gray-400 font-light text-base py-2 pr-4  ">
+                9806242024
               </td>
               <td className="text-gray-400 font-light text-base py-2 pr-4  ">
                 Rs. 400
@@ -48,7 +65,17 @@ const OrderTable = () => {
                 Diamond Ring
               </td>
               <td className="text-gray-400 font-light text-base py-2 pr-4  ">
+                <img
+                  src={image}
+                  alt="product image"
+                  className="w-16 h-16 rounded-md object-cover"
+                />
+              </td>
+              <td className="text-gray-400 font-light text-base py-2 pr-4  ">
                 Anil Oli
+              </td>
+              <td className="text-gray-400 font-light text-base py-2 pr-4  ">
+                9866803070
               </td>
               <td className="text-gray-400 font-light text-base py-2 pr-4  ">
                 Rs. 500
