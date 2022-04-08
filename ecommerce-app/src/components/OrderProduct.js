@@ -1,10 +1,10 @@
-import { StyleSheet, Text, Image, View, Pressable } from "react-native";
-import { spacing } from "../styles/utils";
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
-import MaterialsIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import { deleteDoc, doc } from "firebase/firestore";
-import { firebaseDB } from "../../firebase";
+import { StyleSheet, Text, Image, View, Pressable } from 'react-native';
+import { spacing } from '../styles/utils';
+import colors from '../styles/colors';
+import fonts from '../styles/fonts';
+import MaterialsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { firebaseDB } from '../../firebase';
 const OrderProduct = ({
   id,
   productPrice,
@@ -13,9 +13,10 @@ const OrderProduct = ({
   productType,
   productSize,
   status,
+  orderPcs,
 }) => {
   const removeFromCart = async () => {
-    await deleteDoc(doc(firebaseDB, "orders", id));
+    await deleteDoc(doc(firebaseDB, 'orders', id));
   };
 
   return (
@@ -38,13 +39,20 @@ const OrderProduct = ({
         </Text>
 
         {/* Product Size */}
-        {productType == "Ring" && (
-          <Text style={[styles.sizeText, fonts.light]}>{productSize}</Text>
-        )}
+
+        <View style={styles.sizePcsWrapper}>
+          {productType == 'Ring' && (
+            <Text style={[styles.sizeText, fonts.light]}>{productSize}</Text>
+          )}
+
+          {orderPcs ? (
+            <Text style={[styles.pcsText, fonts.light]}>Pcs: {orderPcs}</Text>
+          ) : null}
+        </View>
       </View>
 
       {/* Product Remove View */}
-      {status === "pending" && (
+      {status === 'pending' && (
         <Pressable style={styles.deleteButton} onPress={removeFromCart}>
           <MaterialsIcon name="delete" size={20} color="red" />
         </Pressable>
@@ -57,37 +65,49 @@ export default OrderProduct;
 
 const styles = StyleSheet.create({
   cartProductWrapper: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginHorizontal: spacing.min,
     marginBottom: spacing.min,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
   },
   productImage: {
     width: 100,
     height: 140,
     borderRadius: 15,
-    backgroundColor: "#ccc",
+    backgroundColor: '#ccc',
   },
   productContentWrapper: {
     marginHorizontal: spacing.mid,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     flex: 1,
   },
   productTitle: {
     fontSize: 16,
-    marginTop: "3%",
+    marginTop: '3%',
   },
   priceText: {
     fontSize: 14,
     marginTop: spacing.min * 0.05,
     color: colors.mediumGray,
   },
+
+  sizePcsWrapper: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+
+  pcsText: {
+    marginLeft: spacing.min * 0.5,
+    fontSize: 14,
+    color: colors.mediumGray,
+  },
+
   sizeText: {
     marginTop: spacing.min * 0.25,
     borderWidth: 1,
-    borderColor: "lightgray",
-    textAlign: "center",
-    textAlignVertical: "bottom",
+    borderColor: 'lightgray',
+    textAlign: 'center',
+    textAlignVertical: 'bottom',
     width: 26,
     height: 26,
     borderRadius: 50,
@@ -100,8 +120,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.lightGray,
     backgroundColor: colors.white,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     borderRadius: 50,
     marginTop: spacing.min * 0.25,
     marginRight: spacing.min,
@@ -110,15 +130,15 @@ const styles = StyleSheet.create({
   // product status
   productStatus: (status) => ({
     backgroundColor:
-      status === "pending"
+      status === 'pending'
         ? colors.pending
-        : status === "processing"
+        : status === 'processing'
         ? colors.processing
-        : status === "delivered"
+        : status === 'delivered'
         ? colors.delivered
-        : status === "rejected"
+        : status === 'rejected'
         ? colors.rejected
-        : status === "shipping"
+        : status === 'shipping'
         ? colors.shipping
         : colors.lightGray,
     paddingHorizontal: spacing.min * 0.75,

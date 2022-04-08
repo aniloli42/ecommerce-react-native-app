@@ -6,22 +6,22 @@ import {
   View,
   Pressable,
   Linking,
-} from "react-native";
+} from 'react-native';
 
-import { useNavigation } from "@react-navigation/native";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
-import { spacing } from "../styles/utils";
+import { useNavigation } from '@react-navigation/native';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { spacing } from '../styles/utils';
 
-import Ionic from "react-native-vector-icons/Ionicons";
-import colors from "../styles/colors";
-import { ScreenHeader } from "../components/";
+import Ionic from 'react-native-vector-icons/Ionicons';
+import colors from '../styles/colors';
+import { ScreenHeader } from '../components/';
 
 const Settings = () => {
   const navigation = useNavigation();
 
   const handleContact = async () => {
-    await Linking.openURL("tel:+9779806242024");
+    await Linking.openURL('tel:+9779817543609');
   };
 
   const handleLogout = async () => {
@@ -37,7 +37,7 @@ const Settings = () => {
       />
 
       {/* Screen Title */}
-      <ScreenHeader screenName={"My Settings"} />
+      <ScreenHeader screenName={'My Settings'} />
 
       <ScrollView>
         <View>
@@ -58,7 +58,7 @@ const Settings = () => {
             <View style={styles.sectionContentWrapper}>
               <Pressable
                 style={[styles.sectionButton]}
-                onPress={() => navigation.navigate("Profile")}
+                onPress={() => navigation.navigate('Profile')}
               >
                 <Text style={[fonts.regular, styles.buttonText]}>
                   View Profile
@@ -67,7 +67,7 @@ const Settings = () => {
 
               <Pressable
                 style={[styles.sectionButton]}
-                onPress={() => navigation.navigate("Security")}
+                onPress={() => navigation.navigate('Security')}
               >
                 <Text style={[fonts.regular, styles.buttonText]}>Security</Text>
               </Pressable>
@@ -115,18 +115,18 @@ export default Settings;
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: "100%",
+    height: '100%',
   },
   signOutButton: {
-    backgroundColor: "#b00",
+    backgroundColor: '#b00',
     marginHorizontal: 15,
     padding: 15,
     borderRadius: 5,
     marginVertical: 15,
   },
   signOutText: {
-    textAlign: "center",
-    color: "#fff",
+    textAlign: 'center',
+    color: '#fff',
     fontSize: 18,
   },
   sectionWrapper: {
@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     marginVertical: spacing.min,
   },
   sectionHeaderWrapper: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     marginBottom: spacing.min * 0.15,
   },
   sectionHeaderText: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   sectionButton: {
     marginBottom: spacing.min * 0.5,
     paddingVertical: spacing.min * 0.4,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   buttonText: {
     color: colors.mediumGray,
@@ -161,10 +161,10 @@ const styles = StyleSheet.create({
   },
 
   logoutButton: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
     paddingVertical: spacing.min * 0.75,
     paddingHorizontal: spacing.min * 0.45,
-    alignItems: "center",
+    alignItems: 'center',
     borderRadius: 50,
   },
   logoutButtonText: {
