@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { View } from "react-native";
+import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
 
-import { EditProfile, ScreenHeader, ViewProfile } from "../components";
-import { auth } from "../../firebase";
+import { EditProfile, ScreenHeader, ViewProfile } from '../components';
+
+import { ScrollView } from 'react-native';
+import { auth } from '../../firebase';
 
 const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -15,15 +17,16 @@ const Profile = () => {
   return (
     <View>
       <ScreenHeader
-        screenName={"Profile"}
+        screenName={'Profile'}
         callback={() => navigation.goBack()}
       />
-
-      {isEdit ? (
-        <EditProfile handleEdit={handleEdit} />
-      ) : (
-        <ViewProfile handleEdit={handleEdit} />
-      )}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {isEdit ? (
+          <EditProfile handleEdit={handleEdit} />
+        ) : (
+          <ViewProfile handleEdit={handleEdit} />
+        )}
+      </ScrollView>
     </View>
   );
 };

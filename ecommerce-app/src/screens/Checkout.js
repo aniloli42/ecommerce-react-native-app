@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,18 +7,18 @@ import {
   ScrollView,
   TextInput,
   Pressable,
-} from "react-native";
-import { spacing } from "../styles/utils";
-import colors from "../styles/colors";
-import { ScreenHeader } from "../components";
-import { useProductContext } from "../context/ProductContext";
-import { useNavigation } from "@react-navigation/native";
-import { auth, firebaseDB } from "../../firebase";
-import fonts from "../styles/fonts";
-import { Formik } from "formik";
-import { checkOutSchema } from "../schemas/userSchema";
-import { useUserContext } from "../context/UserContext";
-import { setDoc, doc, collection } from "firebase/firestore";
+} from 'react-native';
+import { spacing } from '../styles/utils';
+import colors from '../styles/colors';
+import { ScreenHeader } from '../components';
+import { useProductContext } from '../context/ProductContext';
+import { useNavigation } from '@react-navigation/native';
+import { auth, firebaseDB } from '../../firebase';
+import fonts from '../styles/fonts';
+import { Formik } from 'formik';
+import { checkOutSchema } from '../schemas/userSchema';
+import { useUserContext } from '../context/UserContext';
+import { setDoc, doc, collection } from 'firebase/firestore';
 
 const Checkout = () => {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ const Checkout = () => {
 
       {/* Screen Title */}
       <ScreenHeader
-        screenName={"Checkout"}
+        screenName={'Checkout'}
         callback={() => navigation.goBack()}
       />
 
@@ -45,25 +45,26 @@ const Checkout = () => {
           validateOnMount={true}
           initialValues={{
             orderName: auth.currentUser.displayName,
-            orderAddress: "",
+            orderAddress: '',
             phoneNumber: user.phoneNumber,
           }}
           onSubmit={async (values) => {
-            const orderRef = collection(firebaseDB, "orders");
+            const orderRef = collection(firebaseDB, 'orders');
             await setDoc(doc(orderRef), {
               ...product,
               orderName: values.orderName,
               orderAddress: values.orderAddress,
               phoneNumber: values.phoneNumber,
               userId: auth.currentUser.uid,
+              orderAt: new Date().toISOString(),
             });
 
             alert(
-              "Order Submitted, You can check order status in Order History Section."
+              'Order Submitted, You can check order status in Order History Section.'
             );
 
             setProduct(null);
-            navigation.navigate("Home");
+            navigation.navigate('Home');
           }}
         >
           {({ isValid, values, handleBlur, handleChange, handleSubmit }) => (
@@ -72,11 +73,11 @@ const Checkout = () => {
                 <Text style={[styles.formLabel, fonts.light]}>Order Name</Text>
                 <TextInput
                   style={[styles.formInput, fonts.regular]}
-                  autoCapitalize={"none"}
+                  autoCapitalize={'none'}
                   autoCorrect={false}
                   keyboardType="default"
-                  onChangeText={handleChange("orderName")}
-                  onBlur={handleBlur("orderName")}
+                  onChangeText={handleChange('orderName')}
+                  onBlur={handleBlur('orderName')}
                   value={values.orderName}
                 />
               </View>
@@ -87,11 +88,11 @@ const Checkout = () => {
                 </Text>
                 <TextInput
                   style={[styles.formInput, fonts.regular]}
-                  autoCapitalize={"none"}
+                  autoCapitalize={'none'}
                   autoCorrect={false}
                   keyboardType="default"
-                  onChangeText={handleChange("orderAddress")}
-                  onBlur={handleBlur("orderAddress")}
+                  onChangeText={handleChange('orderAddress')}
+                  onBlur={handleBlur('orderAddress')}
                   value={values.orderAddress}
                 />
               </View>
@@ -102,11 +103,11 @@ const Checkout = () => {
                 </Text>
                 <TextInput
                   style={[styles.formInput, fonts.regular]}
-                  autoCapitalize={"none"}
+                  autoCapitalize={'none'}
                   autoCorrect={false}
                   keyboardType="numeric"
-                  onChangeText={handleChange("phoneNumber")}
-                  onBlur={handleBlur("phoneNumber")}
+                  onChangeText={handleChange('phoneNumber')}
+                  onBlur={handleBlur('phoneNumber')}
                   value={values.phoneNumber}
                 />
               </View>
@@ -148,7 +149,7 @@ export default Checkout;
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: "100%",
+    height: '100%',
   },
 
   // Form
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
   button: (isValid) => ({
     paddingVertical: spacing.min * 0.5,
     paddingHorizontal: spacing.min * 0.25,
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: isValid ? colors.tintBrown : colors.mediumGray,
     borderRadius: 50,
   }),
@@ -201,7 +202,7 @@ const styles = StyleSheet.create({
   noteText: {
     fontSize: 14,
     color: colors.mediumGray,
-    display: "flex",
+    display: 'flex',
   },
 
   listText: {
