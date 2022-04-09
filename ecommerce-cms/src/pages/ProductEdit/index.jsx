@@ -146,7 +146,10 @@ const ProductEdit = () => {
 
   const handleDelete = async () => {
     await deleteDoc(productRef).then(() => {
-      navigate('/products', { replace: true });
+      setModalText('Product Deleted');
+      openModal(() => {
+        navigate('/products', { replace: true });
+      });
     });
   };
 
@@ -183,9 +186,13 @@ const ProductEdit = () => {
                     price: data.price,
                     desc: data.desc,
                     type: data.type,
-                    sizes: data.type === 'Ring' ? data.sizes.split(',') : null,
+                    sizes:
+                      data.type === 'Ring'
+                        ? data.sizes.split(',').map((s) => parseInt(s))
+                        : null,
                     stock: data.stock === 'true' ? true : false,
                     images: imagesURL,
+                    createdAt: Date.now(),
                   };
 
                   if (productId !== undefined) {
@@ -193,7 +200,7 @@ const ProductEdit = () => {
 
                     setModalText('Product Updated');
                     openModal(() => {
-                      navigate('/products');
+                      navigate('/products', { replace: true });
                     });
                     return;
                   }
@@ -203,7 +210,7 @@ const ProductEdit = () => {
 
                   setModalText('Product Added');
                   openModal(() => {
-                    navigate('/products');
+                    navigate('/products', { replace: true });
                   });
                 } catch (e) {
                   console.log(e.message);

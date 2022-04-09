@@ -12,3 +12,9 @@ export const productSchema = object({
   type: string().required(),
   stock: string().required(),
 });
+
+export const orderSchema = object({
+  status: string().required(),
+  orderPcs: number().integer().required().moreThan(0),
+  shippingCharge: number().integer().required().moreThan(-1),
+});

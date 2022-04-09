@@ -56,7 +56,7 @@ const Checkout = () => {
               orderAddress: values.orderAddress,
               phoneNumber: values.phoneNumber,
               userId: auth.currentUser.uid,
-              orderAt: new Date().toISOString(),
+              orderAt: Date.now(),
             });
 
             alert(

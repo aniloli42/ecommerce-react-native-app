@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Image,
   SafeAreaView,
@@ -11,18 +11,19 @@ import {
   StyleSheet,
   Dimensions,
   Animated,
-} from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+} from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
-import { spacing } from "../styles/utils";
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
-import { ScreenHeader, Sizes } from "../components";
-import { firebaseDB } from "../../firebase";
-import { onSnapshot, doc } from "firebase/firestore";
-import { useProductContext } from "../context/ProductContext";
+import { spacing } from '../styles/utils';
+import colors from '../styles/colors';
+import fonts from '../styles/fonts';
+import { ScreenHeader, Sizes } from '../components';
+import { firebaseDB } from '../../firebase';
+import { onSnapshot, doc } from 'firebase/firestore';
+import { useProductContext } from '../context/ProductContext';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
 const Product = () => {
   const navigation = useNavigation();
@@ -36,10 +37,9 @@ const Product = () => {
 
   const [product, setProduct] = useState(null);
   const [chooseSize, setChooseSize] = useState(0);
-
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      doc(firebaseDB, "products", productId),
+      doc(firebaseDB, 'products', productId),
       (doc) => {
         setProduct({ id: doc.id, ...doc.data() });
       }
@@ -50,7 +50,7 @@ const Product = () => {
 
   useEffect(() => {
     if (product == null) return;
-    if (product?.type !== "Ring") return;
+    if (product?.type !== 'Ring') return;
 
     setChooseSize(product.sizes[0]);
   }, [product]);
@@ -59,20 +59,49 @@ const Product = () => {
     setChooseSize(value);
   };
 
+  const [images, setImages] = useState();
+
+  const getDownloadURLs = async () => {
+    return product?.images.map(async (image) => {
+      const storage = getStorage();
+      const imageRef = ref(storage, image);
+
+      return await getDownloadURL(imageRef);
+    });
+  };
+
+  const getImageUrls = async () => {
+    const get = await getDownloadURLs();
+
+    const resUrls = await Promise.all(get);
+
+    setImages(resUrls);
+  };
+
+  useEffect(() => {
+    if (product == null) return;
+
+    getImageUrls();
+  }, [product]);
+
   const handleBuy = () => {
     const prodObj = {
       productId: product.id,
       productPrice: product.price,
+      orderPcs: 1,
+      totalPrice: product.price,
+      shippingCharge: 0,
       productType: product.type,
       productImage: product.images[0],
       productTitle: product.product,
-      productSize: product.type === "Ring" ? parseInt(chooseSize) : null,
-      status: "pending",
+      productSize: product.type === 'Ring' ? parseInt(chooseSize) : null,
+      status: 'pending',
+      remarks: '',
     };
 
     addProduct(prodObj);
 
-    navigation.navigate("Checkout");
+    navigation.navigate('Checkout');
   };
 
   return (
@@ -83,7 +112,7 @@ const Product = () => {
         animated={true}
       />
 
-      <ScreenHeader screenName={""} callback={() => navigation.goBack()} />
+      <ScreenHeader screenName="" callback={() => navigation.goBack()} />
 
       {/* Product Details */}
       <ScrollView
@@ -93,7 +122,7 @@ const Product = () => {
       >
         {/* Product Images */}
         <Animated.FlatList
-          data={product?.images}
+          data={images}
           keyExtractor={(_, index) => index}
           renderItem={({ item }) => (
             <View style={styles.imageWrapper}>
@@ -113,12 +142,12 @@ const Product = () => {
           )}
         />
 
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          {product?.images?.map((_, i) => {
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          {images?.map((_, i) => {
             let opacity = position.interpolate({
               inputRange: [i - 1, i, i + 1],
               outputRange: [0.3, 1, 0.3],
-              extrapolate: "clamp",
+              extrapolate: 'clamp',
             });
 
             return (
@@ -137,14 +166,17 @@ const Product = () => {
           </Text>
         </View>
 
-        {product?.desc && (
+        {product?.desc ? (
           <View style={styles.descWrapper}>
-            <Text style={[fonts.regular, styles.descText]}>{product.desc}</Text>
+            <Text style={[fonts.regular, styles.descText]}>
+              {product?.desc ?? ''}
+            </Text>
           </View>
-        )}
+        ) : null}
+
         {product?.stock === true ? (
           <>
-            {product?.type === "Ring" && product?.sizes?.length !== 0 && (
+            {product?.type === 'Ring' && product?.sizes?.length !== 0 && (
               <>
                 {/* Product Sizes */}
                 <Text style={[fonts.regular, styles.productSizeTitle]}>
@@ -192,7 +224,7 @@ const Product = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: "100%",
+    height: '100%',
   },
   imageScrollWrapper: {
     height: 350,
@@ -201,12 +233,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGray,
     height: 350,
     width: width,
-    justifyContent: "flex-end",
-    alignItems: "center",
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   productImage: {
     width: width,
-    height: "100%",
+    height: '100%',
   },
   productDetailScrollWrapper: {
     flexGrow: 0,
@@ -224,16 +256,16 @@ const styles = StyleSheet.create({
     color: colors.mediumGray,
   },
   titlePriceWrapper: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: spacing.min * 0.35,
     paddingHorizontal: spacing.min,
   },
   productTitle: {
     fontSize: 20,
     color: colors.tintBrown,
-    textAlignVertical: "bottom",
+    textAlignVertical: 'bottom',
   },
   productPrice: {
     color: colors.mediumGray,
@@ -254,8 +286,8 @@ const styles = StyleSheet.create({
     marginTop: spacing.min * 1.25,
   },
   button: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: spacing.min,
     borderRadius: 50,
   },
@@ -266,7 +298,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.white,
     fontSize: 18,
-    textAlignVertical: "bottom",
+    textAlignVertical: 'bottom',
   },
 
   animatedDot: (opacity) => ({
@@ -279,7 +311,7 @@ const styles = StyleSheet.create({
   }),
   outOfStockText: {
     fontSize: 16,
-    color: "red",
+    color: 'red',
   },
 });
 

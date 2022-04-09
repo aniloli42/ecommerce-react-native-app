@@ -1,29 +1,50 @@
+import { useState, useEffect } from 'react';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+
 import { StyleSheet, Text, Image, View, Pressable } from 'react-native';
 import { spacing } from '../styles/utils';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import MaterialsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { firebaseDB } from '../../firebase';
 const OrderProduct = ({
   id,
-  productPrice,
+  totalPrice,
   productImage,
   productTitle,
   productType,
   productSize,
+  shippingCharge,
   status,
   orderPcs,
+  remarks,
+  getInitialOrders,
 }) => {
+  const [image, setImage] = useState();
+
+  useEffect(() => {
+    if (productImage == null) return;
+    if (productImage.length === 0) return;
+    const storage = getStorage();
+    const imageRef = ref(storage, productImage);
+
+    getDownloadURL(imageRef)
+      .catch((e) => console.log(e.message))
+      .then((url) => setImage(url));
+  }, []);
+
   const removeFromCart = async () => {
     await deleteDoc(doc(firebaseDB, 'orders', id));
+    await getInitialOrders();
   };
 
   return (
     <View style={styles.cartProductWrapper}>
       {/* Image View */}
       <View>
-        <Image source={{ uri: productImage }} style={styles.productImage} />
+        <Image source={{ uri: image }} style={styles.productImage} />
       </View>
 
       {/* Details View */}
@@ -32,31 +53,45 @@ const OrderProduct = ({
         <Text style={[styles.productTitle, fonts.regular]}>{productTitle}</Text>
 
         {/* Product Price */}
-        <Text style={[styles.priceText, fonts.light]}>Rs. {productPrice}</Text>
+        <Text style={[styles.priceText, fonts.light]}>Rs. {totalPrice}</Text>
 
         <Text style={[styles.productStatus(status), fonts.light]}>
           {status}
         </Text>
 
         {/* Product Size */}
+        {productType !== 'rejected' && remarks === '' ? (
+          <View style={styles.sizePcsWrapper}>
+            {productType == 'Ring' && (
+              <Text style={[styles.sizeText, fonts.light]}>{productSize}</Text>
+            )}
 
-        <View style={styles.sizePcsWrapper}>
-          {productType == 'Ring' && (
-            <Text style={[styles.sizeText, fonts.light]}>{productSize}</Text>
-          )}
+            {orderPcs ? (
+              <Text style={[styles.pcsText, fonts.light]}>Pcs: {orderPcs}</Text>
+            ) : null}
 
-          {orderPcs ? (
-            <Text style={[styles.pcsText, fonts.light]}>Pcs: {orderPcs}</Text>
-          ) : null}
-        </View>
+            {shippingCharge !== 0 && (
+              <View style={styles.shippingWrapper}>
+                <Icon name="local-shipping" size={18} color="#aaa" />
+                <Text style={[styles.pcsText, fonts.light]}>
+                  Rs.{shippingCharge}
+                </Text>
+              </View>
+            )}
+          </View>
+        ) : (
+          <View>
+            <Text style={[styles.pcsText, fonts.light]}>{remarks}</Text>
+          </View>
+        )}
       </View>
 
       {/* Product Remove View */}
-      {status === 'pending' && (
+      {status === 'pending' || status === 'rejected' ? (
         <Pressable style={styles.deleteButton} onPress={removeFromCart}>
           <MaterialsIcon name="delete" size={20} color="red" />
         </Pressable>
-      )}
+      ) : null}
     </View>
   );
 };
@@ -100,6 +135,11 @@ const styles = StyleSheet.create({
     marginLeft: spacing.min * 0.5,
     fontSize: 14,
     color: colors.mediumGray,
+  },
+
+  shippingWrapper: {
+    flexDirection: 'row',
+    marginLeft: spacing.min * 0.75,
   },
 
   sizeText: {
