@@ -26,7 +26,6 @@ const OrderEdit = () => {
 
   // for modal
   const callback = useRef(null);
-  const [fileUploading, setFileUploading] = useState(false);
   const [modal, setModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const openModal = (cb) => {
