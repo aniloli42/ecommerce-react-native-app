@@ -51,7 +51,6 @@ const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [lastPointer, setLastPointer] = useState([]);
-  const [limitNext, setLimitNext] = useState(null);
   const [pType, setPType] = useState('All');
 
   const getInitialProducts = async () => {
