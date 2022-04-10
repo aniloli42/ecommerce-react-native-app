@@ -16,6 +16,7 @@ import Modal from '../../components/Modal';
 import { AnimatePresence } from 'framer-motion';
 
 const OrderEdit = () => {
+  const navigate = useNavigate();
   const { orderId } = useParams();
   const pendingRef = useRef();
   const processingRef = useRef();
@@ -43,7 +44,6 @@ const OrderEdit = () => {
 
   let orderRef;
 
-  const navigate = useNavigate();
   if (orderId != undefined) {
     orderRef = doc(firebaseDB, 'orders', orderId);
   }
@@ -122,7 +122,7 @@ const OrderEdit = () => {
 
                   setModalText('Order Updated');
                   openModal(() => {
-                    navigate('/orders', { replace: true });
+                    navigate(-1);
                   });
                 } catch (e) {
                   console.log(e.message);

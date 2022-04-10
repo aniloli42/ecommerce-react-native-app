@@ -114,7 +114,6 @@ const Dashboard = () => {
   // handle search filter
   useEffect(() => {
     const getFilteredResult = async () => {
-      if (products.length === 0) return;
       if (pType === 'All') {
         getInitialProducts();
       }

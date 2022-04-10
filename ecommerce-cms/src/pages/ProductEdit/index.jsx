@@ -148,7 +148,7 @@ const ProductEdit = () => {
     await deleteDoc(productRef).then(() => {
       setModalText('Product Deleted');
       openModal(() => {
-        navigate('/products', { replace: true });
+        navigate(-1);
       });
     });
   };
@@ -200,7 +200,7 @@ const ProductEdit = () => {
 
                     setModalText('Product Updated');
                     openModal(() => {
-                      navigate('/products', { replace: true });
+                      navigate(-1);
                     });
                     return;
                   }
@@ -210,7 +210,7 @@ const ProductEdit = () => {
 
                   setModalText('Product Added');
                   openModal(() => {
-                    navigate('/products', { replace: true });
+                    navigate(-1);
                   });
                 } catch (e) {
                   console.log(e.message);
