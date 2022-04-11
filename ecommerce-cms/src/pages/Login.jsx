@@ -1,17 +1,14 @@
 import { useState, useRef } from 'react';
 import { Formik, Form } from 'formik';
-import Main from '../layouts/main';
+import Main from '../layouts/Main';
 import Input from '../components/formElements/Input';
 import { loginSchema } from '../schema';
-import { useUserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AnimatePresence } from 'framer-motion';
 import Modal from '../components/Modal';
 
 const Login = () => {
-  const { user, setUser } = useUserContext();
-
   // for modal
   const callback = useRef(null);
   const [modal, setModal] = useState(false);

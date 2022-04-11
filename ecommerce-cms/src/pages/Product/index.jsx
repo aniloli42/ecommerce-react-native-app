@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PageTitle from '../../components/PageTitle';
-import Main from '../../layouts/main';
+import Main from '../../layouts/Main';
 import ProductTable from './ProductTable';
 
 const Product = () => {

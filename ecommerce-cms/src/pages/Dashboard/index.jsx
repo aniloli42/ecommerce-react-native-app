@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 
 import Card from '../../components/Card';
-import Main from '../../layouts/main';
+import Main from '../../layouts/Main';
 import { firebaseDB } from '../../firebase';
 
 import {
