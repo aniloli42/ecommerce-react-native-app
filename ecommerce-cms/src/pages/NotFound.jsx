@@ -18,6 +18,7 @@ const NotFound = () => {
         <Link
           to="/"
           className="text-gray-400 ml-1 hover:underline focus-within:underline outline-none"
+          replace
         >
           Go Back.
         </Link>

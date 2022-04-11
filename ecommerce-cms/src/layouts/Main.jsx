@@ -1,26 +1,63 @@
+import axios from 'axios';
 import { useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import { useUserContext } from '../context/UserContext';
 
 const Main = ({ children }) => {
   const { user, setUser } = useUserContext();
-  const location = useLocation();
+  const { pathname, state } = useLocation();
+  const navigate = useNavigate();
+
+  const verifyAccessToken = async (token) => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_AUTH_SERVER_URL}/verify`,
+        {
+          accessToken: token,
+        }
+      );
+
+      if (res?.data?.valid === true) {
+        setUser(token);
+        return;
+      }
+
+      throw new Error('Token Invalid');
+    } catch (e) {
+      console.log(e.message);
+      sessionStorage.clear();
+      setUser(null);
+    }
+  };
 
   useEffect(() => {
-    let userStore = sessionStorage.getItem('user');
+    let userStore = sessionStorage.getItem('cms');
 
-    if (!userStore) return setUser(null);
+    if (!userStore) {
+      return setUser(null);
+    }
 
-    userStore = JSON.parse(userStore);
+    verifyAccessToken(userStore);
+  }, [pathname]);
 
-    setUser(userStore.accessToken ?? null);
-  }, []);
+  useEffect(() => {
+    if (user === null) {
+      navigate('/login', {
+        replace: true,
+        state: {
+          path: pathname === '/login' ? null : pathname,
+        },
+      });
+    }
 
-  if (user == null && location.pathname != '/login')
-    return <Navigate to="/login" />;
+    if (user != null && location.pathname === '/login') {
+      console.log(state);
+      if (state.path == null) return navigate('/', { replace: true });
 
-  if (user != null && location.pathname == '/login') return <Navigate to="/" />;
+      navigate(state.path, { replace: true });
+    }
+  }, [user]);
 
   return (
     <>

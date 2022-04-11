@@ -47,6 +47,8 @@ const Login = () => {
             }}
             onSubmit={async ({ username, password }) => {
               try {
+                setModalText('Wait...');
+                openModal();
                 const res = await axios.post(
                   import.meta.env.VITE_AUTH_SERVER_URL,
                   {
@@ -55,8 +57,8 @@ const Login = () => {
                   }
                 );
 
-                sessionStorage.setItem('user', JSON.stringify(res.data));
-                setUser(res.data);
+                sessionStorage.setItem('cms', res.data.accessToken);
+                // setUser(res?.data?.accessToken);
 
                 navigate('/', { replace: true });
               } catch (error) {
@@ -68,7 +70,7 @@ const Login = () => {
             }}
             validationSchema={loginSchema}
           >
-            {({ handleSubmit }) => {
+            {({ handleSubmit, isValid }) => {
               return (
                 <Form className="mt-4" onSubmit={handleSubmit}>
                   <label className="flex flex-col gap-1">
@@ -88,7 +90,15 @@ const Login = () => {
 
                   <button
                     type="submit"
-                    className="outline-none mt-8 text-white px-6 py-2 w-full rounded-md bg-blue-600"
+                    className={`outline-none mt-8 text-white px-6 py-2 w-full rounded-md 
+                    
+                    ${
+                      isValid
+                        ? 'bg-blue-600 hover:bg-blue-700 focus-visible:bg-blue-700 focus-visible:ring-1 focus-visible:ring-white active:bg-blue-500'
+                        : 'bg-gray-500 disabled:cursor-not-allowed'
+                    }
+                    `}
+                    disabled={!isValid}
                   >
                     Login
                   </button>
