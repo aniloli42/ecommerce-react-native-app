@@ -7,26 +7,22 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AnimatePresence } from 'framer-motion';
 import Modal from '../components/Modal';
+import { useUserContext } from '../context/UserContext';
 
 const Login = () => {
+  const { setUser } = useUserContext();
+
   // for modal
-  const callback = useRef(null);
   const [modal, setModal] = useState(false);
   const [modalText, setModalText] = useState('');
   const openModal = (cb) => {
     document.body.style.overflow = 'hidden';
     setModal(true);
-
-    if (cb) callback.current = cb;
   };
   const closeModal = () => {
     document.body.style.overflow = 'auto';
     setModal(false);
-
-    if (callback.current) callback.current();
   };
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -56,7 +52,7 @@ const Login = () => {
 
                 sessionStorage.setItem('cms', res.data.accessToken);
                 document.body.style.overflow = 'auto';
-                navigate('/', { replace: true });
+                setUser(res.data.accessToken);
               } catch (error) {
                 console.log(error?.response?.data?.message);
 

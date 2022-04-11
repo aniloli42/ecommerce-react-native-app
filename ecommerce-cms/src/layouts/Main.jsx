@@ -1,12 +1,20 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { calcLength } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import { useUserContext } from '../context/UserContext';
 
 const Main = ({ children }) => {
+  const [storedToken, setStoredToken] = useState(() => {
+    const userStore = sessionStorage.getItem('cms');
+
+    if (!userStore) return null;
+    return userStore;
+  });
+
   const { user, setUser } = useUserContext();
-  const { pathname, state } = useLocation();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const verifyAccessToken = async (token) => {
@@ -18,45 +26,34 @@ const Main = ({ children }) => {
         }
       );
 
-      if (res?.data?.valid === true) {
-        setUser(token);
-        return;
-      }
+      if (res.data.valid === true) return;
 
       throw new Error('Token Invalid');
     } catch (e) {
-      console.log(e.message);
       sessionStorage.clear();
+      setStoredToken(null);
       setUser(null);
     }
   };
 
   useEffect(() => {
-    let userStore = sessionStorage.getItem('cms');
-
-    if (!userStore) {
-      return setUser(null);
-    }
-
-    verifyAccessToken(userStore);
-  }, [pathname]);
+    setUser(storedToken);
+  }, []);
 
   useEffect(() => {
+    if (user === undefined) return;
+
     if (user === null) {
-      navigate('/login', {
+      if (pathname === '/') return;
+
+      navigate(`/`, {
         replace: true,
-        state: {
-          path: pathname === '/login' ? null : pathname,
-        },
       });
+
+      return;
     }
 
-    if (user != null && location.pathname === '/login') {
-      console.log(state);
-      if (state.path == null) return navigate('/', { replace: true });
-
-      navigate(state.path, { replace: true });
-    }
+    verifyAccessToken(user);
   }, [user]);
 
   return (

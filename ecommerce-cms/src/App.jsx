@@ -7,12 +7,14 @@ import ProductEdit from './pages/ProductEdit';
 import Orders from './pages/Orders';
 import OrderEdit from './pages/OrderEdit';
 import NotFound from './pages/NotFound';
+import { useUserContext } from './context/UserContext';
 
 function App() {
+  const { user } = useUserContext();
+
   return (
     <Routes>
-      <Route index element={<Dashboard />} />
-      <Route path="/login" element={<Login />} />
+      <Route index element={user ? <Dashboard /> : <Login />} />
       <Route path="/products">
         <Route index element={<Product />} />
         <Route path="add" element={<ProductEdit />} />
