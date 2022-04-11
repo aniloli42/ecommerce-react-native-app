@@ -167,7 +167,7 @@ const ProductEdit = () => {
 
               <button
                 onClick={handleDelete}
-                className="text-gray-300 text-xs py-2 px-4 bg-red-600 rounded-md"
+                className="text-gray-300 text-xs py-2 px-4 bg-red-600 rounded-md hover:bg-red-500 focus-visible:bg-red-500 active:bg-red-400"
               >
                 Delete
               </button>
@@ -217,8 +217,15 @@ const ProductEdit = () => {
                 }
               }}
               enableReinitialize={true}
+              validateOnMount
             >
-              {({ handleSubmit, handleBlur, handleChange, values }) => (
+              {({
+                handleSubmit,
+                handleBlur,
+                handleChange,
+                values,
+                isValid,
+              }) => (
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                   <label className="flex flex-col gap-1 mb-4">
                     <span className="font-normal text-sm text-gray-500">
@@ -360,8 +367,14 @@ const ProductEdit = () => {
 
                   <button
                     type="submit"
-                    className="outline-none mt-4 text-white px-6 py-2 w-full rounded-md bg-blue-600"
-                    disabled={fileUploading}
+                    className={`outline-none mt-8 text-white px-6 py-2 w-full rounded-md 
+                    ${
+                      isValid
+                        ? 'bg-blue-600 hover:bg-blue-700 focus-visible:bg-blue-700 focus-visible:ring-1 focus-visible:ring-white active:bg-blue-500'
+                        : 'bg-gray-500 disabled:cursor-not-allowed'
+                    }
+                    `}
+                    disabled={fileUploading || !isValid}
                   >
                     {fileUploading === false
                       ? productId

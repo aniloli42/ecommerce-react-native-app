@@ -4,7 +4,7 @@ import Main from '../layouts/main';
 import Input from '../components/formElements/Input';
 import { loginSchema } from '../schema';
 import { useUserContext } from '../context/UserContext';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AnimatePresence } from 'framer-motion';
 import Modal from '../components/Modal';
@@ -58,8 +58,7 @@ const Login = () => {
                 );
 
                 sessionStorage.setItem('cms', res.data.accessToken);
-                // setUser(res?.data?.accessToken);
-
+                document.body.style.overflow = 'auto';
                 navigate('/', { replace: true });
               } catch (error) {
                 console.log(error?.response?.data?.message);

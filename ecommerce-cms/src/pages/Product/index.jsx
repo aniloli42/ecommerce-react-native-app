@@ -11,7 +11,7 @@ const Product = () => {
         <PageTitle title="Products" />
         <Link
           to="/products/add"
-          className="text-gray-300 text-xs py-2 px-4 bg-gray-600 rounded-md"
+          className="text-gray-300 text-xs py-2 px-4 bg-gray-600 rounded-md hover:bg-gray-500 focus-visible:bg-gray-500 active:bg-gray-400"
         >
           Add Product
         </Link>

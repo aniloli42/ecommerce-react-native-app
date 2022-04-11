@@ -114,7 +114,7 @@ const OrderEdit = () => {
                     shippingCharge: data.shippingCharge,
                     totalPrice:
                       order.productPrice * data.orderPcs + data.shippingCharge,
-                    remarks: data.status === 'remarks' ? data.remarks : '',
+                    remarks: data.status === 'rejected' ? data.remarks : '',
                   };
 
                   await setDoc(orderRef, formData, { merge: true });
@@ -348,7 +348,14 @@ const OrderEdit = () => {
 
                   <button
                     type="submit"
-                    className="outline-none mt-4 text-white px-6 py-2 w-full rounded-md bg-blue-600"
+                    className={`outline-none mt-8 text-white px-6 py-2 w-full rounded-md 
+                    ${
+                      isValid
+                        ? 'bg-blue-600 hover:bg-blue-700 focus-visible:bg-blue-700 focus-visible:ring-1 focus-visible:ring-white active:bg-blue-500'
+                        : 'bg-gray-500 disabled:cursor-not-allowed'
+                    }
+                    `}
+                    disabled={!isValid}
                   >
                     Update Order
                   </button>

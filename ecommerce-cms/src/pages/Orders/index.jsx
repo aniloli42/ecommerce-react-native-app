@@ -41,7 +41,11 @@ const Orders = () => {
                 onClick={(e) => toggleSelectedOrder(e, order.status)}
                 key={order.status}
                 className={`text-white px-4 py-2 text-sm text-center
-              ${selectedOrder === order.status ? 'bg-gray-700' : 'bg-gray-600'}
+              ${
+                selectedOrder === order.status
+                  ? 'bg-gray-700'
+                  : 'bg-gray-600 hover:bg-gray-500 focus-visible:bg-gray-500 active:bg-gray-400'
+              }
               `}
               >
                 {order.status}
