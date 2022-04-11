@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 // 3rd Party Packages
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionic from "react-native-vector-icons/Ionicons";
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionic from 'react-native-vector-icons/Ionicons';
 
 import {
   Poppins_100Thin,
@@ -25,10 +25,10 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black,
   Poppins_900Black_Italic,
-} from "@expo-google-fonts/poppins";
+} from '@expo-google-fonts/poppins';
 
-import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 // Components
 import {
@@ -43,16 +43,16 @@ import {
   Security,
   Settings,
   Signup,
-} from "./src/screens";
+} from './src/screens';
 
 const AppStack = createNativeStackNavigator();
 const TabStack = createBottomTabNavigator();
 
-import { auth, firebaseDB } from "./firebase";
-import { getDoc, doc } from "firebase/firestore";
-import UserContext, { useUserContext } from "./src/context/UserContext";
-import ProductContext from "./src/context/ProductContext";
-import colors from "./src/styles/colors";
+import { auth, firebaseDB } from './firebase';
+import { getDoc, doc } from 'firebase/firestore';
+import UserContext, { useUserContext } from './src/context/UserContext';
+import ProductContext from './src/context/ProductContext';
+import colors from './src/styles/colors';
 
 const TabStackScreen = () => {
   return (
@@ -63,20 +63,20 @@ const TabStackScreen = () => {
         tabBarIcon: ({ focused, size, color }) => {
           let iconName;
 
-          color = focused ? colors.tintBrown : "#aaa";
+          color = focused ? colors.tintBrown : '#aaa';
 
-          if (route.name == "Home") {
-            iconName = focused ? "home" : "home-outline";
+          if (route.name == 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
           }
 
-          if (route.name === "OrderHistory") {
+          if (route.name === 'OrderHistory') {
             iconName = focused
-              ? "ios-reorder-four"
-              : "ios-reorder-four-outline";
+              ? 'ios-reorder-four'
+              : 'ios-reorder-four-outline';
           }
 
-          if (route.name === "Settings") {
-            iconName = focused ? "settings" : "settings-outline";
+          if (route.name === 'Settings') {
+            iconName = focused ? 'settings' : 'settings-outline';
           }
           return <Ionic name={iconName} size={size} color={color} />;
         },
@@ -86,7 +86,7 @@ const TabStackScreen = () => {
       <TabStack.Screen
         name="OrderHistory"
         component={OrderHistory}
-        options={{ tabBarLabel: "Order History" }}
+        options={{ tabBarLabel: 'Order History' }}
       />
       <TabStack.Screen name="Settings" component={Settings} />
     </TabStack.Navigator>
@@ -94,16 +94,19 @@ const TabStackScreen = () => {
 };
 
 const App = () => {
-  const { isLogged, setUser } = useUserContext();
+  const { isLogged, setUser, temp, setTemp } = useUserContext();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (!user) return setUser(null);
 
-      const userCollection = doc(firebaseDB, "users", user.uid);
+      const userCollection = doc(firebaseDB, 'users', user.uid);
       const userSnap = await getDoc(userCollection);
 
-      if (!userSnap.exists()) return;
+      if (!userSnap.exists()) {
+        setUser(user);
+        return;
+      }
       const resUser = userSnap.data();
       setUser(resUser);
     });
@@ -140,8 +143,8 @@ const App = () => {
         ...DefaultTheme,
         colors: {
           ...DefaultTheme.colors,
-          background: "#fff",
-          card: "#fff",
+          background: '#fff',
+          card: '#fff',
         },
       }}
     >

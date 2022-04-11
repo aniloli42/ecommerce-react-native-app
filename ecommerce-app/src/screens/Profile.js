@@ -3,9 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 
 import { EditProfile, ScreenHeader, ViewProfile } from '../components';
-
 import { ScrollView } from 'react-native';
-import { auth } from '../../firebase';
 
 const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);

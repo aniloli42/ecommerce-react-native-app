@@ -5,7 +5,7 @@ import {
   ScrollView,
   StatusBar,
   Text,
-  Pressable,
+  TouchableOpacity,
   View,
   FlatList,
   StyleSheet,
@@ -15,7 +15,7 @@ import {
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
-import { spacing } from '../styles/utils';
+import { buttonOpacity, spacing } from '../styles/utils';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import { ScreenHeader, Sizes } from '../components';
@@ -202,12 +202,13 @@ const Product = () => {
               </>
             )}
             <View style={styles.buttonWrapper}>
-              <Pressable
+              <TouchableOpacity
                 style={[styles.buyNowButton, styles.button]}
                 onPress={handleBuy}
+                activeOpacity={buttonOpacity.active}
               >
                 <Text style={[fonts.medium, styles.buttonText]}>Buy Now</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </>
         ) : (

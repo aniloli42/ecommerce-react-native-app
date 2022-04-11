@@ -4,14 +4,14 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
   Linking,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
-import { spacing } from '../styles/utils';
+import { buttonOpacity, spacing } from '../styles/utils';
 
 import Ionic from 'react-native-vector-icons/Ionicons';
 import colors from '../styles/colors';
@@ -56,21 +56,21 @@ const Settings = () => {
 
             {/* Section Content */}
             <View style={styles.sectionContentWrapper}>
-              <Pressable
+              <TouchableOpacity
                 style={[styles.sectionButton]}
                 onPress={() => navigation.navigate('Profile')}
               >
                 <Text style={[fonts.regular, styles.buttonText]}>
                   View Profile
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
 
-              <Pressable
+              <TouchableOpacity
                 style={[styles.sectionButton]}
                 onPress={() => navigation.navigate('Security')}
               >
                 <Text style={[fonts.regular, styles.buttonText]}>Security</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -89,21 +89,28 @@ const Settings = () => {
 
             {/* Section Content */}
             <View style={styles.sectionContentWrapper}>
-              <Pressable style={[styles.sectionButton]} onPress={handleContact}>
+              <TouchableOpacity
+                style={[styles.sectionButton]}
+                onPress={handleContact}
+              >
                 <Text style={[fonts.regular, styles.buttonText]}>
                   Contact Us
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
 
           {/* Logout */}
           <View style={styles.logoutButtonWrapper}>
-            <Pressable style={styles.logoutButton} onPress={handleLogout}>
+            <TouchableOpacity
+              activeOpacity={buttonOpacity.active}
+              style={styles.logoutButton}
+              onPress={handleLogout}
+            >
               <Text style={[styles.logoutButtonText, fonts.regular]}>
                 Logout
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

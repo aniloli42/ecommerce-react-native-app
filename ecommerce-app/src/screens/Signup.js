@@ -2,21 +2,20 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Pressable,
   TextInput,
   StatusBar,
   StyleSheet,
   ScrollView,
-} from "react-native";
-import { auth, createUserWithEmailAndPassword } from "../../firebase";
+} from 'react-native';
+import { auth, createUserWithEmailAndPassword } from '../../firebase';
 
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
-import { spacing } from "../styles/utils";
-import { Formik } from "formik";
-import { signUpSchema } from "../schemas/userSchema";
-import { useUserContext } from "../context/UserContext";
-import ScreenHeader from "../components/ScreenHeader";
+import colors from '../styles/colors';
+import fonts from '../styles/fonts';
+import { buttonOpacity, spacing } from '../styles/utils';
+import { Formik } from 'formik';
+import { signUpSchema } from '../schemas/userSchema';
+import { useUserContext } from '../context/UserContext';
+import ScreenHeader from '../components/ScreenHeader';
 
 const Signup = ({ navigation }) => {
   const { setTemp } = useUserContext();
@@ -30,17 +29,17 @@ const Signup = ({ navigation }) => {
       />
 
       <ScreenHeader
-        screenName={"Sign up"}
+        screenName={'Sign up'}
         callback={() => navigation.goBack()}
       />
 
       <ScrollView contentContainerStyle={styles.scrollWrapper}>
         <Formik
           initialValues={{
-            name: "",
-            email: "",
-            password: "",
-            phoneNumber: "",
+            name: '',
+            email: '',
+            password: '',
+            phoneNumber: '',
           }}
           validationSchema={signUpSchema}
           onSubmit={async (values) => {
@@ -48,10 +47,9 @@ const Signup = ({ navigation }) => {
               const { name, phoneNumber, email, password } = values;
 
               await createUserWithEmailAndPassword(auth, email, password);
-
               setTemp({ name, phoneNumber });
             } catch (error) {
-              alert("Check All Inputs or Email is already used.");
+              alert('Check All Inputs or Email is already used.');
             }
           }}
           validateOnMount={true}
@@ -66,11 +64,11 @@ const Signup = ({ navigation }) => {
                   </Text>
                   <TextInput
                     style={[styles.formElementInput, fonts.regular]}
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     autoCorrect={false}
                     keyboardType="default"
-                    onChangeText={handleChange("name")}
-                    onBlur={handleBlur("name")}
+                    onChangeText={handleChange('name')}
+                    onBlur={handleBlur('name')}
                     value={values.name}
                   />
                 </View>
@@ -81,11 +79,11 @@ const Signup = ({ navigation }) => {
                   </Text>
                   <TextInput
                     style={[styles.formElementInput, fonts.regular]}
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     autoCorrect={false}
                     keyboardType="phone-pad"
-                    onChangeText={handleChange("phoneNumber")}
-                    onBlur={handleBlur("phoneNumber")}
+                    onChangeText={handleChange('phoneNumber')}
+                    onBlur={handleBlur('phoneNumber')}
                     value={values.phoneNumber}
                   />
                 </View>
@@ -96,11 +94,11 @@ const Signup = ({ navigation }) => {
                   </Text>
                   <TextInput
                     style={[styles.formElementInput, fonts.regular]}
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     autoCorrect={false}
                     keyboardType="email-address"
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
                     value={values.email}
                   />
                 </View>
@@ -113,22 +111,25 @@ const Signup = ({ navigation }) => {
                     style={[styles.formElementInput, fonts.regular]}
                     secureTextEntry={true}
                     keyboardType="default"
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     autoCorrect={false}
-                    onChangeText={handleChange("password")}
-                    onBlur={handleBlur("password")}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
                     value={values.password}
                   />
                 </View>
 
-                <Pressable
+                <TouchableOpacity
                   style={styles.loginButton(isValid)}
                   onPress={handleSubmit}
+                  activeOpacity={
+                    isValid ? buttonOpacity.active : buttonOpacity.disable
+                  }
                 >
                   <Text style={[styles.loginButtonText, fonts.medium]}>
                     Create Account
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </>
           )}
@@ -137,7 +138,10 @@ const Signup = ({ navigation }) => {
         {/* Bottom Task */}
         <View style={[styles.newAccountWrapper]}>
           <Text style={[fonts.light]}>Already have an Account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            activeOpacity={buttonOpacity.active}
+          >
             <Text style={[fonts.medium, styles.newAccountButtonText]}>
               Click Here
             </Text>
@@ -150,15 +154,15 @@ const Signup = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: "100%",
+    height: '100%',
   },
   scrollWrapper: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: spacing.min,
   },
   formWrapper: {
     paddingVertical: spacing.min * 0.25,
-    width: "90%",
+    width: '90%',
   },
   formElementWrapper: {
     marginTop: spacing.max * 1.5,
@@ -173,11 +177,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
     paddingVertical: 5,
     fontSize: 18,
-    textDecorationLine: "none",
+    textDecorationLine: 'none',
   },
   loginButton: (isValid) => ({
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 30,
     backgroundColor: isValid ? colors.tintBrown : colors.lightGray,
     paddingHorizontal: 8,
@@ -185,12 +189,12 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   }),
   loginButtonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 18,
   },
   newAccountWrapper: {
     marginTop: 30,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   newAccountButtonText: {
     marginLeft: 7,

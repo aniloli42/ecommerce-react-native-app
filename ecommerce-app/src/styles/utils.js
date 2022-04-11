@@ -11,4 +11,9 @@ const spacing = {
   max: 24,
 };
 
-export { spacing, heading };
+const buttonOpacity = {
+  active: 0.5,
+  disable: 1,
+};
+
+export { spacing, heading, buttonOpacity };

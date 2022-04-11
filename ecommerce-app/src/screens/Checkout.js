@@ -5,9 +5,9 @@ import {
   StatusBar,
   ScrollView,
   TextInput,
-  Pressable,
+  TouchableOpacity,
 } from 'react-native';
-import { spacing } from '../styles/utils';
+import { buttonOpacity, spacing } from '../styles/utils';
 import colors from '../styles/colors';
 import { ScreenHeader } from '../components';
 import { useProductContext } from '../context/ProductContext';
@@ -112,14 +112,17 @@ const Checkout = () => {
               </View>
 
               <View style={styles.buttonWrapper}>
-                <Pressable
+                <TouchableOpacity
                   style={styles.button(isValid)}
                   onPress={handleSubmit}
+                  activeOpacity={
+                    isValid ? buttonOpacity.active : buttonOpacity.disable
+                  }
                 >
                   <Text style={[styles.buttonText, fonts.regular]}>
                     Submit Order
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </View>
           )}

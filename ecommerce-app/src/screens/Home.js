@@ -6,15 +6,15 @@ import {
   ImageBackground,
   StatusBar,
   StyleSheet,
-} from "react-native";
-import fonts from "../styles/fonts";
-import colors from "../styles/colors";
-import { spacing } from "../styles/utils";
+} from 'react-native';
+import fonts from '../styles/fonts';
+import colors from '../styles/colors';
+import { buttonOpacity, spacing } from '../styles/utils';
 
 const Home = ({ navigation }) => {
   return (
     <ImageBackground
-      source={require("../../assets/home-background.png")}
+      source={require('../../assets/home-background.png')}
       resizeMode="cover"
       style={styles.backgroundImage}
     >
@@ -27,7 +27,7 @@ const Home = ({ navigation }) => {
         <View style={styles.brandWrapper}>
           <View style={styles.brandImageWrapper}>
             <Image
-              source={require("../../assets/brand.png")}
+              source={require('../../assets/brand.png')}
               style={styles.brandImage}
             />
           </View>
@@ -40,7 +40,8 @@ const Home = ({ navigation }) => {
         <View style={styles.buttonWrapper}>
           <TouchableOpacity
             style={[styles.loginButton, styles.button]}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate('Login')}
+            activeOpacity={buttonOpacity.active}
           >
             <Text
               style={[styles.buttonText, styles.loginButtonText, fonts.regular]}
@@ -51,7 +52,8 @@ const Home = ({ navigation }) => {
 
           <TouchableOpacity
             style={[styles.signUpButton, styles.button]}
-            onPress={() => navigation.navigate("Signup")}
+            onPress={() => navigation.navigate('Signup')}
+            activeOpacity={buttonOpacity.active}
           >
             <Text
               style={[
@@ -70,20 +72,20 @@ const Home = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: { width: "100%", height: "100%", flex: 1 },
-  wrapper: { flex: 1, alignItems: "center", justifyContent: "space-between" },
+  backgroundImage: { width: '100%', height: '100%', flex: 1 },
+  wrapper: { flex: 1, alignItems: 'center', justifyContent: 'space-between' },
   brandWrapper: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   brandImageWrapper: {
     width: 150,
     height: 150,
     backgroundColor: colors.white,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderRadius: 36,
     marginTop: spacing.max * 2,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     elevation: 3,
   },
   brandImage: {
@@ -95,10 +97,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.max,
   },
   brandText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 32,
-    textAlign: "center",
-    fontWeight: "bold",
+    textAlign: 'center',
+    fontWeight: 'bold',
     textShadowColor: colors.tintBrown,
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
@@ -106,25 +108,25 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     margin: spacing.max,
-    width: "80%",
+    width: '80%',
   },
   button: {
     marginVertical: 12,
     paddingVertical: 12,
     elevation: 3,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 30,
   },
   loginButton: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   signUpButton: {
     backgroundColor: colors.tintBrown,
   },
   buttonText: { fontSize: 18 },
   loginButtonText: { color: colors.tintBrown },
-  signUpButtonText: { color: "#fff" },
+  signUpButtonText: { color: '#fff' },
 });
 
 export default Home;

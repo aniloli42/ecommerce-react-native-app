@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 
-import { StyleSheet, Text, Image, View, Pressable } from 'react-native';
-import { spacing } from '../styles/utils';
+import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
+import { buttonOpacity, spacing } from '../styles/utils';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 import MaterialsIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -88,9 +88,13 @@ const OrderProduct = ({
 
       {/* Product Remove View */}
       {status === 'pending' || status === 'rejected' ? (
-        <Pressable style={styles.deleteButton} onPress={removeFromCart}>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={removeFromCart}
+          activeOpacity={buttonOpacity.active}
+        >
           <MaterialsIcon name="delete" size={20} color="red" />
-        </Pressable>
+        </TouchableOpacity>
       ) : null}
     </View>
   );

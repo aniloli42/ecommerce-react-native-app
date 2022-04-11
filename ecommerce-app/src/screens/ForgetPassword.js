@@ -1,13 +1,19 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
-import React from "react";
-import { ScreenHeader } from "../components";
-import { Formik } from "formik";
-import { passwordForgetSchema } from "../schemas/userSchema";
-import colors from "../styles/colors";
-import { spacing } from "../styles/utils";
-import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../../firebase";
-import { useNavigation } from "@react-navigation/native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import React from 'react';
+import { ScreenHeader } from '../components';
+import { Formik } from 'formik';
+import { passwordForgetSchema } from '../schemas/userSchema';
+import colors from '../styles/colors';
+import { buttonOpacity, spacing } from '../styles/utils';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { useNavigation } from '@react-navigation/native';
 
 const ForgetPassword = () => {
   const navigation = useNavigation();
@@ -15,19 +21,19 @@ const ForgetPassword = () => {
   return (
     <View>
       <ScreenHeader
-        screenName={"Forget Password"}
+        screenName={'Forget Password'}
         callback={() => navigation.goBack()}
       />
       <View style={styles.scrollWrapper}>
         <Formik
           initialValues={{
-            email: "",
+            email: '',
           }}
           validationSchema={passwordForgetSchema}
           onSubmit={async (values) => {
             try {
               await sendPasswordResetEmail(auth, values.email);
-              alert("Check Your Email");
+              alert('Check Your Email');
             } catch (error) {
               alert(error.message);
             }
@@ -44,23 +50,26 @@ const ForgetPassword = () => {
                   </Text>
                   <TextInput
                     style={[styles.formElementInput, fonts.regular]}
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     autoCorrect={false}
                     keyboardType="email-address"
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
                     value={values.email}
                   />
                 </View>
 
-                <Pressable
+                <TouchableOpacity
                   style={styles.loginButton(isValid)}
                   onPress={handleSubmit}
+                  activeOpacity={
+                    isValid ? buttonOpacity.active : buttonOpacity.disable
+                  }
                 >
                   <Text style={[styles.loginButtonText, fonts.medium]}>
                     Send Mail
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </>
           )}
@@ -74,15 +83,15 @@ export default ForgetPassword;
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: "100%",
+    height: '100%',
   },
   scrollWrapper: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: spacing.min,
   },
 
   formWrapper: {
-    width: "90%",
+    width: '90%',
   },
   formElementWrapper: {
     marginTop: spacing.min * 1.5,
@@ -97,11 +106,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
     paddingVertical: 5,
     fontSize: 18,
-    textDecorationLine: "none",
+    textDecorationLine: 'none',
   },
   loginButton: (isValid) => ({
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 30,
     backgroundColor: isValid ? colors.tintBrown : colors.lightGray,
     paddingHorizontal: 8,
@@ -109,7 +118,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   }),
   loginButtonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 18,
   },
 });

@@ -11,7 +11,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
+  TouchableOpacity,
   TextInput,
   ScrollView,
 } from 'react-native';
@@ -21,7 +21,7 @@ import { ScreenHeader } from '../components';
 import { emailChangeSchema, passwordChangeSchema } from '../schemas/userSchema';
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
-import { spacing } from '../styles/utils';
+import { buttonOpacity, spacing } from '../styles/utils';
 
 const Security = () => {
   const navigation = useNavigation();
@@ -105,14 +105,17 @@ const Security = () => {
                   />
                 </View>
 
-                <Pressable
+                <TouchableOpacity
+                  activeOpacity={
+                    isValid ? buttonOpacity.active : buttonOpacity.disable
+                  }
                   onPress={handleSubmit}
                   style={styles.editProfileButton}
                 >
                   <Text style={styles.editProfileButtonText(isValid)}>
                     Update Email
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             )}
           </Formik>
@@ -173,14 +176,17 @@ const Security = () => {
                   />
                 </View>
 
-                <Pressable
+                <TouchableOpacity
+                  activeOpacity={
+                    isValid ? buttonOpacity.active : buttonOpacity.disable
+                  }
                   onPress={handleSubmit}
                   style={styles.editProfileButton}
                 >
                   <Text style={styles.editProfileButtonText(isValid)}>
                     Update Password
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             )}
           </Formik>

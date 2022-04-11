@@ -5,17 +5,16 @@ import {
   TextInput,
   StatusBar,
   StyleSheet,
-  Pressable,
   ScrollView,
-} from "react-native";
-import { auth, signInWithEmailAndPassword } from "../../firebase";
+} from 'react-native';
+import { auth, signInWithEmailAndPassword } from '../../firebase';
 
-import colors from "../styles/colors";
-import fonts from "../styles/fonts";
-import { spacing } from "../styles/utils";
-import { loginSchema } from "../schemas/userSchema";
-import { Formik } from "formik";
-import { ScreenHeader } from "../components";
+import colors from '../styles/colors';
+import fonts from '../styles/fonts';
+import { buttonOpacity, spacing } from '../styles/utils';
+import { loginSchema } from '../schemas/userSchema';
+import { Formik } from 'formik';
+import { ScreenHeader } from '../components';
 
 const Login = ({ navigation }) => {
   return (
@@ -26,13 +25,13 @@ const Login = ({ navigation }) => {
         animated={true}
       />
 
-      <ScreenHeader screenName={"Login"} callback={() => navigation.goBack()} />
+      <ScreenHeader screenName={'Login'} callback={() => navigation.goBack()} />
 
       <ScrollView contentContainerStyle={styles.scrollWrapper}>
         <Formik
           initialValues={{
-            email: "",
-            password: "",
+            email: '',
+            password: '',
           }}
           validationSchema={loginSchema}
           onSubmit={async (values) => {
@@ -58,11 +57,11 @@ const Login = ({ navigation }) => {
                   </Text>
                   <TextInput
                     style={[styles.formElementInput, fonts.regular]}
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     autoCorrect={false}
                     keyboardType="email-address"
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
                     value={values.email}
                   />
                 </View>
@@ -75,40 +74,47 @@ const Login = ({ navigation }) => {
                     style={[styles.formElementInput, fonts.regular]}
                     secureTextEntry={true}
                     keyboardType="default"
-                    autoCapitalize={"none"}
+                    autoCapitalize={'none'}
                     autoCorrect={false}
-                    onChangeText={handleChange("password")}
-                    onBlur={handleBlur("password")}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
                     value={values.password}
                   />
                 </View>
 
-                <Pressable
+                <TouchableOpacity
+                  activeOpacity={
+                    isValid ? buttonOpacity.active : buttonOpacity.disable
+                  }
                   style={styles.loginButton(isValid)}
                   onPress={handleSubmit}
                 >
                   <Text style={[styles.loginButtonText, fonts.medium]}>
                     Login
                   </Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             </>
           )}
         </Formik>
 
-        <Pressable
+        <TouchableOpacity
+          activeOpacity={buttonOpacity.active}
           style={styles.forgetButton}
-          onPress={() => navigation.navigate("ForgetPassword")}
+          onPress={() => navigation.navigate('ForgetPassword')}
         >
           <Text style={[fonts.regular, styles.forgetText]}>
             Forget password?
           </Text>
-        </Pressable>
+        </TouchableOpacity>
 
         {/* Bottom Task */}
         <View style={[styles.newAccountWrapper]}>
           <Text style={[fonts.light]}>Don't have an Account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Signup')}
+            activeOpacity={buttonOpacity.active}
+          >
             <Text style={[fonts.medium, styles.newAccountButtonText]}>
               Click Here
             </Text>
@@ -121,15 +127,15 @@ const Login = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: "100%",
+    height: '100%',
   },
   scrollWrapper: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: spacing.min,
   },
 
   formWrapper: {
-    width: "84%",
+    width: '84%',
   },
   formElementWrapper: {
     marginTop: spacing.min * 1.5,
@@ -144,11 +150,11 @@ const styles = StyleSheet.create({
     marginTop: 2,
     paddingVertical: 5,
     fontSize: 18,
-    textDecorationLine: "none",
+    textDecorationLine: 'none',
   },
   loginButton: (isValid) => ({
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 30,
     backgroundColor: isValid ? colors.tintBrown : colors.lightGray,
     paddingHorizontal: 8,
@@ -156,12 +162,12 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   }),
   loginButtonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 18,
   },
   newAccountWrapper: {
     marginTop: 30,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   newAccountButtonText: {
     marginLeft: 7,

@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import React from "react";
-import { spacing } from "../styles/utils";
-import colors from "../styles/colors";
-import { useUserContext } from "../context/UserContext";
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { buttonOpacity, spacing } from '../styles/utils';
+import colors from '../styles/colors';
+import { useUserContext } from '../context/UserContext';
 
 const ViewProfile = ({ handleEdit }) => {
   const { user } = useUserContext();
@@ -25,9 +25,13 @@ const ViewProfile = ({ handleEdit }) => {
         </Text>
       </View>
 
-      <Pressable onPress={handleEdit} style={styles.editProfileButton}>
+      <TouchableOpacity
+        activeOpacity={buttonOpacity.active}
+        onPress={handleEdit}
+        style={styles.editProfileButton}
+      >
         <Text style={styles.editProfileButtonText}>Edit Profile</Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
 
   // button section
   editProfileButton: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
   },
 
   editProfileButtonText: {

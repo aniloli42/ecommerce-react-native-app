@@ -1,13 +1,19 @@
-import { StyleSheet, Text, View, Pressable, TextInput } from "react-native";
-import React from "react";
-import colors from "../styles/colors";
-import { spacing } from "../styles/utils";
-import { useUserContext } from "../context/UserContext";
-import { Formik } from "formik";
-import { profileSchema } from "../schemas/userSchema";
-import { updateCurrentUser, updateProfile } from "firebase/auth";
-import { auth, firebaseDB } from "../../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
+import React from 'react';
+import colors from '../styles/colors';
+import { buttonOpacity, spacing } from '../styles/utils';
+import { useUserContext } from '../context/UserContext';
+import { Formik } from 'formik';
+import { profileSchema } from '../schemas/userSchema';
+import { updateCurrentUser, updateProfile } from 'firebase/auth';
+import { auth, firebaseDB } from '../../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 const EditProfile = ({ handleEdit }) => {
   const { user, setUser } = useUserContext();
@@ -27,13 +33,15 @@ const EditProfile = ({ handleEdit }) => {
           )
             return handleEdit();
 
-          const usersRef = doc(firebaseDB, "users", auth.currentUser.uid);
+          const usersRef = doc(firebaseDB, 'users', auth.currentUser.uid);
 
           await setDoc(
             usersRef,
             {
               name: values.name,
               phoneNumber: values.phoneNumber,
+              oldName: auth.currentUser.displayName,
+              oldPhoneNumber: user.phoneNumber,
             },
             { merge: true }
           );
@@ -49,7 +57,7 @@ const EditProfile = ({ handleEdit }) => {
             phoneNumber: values.phoneNumber,
           }));
 
-          alert("Profile Updated");
+          alert('Profile Updated');
 
           handleEdit();
         }}
@@ -62,11 +70,11 @@ const EditProfile = ({ handleEdit }) => {
               </Text>
               <TextInput
                 style={[fonts.light, styles.sectionTextInput]}
-                autoCapitalize={"none"}
+                autoCapitalize={'none'}
                 autoCorrect={false}
                 keyboardType="default"
-                onChangeText={handleChange("name")}
-                onBlur={handleBlur("name")}
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
                 value={values.name}
               />
             </View>
@@ -86,28 +94,35 @@ const EditProfile = ({ handleEdit }) => {
               </Text>
               <TextInput
                 style={[fonts.light, styles.sectionTextInput]}
-                autoCapitalize={"none"}
+                autoCapitalize={'none'}
                 autoCorrect={false}
                 keyboardType="numeric"
-                onChangeText={handleChange("phoneNumber")}
-                onBlur={handleBlur("phoneNumber")}
+                onChangeText={handleChange('phoneNumber')}
+                onBlur={handleBlur('phoneNumber')}
                 value={values.phoneNumber}
               />
             </View>
 
             <View style={styles.buttonWrapper}>
-              <Pressable
+              <TouchableOpacity
+                activeOpacity={
+                  isValid ? buttonOpacity.active : buttonOpacity.disable
+                }
                 onPress={handleSubmit}
                 style={styles.editProfileButton}
               >
                 <Text style={styles.editProfileButtonText(isValid)}>
                   Update Profile
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
 
-              <Pressable onPress={handleEdit} style={styles.cancelButton}>
+              <TouchableOpacity
+                activeOpacity={buttonOpacity.active}
+                onPress={handleEdit}
+                style={styles.cancelButton}
+              >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </>
         )}
@@ -152,11 +167,11 @@ const styles = StyleSheet.create({
 
   // button section
   buttonWrapper: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
 
   editProfileButton: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
   },
 
   editProfileButtonText: (isValid) => ({
@@ -168,7 +183,7 @@ const styles = StyleSheet.create({
   }),
 
   cancelButton: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     marginLeft: spacing.min,
   },
   cancelButtonText: {
