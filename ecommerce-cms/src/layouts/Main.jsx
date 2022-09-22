@@ -16,28 +16,31 @@ const Main = ({ children }) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const verifyAccessToken = async (token) => {
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_AUTH_SERVER_URL}/verify`,
-        null,
-        {
-          headers: {
-            'access-token': token,
-          },
-        }
-      );
+  const verifyAccessToken = useCallback(
+    async (token) => {
+      try {
+        const res = await axios.post(
+          `${import.meta.env.VITE_AUTH_SERVER_URL}/verify`,
+          null,
+          {
+            headers: {
+              'access-token': token,
+            },
+          }
+        );
 
-      if (res.data?.accessToken == null) throw new Error('Token Invalid');
+        if (res.data?.accessToken == null) throw new Error('Token Invalid');
 
-      sessionStorage.setItem('cms', res.data.accessToken);
-      setUser(res.data.accessToken);
-    } catch (e) {
-      sessionStorage.clear();
-      setStoredToken(null);
-      setUser(null);
-    }
-  };
+        sessionStorage.setItem('cms', res.data.accessToken);
+        setUser(res.data.accessToken);
+      } catch (e) {
+        sessionStorage.clear();
+        setStoredToken(null);
+        setUser(null);
+      }
+    },
+    [token]
+  );
 
   useEffect(() => {
     setUser(storedToken);
