@@ -28,12 +28,10 @@ const Main = ({ children }) => {
         }
       );
 
-      if (res.data.accessToken != null) {
-        sessionStorage.setItem('cms', res.data.accessToken);
-        setUser(res.data.accessToken);
-      }
+      if (res.data?.accessToken == null) throw new Error('Token Invalid');
 
-      throw new Error('Token Invalid');
+      sessionStorage.setItem('cms', res.data.accessToken);
+      setUser(res.data.accessToken);
     } catch (e) {
       sessionStorage.clear();
       setStoredToken(null);
