@@ -17,14 +17,16 @@ const Main = ({ children }) => {
   const navigate = useNavigate();
 
   const verifyAccessToken = useCallback(
-    async (token) => {
+    async (user) => {
       try {
+        if (user == null) return;
+
         const res = await axios.post(
           `${import.meta.env.VITE_AUTH_SERVER_URL}/verify`,
           null,
           {
             headers: {
-              'access-token': token,
+              'access-token': user,
             },
           }
         );
@@ -39,7 +41,7 @@ const Main = ({ children }) => {
         setUser(null);
       }
     },
-    [token]
+    [user]
   );
 
   useEffect(() => {
