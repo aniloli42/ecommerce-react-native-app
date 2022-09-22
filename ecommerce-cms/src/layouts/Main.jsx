@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { useUserContext } from '../context/UserContext';
 
@@ -20,12 +20,18 @@ const Main = ({ children }) => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_AUTH_SERVER_URL}/verify`,
+        null,
         {
-          accessToken: token,
+          headers: {
+            'access-token': token,
+          },
         }
       );
 
-      if (res.data.valid === true) return;
+      if (res.data.accessToken != null) {
+        sessionStorage.setItem('cms', res.data.accessToken);
+        setUser(res.data.accessToken);
+      }
 
       throw new Error('Token Invalid');
     } catch (e) {

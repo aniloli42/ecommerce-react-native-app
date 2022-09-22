@@ -1,13 +1,12 @@
-import { useState, useRef } from 'react';
-import { Formik, Form } from 'formik';
-import Main from '../layouts/Main';
-import Input from '../components/formElements/Input';
-import { loginSchema } from '../schema';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Form, Formik } from 'formik';
 import { AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import Input from '../components/formElements/Input';
 import Modal from '../components/Modal';
 import { useUserContext } from '../context/UserContext';
+import Main from '../layouts/Main';
+import { loginSchema } from '../schema';
 
 const Login = () => {
   const { setUser } = useUserContext();
