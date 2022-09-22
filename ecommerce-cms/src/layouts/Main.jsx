@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { useUserContext } from '../context/UserContext';
@@ -71,4 +71,4 @@ const Main = ({ children }) => {
   );
 };
 
-export default () => memo(Main);
+export default Main;
